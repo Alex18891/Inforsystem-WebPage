@@ -121,10 +121,6 @@ const handleMouseEnterserv = () => {
           <img
             src={logo}
             alt="profile picture"
-       
-            style={{
-              cursor: "pointer",
-            }}
           ></img>
           <Search>
             <SearchIconWrapper>
@@ -164,13 +160,13 @@ const handleMouseEnterserv = () => {
                     <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
                 </a>
                 <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered]}>
-                        <a style={styles.acontainer} href="#">Computadores</a>
-                        <a style={styles.acontainer} href="#">Sistemas Pos</a>
-                        <a style={styles.acontainer} href="#">All-In-On</a>
-                        <a style={styles.acontainer} href="#">Portateis</a>
-                        <a style={styles.acontainer} href="#">Monitores</a>
-                        <a style={styles.acontainer} href="#">Impressoras</a>
-                        <a style={styles.acontainer} href="#">Acessórios</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Sistemas Pos</a>
+                        <a style={styles.acontainer} id='aheader' href="#">All-In-On</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Portateis</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Monitores</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Acessórios</a>
                 </View>
             </View>
             <View  style={styles.container} onMouseEnter={handleMouseEnterserv}
@@ -187,12 +183,12 @@ const handleMouseEnterserv = () => {
                             </Text>     
       
                             <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
-                                <a style={styles.acontainer}  href="#">Computadores</a>
-                                <a style={styles.acontainer}  href="#">Impressoras</a>
+                                <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
+                                <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
                             </View>
                     </View>
-                        <a style={styles.acontainer} href="#">Instalação SO</a>
-                        <a style={styles.acontainer} href="#">Remoção de virus</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Instalação SO</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Remoção de virus</a>
                 </View>
             </View>
             <View  style={styles.container} onMouseEnter={handleMouseEntersoft}
@@ -208,11 +204,11 @@ const handleMouseEnterserv = () => {
                                 <i class="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
                             </Text>     
                             <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
-                                <a style={styles.acontainer}  href="#">Alojamento</a>
+                                <a style={styles.acontainer} id='aheader' href="#">Alojamento</a>
                             </View>
                     </View>
                         
-                        <a style={styles.acontainer} href="#">Faturação</a>
+                        <a style={styles.acontainer} id='aheader' href="#">Faturação</a>
                 </View>
             </View>
         </Box>
@@ -226,21 +222,21 @@ const handleMouseEnterserv = () => {
                 </a>
                 <View  style={[styles.container_cont,isHovered && styles.containerHovered]}>
                   
-                    <a style={styles.acontainer} href="https://wa.me/351967687915">
+                    <a style={styles.acontainer} id='aheader' href="https://wa.me/351967687915">
                         <i style={{marginTop:"0.2rem"}} className="fas fa-phone" width="21px" height="21px"  ></i>
                         <p style={{margin:0}}>(+351) xxxxxxxxx</p>
                     </a>
-                    <a style={styles.acontainer} href="mailto:loja2@inforsystem.net">
+                    <a style={styles.acontainer} id='aheader' href="mailto:loja2@inforsystem.net">
                         <i style={{marginTop:"0.2rem"}} className="fas fa-envelope" width="21px" height="24px"   ></i>
                         <p style={{margin:0}} >loja2@inforsystem.net</p>
                     </a>
                   
                 </View>
             </View>
-            <a style={{ textDecorationLine:"none" }} href="#">
+            <a style={{ textDecorationLine:"none" }} id='aheader' href="#">
               Sobre a empresa
             </a> 
-            <a style={{ textDecorationLine:"none" }} href="#">
+            <a style={{ textDecorationLine:"none" }} id='aheader' href="#">
               Enviar ticket
             </a> 
           </Box>

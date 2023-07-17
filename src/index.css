@@ -13,10 +13,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-a:hover {
+#afooter:hover {
+  color: #08233a;
+}
+#afooter{
+  color: white;
+  font-family:"K2D"; 
+}
+
+#aheader:hover {
   color: #1A65A4;
 }
-a{
+#aheader{
   color: black;
   font-family:"K2D"; 
 }
