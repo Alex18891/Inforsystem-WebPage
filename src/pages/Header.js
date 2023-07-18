@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import {View, Text,StyleSheet,TouchableOpacity} from 'react-native';
+import {View, Text,StyleSheet} from 'react-native';
 
 import pfp from "./../img/user.png";
 
@@ -261,9 +261,9 @@ const styles = StyleSheet.create({
         width: 0,
         height: 8,
         },
-        paddingRight:"20px",
         shadowOpacity: 0.2,
         shadowRadius: 16,
+        paddingRight:"20px",
         borderRadius:"10px",  
         zIndex: 1
     },
