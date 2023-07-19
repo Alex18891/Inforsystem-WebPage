@@ -115,23 +115,25 @@ const handleMouseEnterserv = () => {
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ background: "#1A65A4" }}>
-        <Toolbar>
-          <img
-            src={logo}
-            alt="profile picture"
-          ></img>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon style={{ color: "#344054"}} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Pesquisa por um produto"
-              inputProps={{ "aria-label": "search" }}
-              onChange={handleSearchChange}
-            />     
-          </Search>  
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar position="static" style={{ background: "#1A65A4"}}>
+        <Toolbar sx={{marginLeft:"auto",marginRight:"auto",gap:"580px"}}>
+          <Box sx={{ flexGrow: 1,flexDirection:"row",display:"flex"}}>
+            <img
+              src={logo}
+              alt="profile picture"
+            ></img>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon style={{ color: "#344054"}} />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Pesquisa os nossos produtos"
+                inputProps={{ "aria-label": "search" }}
+                onChange={handleSearchChange}
+              />     
+            </Search>  
+          </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex", alignItems: "center",justifycontent: "center",cursor: "pointer", }}>
             <img
@@ -151,7 +153,7 @@ const handleMouseEnterserv = () => {
         </Toolbar>
       </AppBar>
       <AppBar position="static" style={{ background: "white" }}>
-        <Toolbar>
+        <Toolbar sx={{marginLeft:"auto",marginRight:"auto",gap:"520px"}}>
         <Box sx={{ display: "flex", alignItems: "center", gap: "50px" }}>
             <View  style={styles.container} onMouseEnter={handleMouseEnterprod}
                     onMouseLeave={handleMouseLeave}>
