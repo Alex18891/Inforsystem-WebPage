@@ -7,6 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import {View, Text,StyleSheet} from 'react-native';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import pfp from "./../img/user.png";
 
@@ -14,10 +15,9 @@ import logo from "./../img/logo.png";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius + 10,
-  marginRight: theme.spacing(2),
+  borderRadius: theme.shape.borderRadius + 10 ,
   marginLeft: 0,
-  width: "100%",
+
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
@@ -42,19 +42,27 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `calc(1rem + ${theme.spacing(4)})`,
+    paddingRight: `calc(1rem + ${theme.spacing(3)})`,
     transition: theme.transitions.create("width"),
-    width: "100%",
     border:"1px solid black",
     borderRadius:"12px",
     [theme.breakpoints.up("md")]: {
-      width: "28ch",
-      height:"1.6ch"
+      width: "24ch",
+      height:"1.8ch"
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "24ch", // Set width to 100% for small screens
+      height: "1.8ch", // Set height to 1.6ch for small screens
+    },
+    [theme.breakpoints.down('lg')]: {
+      width: '24ch', // Set width to 30ch for large screens
+      height: "1.8ch", // Set height to 2ch for large screens
     },
     "&::placeholder": {
-      color: "#344054",
       opacity: 0.8,
       fontFamily:"K2D",
+
     },  
   },
 }));
@@ -62,6 +70,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 export default function PrimarySearchAppBar() {
+  const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
+  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
+  const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
+  const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
   const [searchValue, setSearchValue] = React.useState("");
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
@@ -116,106 +129,111 @@ const handleMouseEnterserv = () => {
 
   return (
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static" style={{ background: "#1A65A4"}}>
-        <Toolbar sx={{marginLeft:"auto",marginRight:"auto",gap:"580px"}}>
-          <Box sx={{ flexGrow: 1,flexDirection:"row",display:"flex"}}>
-            <img
-              src={logo}
-              alt="profile picture"
-            ></img>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon style={{ color: "#344054"}} />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Pesquisa os nossos produtos"
-                inputProps={{ "aria-label": "search" }}
-                onChange={handleSearchChange}
-              />     
-            </Search>  
+        <Box position="static"  sx={{background: "#1A65A4"}}>
+            <Toolbar sx={styles.firsttoolbar}>
+              <Box sx={{...styles.firstitemfirsttoolbar,
+                    ...(isSmallScreen && styles.firstitemfirsttoolbarsmall),
+                    ...(isExtraSmallScreen && styles.firstitemfirsttoolbarextrasmall) }}>
+                <img
+                  src={logo}
+                  alt="profile picture"
+                ></img>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon style={{ color: "#344054"}} />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Pesquisa os nossos produtos"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={handleSearchChange}
+                  />     
+                </Search>  
+              </Box>
+              <Box sx={{...styles.seconditemfirsttoolbar,
+                    ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
+                    ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }}>
+                <img
+                    src={pfp}
+                    alt="profile picture"
+                    width="40px"
+                    height="40px"
+                    style={{
+        
+                    marginTop:"0.5rem"
+                    }}
+                ></img>
+                <Text style={styles.textdefault} >
+                    Minha conta
+                </Text> 
+              </Box>
+            </Toolbar>
+        </Box >
+      <Box position="static" sx={{ background: "white" ,boxShadow: '0 0 30px rgba(0, 0, 0, 0.2)'}}>
+        <Toolbar sx={{...styles.secondtoolbar,
+                    ...(isSmallScreen && styles.secondtoolbarsmall),
+                    ...(isExtraSmallScreen && styles.secondtoolbarsmall)  }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "50px" }}>
+              <View  style={styles.container} onMouseEnter={handleMouseEnterprod}
+                      onMouseLeave={handleMouseLeave}>
+                  <a  style={{ color: "black"}} >
+                      Produtos
+                      <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
+                  </a>
+                  <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered]}>
+                          <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
+                          <a style={styles.acontainer} id='aheader' href="#">Sistemas Pos</a>
+                          <a style={styles.acontainer} id='aheader' href="#">All-In-On</a>
+                          <a style={styles.acontainer} id='aheader' href="#">Portateis</a>
+                          <a style={styles.acontainer} id='aheader' href="#">Monitores</a>
+                          <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
+                          <a style={styles.acontainer} id='aheader' href="#">Acessórios</a>
+                  </View>
+              </View>
+              <View  style={styles.container} onMouseEnter={handleMouseEnterserv}
+                      onMouseLeave={handleMouseLeave}>
+                  <a  style={{ color: "black" }} >
+                      Serviços
+                      <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
+                  </a>
+                  <View  style={[styles.container_cont,isHoveredserv && styles.containerHovered]}>
+                      <View style={styles.container}  onMouseEnter={handleMouseEnter2}
+                      onMouseLeave={handleMouseLeave2} > 
+                              <Text style={[styles.acontainer, {marginBottom:0, paddingRight:"40px"}]}>Reparação
+                                  <i class="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
+                              </Text>     
+        
+                              <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
+                                  <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
+                                  <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
+                              </View>
+                      </View>
+                          <a style={styles.acontainer} id='aheader' href="#">Instalação SO</a>
+                          <a style={styles.acontainer} id='aheader' href="#">Remoção de virus</a>
+                  </View>
+              </View>
+              <View  style={styles.container} onMouseEnter={handleMouseEntersoft}
+                      onMouseLeave={handleMouseLeave}>
+                      <a  style={{ color: "black"}} >
+                          Software
+                          <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
+                      </a>
+                  <View  style={[styles.container_cont,isHoveredsoft && styles.containerHovered]}>
+                  <View style={styles.container}  onMouseEnter={handleMouseEnter2}
+                      onMouseLeave={handleMouseLeave2} > 
+                              <Text style={[styles.acontainer, {paddingRight:"20px", marginBottom:0}]}>Serviços Web
+                                  <i class="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
+                              </Text>     
+                              <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
+                                  <a style={styles.acontainer} id='aheader' href="#">Alojamento</a>
+                              </View>
+                      </View>
+                          
+                          <a style={styles.acontainer} id='aheader' href="#">Faturação</a>
+                  </View>
+              </View>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: "flex", alignItems: "center",justifycontent: "center",cursor: "pointer", }}>
-            <img
-                src={pfp}
-                alt="profile picture"
-                width="40px"
-                height="40px"
-                style={{
-     
-                marginTop:"0.5rem"
-                }}
-            ></img>
-            <Text style={styles.textdefault} >
-                Minha conta
-            </Text> 
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <AppBar position="static" style={{ background: "white" }}>
-        <Toolbar sx={{marginLeft:"auto",marginRight:"auto",gap:"520px"}}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "50px" }}>
-            <View  style={styles.container} onMouseEnter={handleMouseEnterprod}
-                    onMouseLeave={handleMouseLeave}>
-                <a  style={{ color: "black"}} >
-                    Produtos
-                    <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                </a>
-                <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered]}>
-                        <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
-                        <a style={styles.acontainer} id='aheader' href="#">Sistemas Pos</a>
-                        <a style={styles.acontainer} id='aheader' href="#">All-In-On</a>
-                        <a style={styles.acontainer} id='aheader' href="#">Portateis</a>
-                        <a style={styles.acontainer} id='aheader' href="#">Monitores</a>
-                        <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
-                        <a style={styles.acontainer} id='aheader' href="#">Acessórios</a>
-                </View>
-            </View>
-            <View  style={styles.container} onMouseEnter={handleMouseEnterserv}
-                    onMouseLeave={handleMouseLeave}>
-                <a  style={{ color: "black" }} >
-                    Serviços
-                    <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                </a>
-                <View  style={[styles.container_cont,isHoveredserv && styles.containerHovered]}>
-                    <View style={styles.container}  onMouseEnter={handleMouseEnter2}
-                    onMouseLeave={handleMouseLeave2} > 
-                            <Text style={[styles.acontainer, {marginBottom:0, paddingRight:"40px"}]}>Reparação
-                                <i class="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
-                            </Text>     
-      
-                            <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
-                                <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
-                                <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
-                            </View>
-                    </View>
-                        <a style={styles.acontainer} id='aheader' href="#">Instalação SO</a>
-                        <a style={styles.acontainer} id='aheader' href="#">Remoção de virus</a>
-                </View>
-            </View>
-            <View  style={styles.container} onMouseEnter={handleMouseEntersoft}
-                    onMouseLeave={handleMouseLeave}>
-                    <a  style={{ color: "black"}} >
-                        Software
-                        <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                    </a>
-                <View  style={[styles.container_cont,isHoveredsoft && styles.containerHovered]}>
-                <View style={styles.container}  onMouseEnter={handleMouseEnter2}
-                    onMouseLeave={handleMouseLeave2} > 
-                            <Text style={[styles.acontainer, {paddingRight:"20px", marginBottom:0}]}>Serviços Web
-                                <i class="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
-                            </Text>     
-                            <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
-                                <a style={styles.acontainer} id='aheader' href="#">Alojamento</a>
-                            </View>
-                    </View>
-                        
-                        <a style={styles.acontainer} id='aheader' href="#">Faturação</a>
-                </View>
-            </View>
-        </Box>
-        <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: "flex", alignItems: "center",gap: "50px" }}>
+            <Box sx={{ display: "flex", alignItems: "center",gap: "50px" }}>
             <View  style={styles.container} onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}>
                 <a style={{ color: "black"}} >
@@ -243,7 +261,7 @@ const handleMouseEnterserv = () => {
             </a> 
           </Box>
         </Toolbar>
-      </AppBar>
+      </Box>
     </Box>
   );
 }
@@ -253,6 +271,46 @@ const styles = StyleSheet.create({
         position: "relative",
         display: "inline-block"
     },
+    firsttoolbar:{
+      alignItems:"center",
+      display:"flex",
+      justifyContent:"space-between",
+      maxWidth:"1800px",
+      margin:"auto"
+    },
+    seconditemfirsttoolbar:{
+      display: "flex", alignItems: "center",cursor: "pointer"
+    },
+    seconditemfirsttoolbarsmall:{
+      display: "none"
+    },
+    firstitemfirsttoolbar:{
+      flexDirection:"row",display:"flex"
+    },
+    firstitemfirsttoolbarsmall:{
+      gap:"20px",
+      margin:"auto"
+    },
+    firstitemfirsttoolbarextrasmall:{
+      gap:"20px",
+      marginLeft:"auto",
+      marginRight:"auto",
+      flexDirection:"column",
+      marginBottom:"20px"
+    },
+    secondtoolbar:{
+      marginLeft:"auto",
+      marginRight:"auto",
+      alignItems:"center",
+      display:"flex",
+      justifyContent:"space-between",
+      maxWidth:"1800px", 
+    },
+    
+    secondtoolbarsmall:{
+      display:"none",
+    },
+
     container_cont:{
         display: "none",
         position: "absolute",
@@ -267,7 +325,7 @@ const styles = StyleSheet.create({
         shadowRadius: 16,
         paddingRight:"20px",
         borderRadius:"10px",  
-        zIndex: 1
+        zIndex: 3
     },
 
     container_cont2:{

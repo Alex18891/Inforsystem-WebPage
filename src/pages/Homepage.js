@@ -42,15 +42,14 @@ export default function Homepage() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
-    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
+    const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     return (
         <>
             <Header></Header>
             <Box sx={{maxWidth:"1800px",  margin:"auto"}}>
                 <Box  sx={{
                 ...styles.container, // Apply common styles
-                ...(isLargeScreen && styles.containerlarge), 
-                ...(isMediumScreen && styles.containermedium), 
                 ...(isSmallScreen && styles.containersmall),
                 ...(isExtraSmallScreen && styles.containersmall),  
                 }}>
@@ -61,6 +60,7 @@ export default function Homepage() {
                 </Box>
                 <Box sx={styles.viewcontainer}>
                     <Box sx={{...styles.containerfeaturesmain,
+                        ...(isExtraLargeScreen && styles.containerfeaturesmainextralarge),
                        ...(isLargeScreen && styles.containerfeaturesmainlarge), 
                        ...(isMediumScreen && styles.containerfeaturesmainmedium), 
                        ...(isSmallScreen && styles.containerfeaturesmainsmall), 
@@ -123,7 +123,8 @@ export default function Homepage() {
                 </Text>
                 <Box sx={styles.viewcontainer}>
                     <Box sx={{...styles.containerfeaturesmainproduct,
-                       ...(isLargeScreen && styles.containerfeaturesmainproduct), 
+                        ...(isExtraLargeScreen && styles.containerfeaturesmainproductextralarge),
+                       ...(isLargeScreen && styles.containerfeaturesmainproductlarge), 
                        ...(isMediumScreen && styles.containerfeaturesmainproductmedium), 
                        ...(isSmallScreen && styles.containerfeaturesmainproductsmall), 
                        ...(isExtraSmallScreen && styles.containerfeaturesmainproductextrasmall), 
@@ -195,11 +196,12 @@ export default function Homepage() {
                 </Text>
                 <Box sx={styles.viewcontainer}>
                     <Box sx={{...styles.containerfeaturesmainproduct,
-                       ...(isLargeScreen && styles.containerfeaturesmainproduct), 
-                       ...(isMediumScreen && styles.containerfeaturesmainproductmedium), 
-                       ...(isSmallScreen && styles.containerfeaturesmainproductsmall), 
-                       ...(isExtraSmallScreen && styles.containerfeaturesmainproductextrasmall), 
-                    }}>
+                            ...(isExtraLargeScreen && styles.containerfeaturesmainproductextralarge),
+                        ...(isLargeScreen && styles.containerfeaturesmainproductlarge), 
+                        ...(isMediumScreen && styles.containerfeaturesmainproductmedium), 
+                        ...(isSmallScreen && styles.containerfeaturesmainproductsmall), 
+                        ...(isExtraSmallScreen && styles.containerfeaturesmainproductextrasmall), 
+                        }}>
                         <Box sx={styles.containerfeatures}>
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
@@ -337,10 +339,11 @@ export default function Homepage() {
                 </Text>
                 <Box sx={styles.viewcontainer}>
                     <Box sx={{...styles.containerfeaturesmainproduct,
-                       ...(isLargeScreen && styles.containerfeaturesmainproduct), 
-                       ...(isMediumScreen && styles.containerfeaturesmainproductmedium), 
-                       ...(isSmallScreen && styles.containerfeaturesmainproductsmall), 
-                       ...(isExtraSmallScreen && styles.containerfeaturesmainproductextrasmall), 
+                            ...(isExtraLargeScreen && styles.containerfeaturesmainproductextralarge),
+                        ...(isLargeScreen && styles.containerfeaturesmainproductlarge), 
+                        ...(isMediumScreen && styles.containerfeaturesmainproductmedium), 
+                        ...(isSmallScreen && styles.containerfeaturesmainproductsmall), 
+                        ...(isExtraSmallScreen && styles.containerfeaturesmainproductextrasmall), 
                     }}>
                         <Box sx={styles.containerfeatures}>
                             <Box sx={styles.containerfeaturesproduts}> 
@@ -478,8 +481,9 @@ export default function Homepage() {
                     <span style={{fontWeight:"bold"}}>| Acessórios</span>
                 </Text>
                 <Box sx={styles.viewcontainer}>
-                    <Box sx={{...styles.containerfeaturesmainproduct,
-                        ...(isLargeScreen && styles.containerfeaturesmainproduct), 
+                        <Box sx={{...styles.containerfeaturesmainproduct,
+                            ...(isExtraLargeScreen && styles.containerfeaturesmainproductextralarge),
+                        ...(isLargeScreen && styles.containerfeaturesmainproductlarge), 
                         ...(isMediumScreen && styles.containerfeaturesmainproductmedium), 
                         ...(isSmallScreen && styles.containerfeaturesmainproductsmall), 
                         ...(isExtraSmallScreen && styles.containerfeaturesmainproductextrasmall), 
@@ -620,8 +624,9 @@ export default function Homepage() {
                     <span style={{fontWeight:"bold"}}>| Serviços</span>
                 </Text>
                 <Box sx={styles.viewcontainer}>
-                    <Box sx={{...styles.containerfeaturesmainproduct,
-                        ...(isLargeScreen && styles.containerfeaturesmainproduct), 
+                        <Box sx={{...styles.containerfeaturesmainproduct,
+                            ...(isExtraLargeScreen && styles.containerfeaturesmainproductextralarge),
+                        ...(isLargeScreen && styles.containerfeaturesmainproductlarge), 
                         ...(isMediumScreen && styles.containerfeaturesmainproductmedium), 
                         ...(isSmallScreen && styles.containerfeaturesmainproductsmall), 
                         ...(isExtraSmallScreen && styles.containerfeaturesmainproductextrasmall), 
@@ -713,14 +718,7 @@ const styles = StyleSheet.create({
     container:{
         position: "relative",
         paddingLeft:"0.5rem",
-        paddingRight:"0.5rem",
-        width:"100%"
-    },
-    containerlarge:{
-        display:"inline-block",
-    },
-    containermedium:{
-        display:"inline-block",
+        paddingRight:"0.5rem",    
     },
     containersmall:{
         display:"none",
@@ -752,15 +750,19 @@ const styles = StyleSheet.create({
         marginRight:"0.5rem",
     },
     containerfeaturesmain:{
-        
         background: "white",
         alignItems:"center",
         justifyContent:"center"
     },
-    containerfeaturesmainlarge:{
+    containerfeaturesmainextralarge:{
         display:"flex",
         flexDirection:"row",
         gap:"180px",  
+    },
+    containerfeaturesmainlarge:{
+        display:"flex",
+        flexDirection:"row",
+        gap:"120px",  
     },
     containerfeaturesmainmedium:{
         display:"grid",
@@ -773,21 +775,31 @@ const styles = StyleSheet.create({
         gridTemplateRows: "auto auto ",
         gridTemplateColumns:"auto auto  ",
         gap:"40px", 
+        marginTop:"0.5rem"
     },
     containerfeaturesmainextrasmall:{
         display:"flex",
         flexDirection:"column",
         gap:"40px", 
+        marginTop:"0.5rem"
     },
-
-    containerfeaturesmainproduct:{
+    containerfeaturesmainproduct:
+    {
         background: "white",
         alignItems:"center",
         justifyContent:"center",
-        display:"flex",
-        gap:"130px",
     },
-
+    containerfeaturesmainproductlarge:{
+        display:"grid",
+        gridTemplateRows: "auto auto auto ",
+        gridTemplateColumns:"auto auto auto auto",
+        gap:"40px",
+    },
+    containerfeaturesmainproductextralarge:{
+        display:"flex",
+        gap:"80px",
+    },
+    
     containerfeaturesmainproductmedium:{
         display:"grid",
         gridTemplateRows: "auto auto auto ",
@@ -810,7 +822,8 @@ const styles = StyleSheet.create({
 
     imgcontainer:{
         marginTop:"0.5rem",
-        width:"100%"
+        width:"100%",
+        zIndex:1
     },
       textdefault:{
         fontSize:"16px",

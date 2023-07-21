@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Forgotpassword from "./pages/ForgotPassword";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 const theme = createTheme({
   // Your theme configuration goes here
 });

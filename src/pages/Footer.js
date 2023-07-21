@@ -6,14 +6,26 @@ import {View, Text,StyleSheet} from 'react-native';
 
 
 import logo from "./../img/logo.png";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 export default function FooterInforsystem() {
 
+    const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+    const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
+    const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
+    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
+    const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
+
   return (
     <Box sx={{background: "#1A65A4"}}
     component="footer">
-    <Container  sx={{ display: "grid",gap:"60px", gridTemplateColumns: "auto auto auto auto"}}>
+    <Container  sx={{...styles.container,
+    ...(isExtraLargeScreen && styles.containerlarge),
+    ...(isLargeScreen && styles.containerlarge), 
+    ...(isMediumScreen && styles.containermedium), 
+    ...(isSmallScreen && styles.containersmall), 
+    ...(isExtraSmallScreen && styles.containerextrasmall) }}>
         <Box sx={{maxWidth:"190px" }}>
                 <img
                     src={logo}
@@ -96,8 +108,31 @@ export default function FooterInforsystem() {
 }
 
 const styles = StyleSheet.create({
+    container:{
+        display: "grid",
+    },
+    containerlarge:{
+        gap:"60px",
+        gridTemplateColumns: "auto auto auto auto"
+    },
+    containermedium:{
+        gridColumnGap:"20px",
+        gridTemplateRows: "auto auto auto",
+        gridTemplateColumns:"auto auto auto",
+    },
+    containersmall:{
+        gridColumnGap:"60px",
+        gridTemplateRows: "auto auto",
+        gridTemplateColumns:"auto auto ",
+    },
+    containerextrasmall:{
+        display:"flex",
+        flexDirection:"column",
+        textAlign:"left" 
+    },
+
     imgcontainer:{
-        marginTop:"20px",
+        marginTop:"14px",
     },
       textdefault:{
         fontSize:"16px",
