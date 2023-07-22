@@ -719,6 +719,7 @@ const styles = StyleSheet.create({
         position: "relative",
         paddingLeft:"0.5rem",
         paddingRight:"0.5rem",    
+        zIndex:1
     },
     containersmall:{
         display:"none",

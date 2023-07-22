@@ -49,15 +49,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     borderRadius:"12px",
     [theme.breakpoints.up("md")]: {
       width: "24ch",
-      height:"1.8ch"
+      height:"2.8ch"
     },
     [theme.breakpoints.down("sm")]: {
       width: "24ch", // Set width to 100% for small screens
-      height: "1.8ch", // Set height to 1.6ch for small screens
+      height:"2.8ch", // Set height to 1.6ch for small screens
     },
     [theme.breakpoints.down('lg')]: {
       width: '24ch', // Set width to 30ch for large screens
-      height: "1.8ch", // Set height to 2ch for large screens
+      height:"2.8ch", // Set height to 2ch for large screens
     },
     "&::placeholder": {
       opacity: 0.8,
@@ -136,6 +136,8 @@ const handleMouseEnterserv = () => {
                     ...(isExtraSmallScreen && styles.firstitemfirsttoolbarextrasmall) }}>
                 <img
                   src={logo}
+                  width={210}
+                  height={42}
                   alt="profile picture"
                 ></img>
                 <Search>
@@ -269,7 +271,8 @@ const handleMouseEnterserv = () => {
 const styles = StyleSheet.create({
     container:{
         position: "relative",
-        display: "inline-block"
+        display: "inline-block",
+        zIndex:2
     },
     firsttoolbar:{
       alignItems:"center",
@@ -292,11 +295,13 @@ const styles = StyleSheet.create({
       margin:"auto"
     },
     firstitemfirsttoolbarextrasmall:{
-      gap:"20px",
+      gap:"10px",
       marginLeft:"auto",
       marginRight:"auto",
       flexDirection:"column",
-      marginBottom:"20px"
+      marginBottom:"20px",
+      marginTop:"10px",
+      alignItems: "center"
     },
     secondtoolbar:{
       marginLeft:"auto",
@@ -325,7 +330,6 @@ const styles = StyleSheet.create({
         shadowRadius: 16,
         paddingRight:"20px",
         borderRadius:"10px",  
-        zIndex: 3
     },
 
     container_cont2:{
@@ -358,6 +362,7 @@ const styles = StyleSheet.create({
   
       containerHovered: {
         display: "block",
+        zIndex:2
       },
       textdefault:{
         fontSize:"16px",

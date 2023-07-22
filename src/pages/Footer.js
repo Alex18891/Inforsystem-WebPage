@@ -147,10 +147,11 @@ const styles = StyleSheet.create({
         textAlign:"left",
       },
       inputtext:{
-        borderRadius:"6px",
-        paddingLeft:"0.5rem",
-        borderColor: 'black', // Change the border color here
-        borderWidth: '1px',
+        borderRadius:"4px",
+        paddingLeft:"0.3rem",
+        border:"0.5px solid #98A2B3",
+        fontFamily: 'Montserrat',
+        fontSize:"12px",
       },
 
       acontainer: {
