@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif,'K2D';
   background-color:#ffffff;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -12,4 +12,19 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+#afooter:hover {
+  color: #134b7c;
+}
+#afooter{
+  color: white;
+  font-family:"K2D"; 
+}
+
+#aheader:hover {
+  color: #1A65A4;
+}
+#aheader{
+  color: black;
+  font-family:"K2D"; 
 }
