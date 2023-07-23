@@ -1,21 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header.js";
-import Footer from "./Footer.js";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import logo from "./../img/logo.png";
 
-export default function Homepage() {
-    const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-    const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
-    const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
-    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
-    const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
+export default function ForgotPassword() {
+    const navigate = useNavigate();
+    
+    function login(){
+        navigate("/login");
+    }
+
     return (
         <>
            <Box sx={{ flexGrow: 1,}}>
@@ -61,7 +59,7 @@ export default function Homepage() {
                             </Box>
                             <Box sx = {[styles.boxcontainer,{alignItems:"center"}]}> 
                                 <Text style={styles.textdefault4} >
-                                        Conseguiste recuperar?<span><a style={styles.textdefaultblue1}> Volta a iniciar sessão</a></span>        
+                                        Conseguiste recuperar?<span><a style={styles.textdefaultblue1}  onClick={login}> Volta a iniciar sessão</a></span>        
                                 </Text>  
                             </Box>
                         </Box>

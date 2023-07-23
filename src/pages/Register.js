@@ -1,21 +1,63 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header.js";
-import Footer from "./Footer.js";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import useMediaQuery from '@mui/material/useMediaQuery';
+import axios from 'axios'
 
 import logo from "./../img/logo.png";
 
-export default function Homepage() {
-    const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-    const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
-    const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
-    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
-    const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
+export default function Register() {
+    const [username,setusername] = useState('');
+    const [nome,setnome] = useState('');
+    const errRef = useRef();
+    const [email,setemail] = useState('');
+    const [password,setpassword] = useState('');
+    const [confirmpassword,setconfirmpassword] = useState('');
+    const [errMsg, setErrMsg] = useState("");
+    const navigate = useNavigate();
+
+    function isValidEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+      }
+    function login(){
+        navigate("/login");
+    }
+    function handleregister(event){
+        event.preventDefault();
+        setErrMsg("");
+        if (!username || !password || !nome || !email || !confirmpassword) {
+            setErrMsg("Fill in all fields");
+            return;
+        }
+        if (!isValidEmail(email)) {
+            setErrMsg("Please enter a valid email");
+            return;
+          }
+        if(confirmpassword !== password)
+        {
+            setErrMsg("Passwords don't match");
+            return;
+        }
+        else{
+            axios.post('http://localhost:8080/register',{nome,username,email,password})
+            .then(res =>{
+                console.log(res)
+                if(res.status === 201){
+                    setErrMsg("");
+                    navigate("/login");
+                }
+                else if(res.status === 203)
+                {
+                    setErrMsg(res.data.message);
+                }
+            }) 
+            .catch(err => console.log(err));
+        }
+ 
+    }
+
     return (
         <>
            <Box sx={{ flexGrow: 1,}}>
@@ -37,7 +79,14 @@ export default function Homepage() {
                         Criar conta
                     </Text> 
                     <Box sx={styles.viewcontainer}>
-                        <Box sx={styles.containerfeaturesmain}>     
+                        <Box sx={styles.containerfeaturesmain}>   
+                            <Text
+                                ref={errRef}
+                                style={errMsg ? styles.errmsg : styles.offscreen}
+                                aria-live="assertive"
+                                >
+                                {errMsg}
+                            </Text>  
                             <Box sx = {styles.boxcontainer}> 
                                 <label style={styles.textdefault1} >
                                     Nome
@@ -46,6 +95,22 @@ export default function Homepage() {
                                     type="text"
                                     placeholder="Qual é o teu nome*"
                                     style={styles.inputtext}
+                                    autoComplete="off"
+                                    onChange={(e) => setnome(e.target.value)}
+                                    value={nome}
+                                    />
+                            </Box>
+                            <Box sx = {styles.boxcontainer}> 
+                                <label style={styles.textdefault1} >
+                                    Username
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Username*"
+                                    style={styles.inputtext}
+                                    autoComplete="off"
+                                    onChange={(e) => setusername(e.target.value)}
+                                    value={username}
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -56,6 +121,8 @@ export default function Homepage() {
                                     type="email"
                                     placeholder="Email*"
                                     style={styles.inputtext}
+                                    onChange={(e) => setemail(e.target.value)}
+                                    value={email}
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -66,6 +133,9 @@ export default function Homepage() {
                                     type="password"
                                     placeholder="Password*"
                                     style={styles.inputtext}
+                                    autoComplete="off"
+                                    onChange={(e) => setpassword(e.target.value)}
+                                    value={password}
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -76,14 +146,16 @@ export default function Homepage() {
                                     type="password"
                                     placeholder="Password*"
                                     style={styles.inputtext}
+                                    onChange={(e) => setconfirmpassword(e.target.value)}
+                                    value={confirmpassword}
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
-                                <Button sx={styles.buttoncontainer}>Criar conta</Button>
+                                <Button sx={styles.buttoncontainer} onClick={handleregister}>Criar conta</Button>
                             </Box>
                             <Box sx = {[styles.boxcontainer,{alignItems:"center"}]}> 
                                 <Text style={styles.textdefault4} >
-                                        Já tens conta?<span><a style={styles.textdefaultblue1}> Inicia sessão</a></span>        
+                                        Já tens conta?<span><a style={styles.textdefaultblue1} onClick={login}> Inicia sessão</a></span>        
                                 </Text>  
                             </Box>
                         </Box>
@@ -104,7 +176,17 @@ const styles = StyleSheet.create({
         marginTop:"4rem",
         marginBottom:"4rem"
     },
-
+    offscreen: {
+        display: 'none',
+        // Other styles...
+      },
+    errmsg: {
+        marginBottom: 0,
+        paddingBottom:0,
+        fontFamily: 'Montserrat',
+        fontWeight: "bold",
+        fontSize:"13px"
+    },
     buttoncontainer:{
         backgroundColor:"#1B64A7",
         color:"white",

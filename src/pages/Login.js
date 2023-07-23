@@ -1,21 +1,48 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect ,useRef} from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header.js";
-import Footer from "./Footer.js";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import useMediaQuery from '@mui/material/useMediaQuery';
+import axios from 'axios'
 
 import logo from "./../img/logo.png";
 
-export default function Homepage() {
-    const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-    const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
-    const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
-    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
-    const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
+export default function Login() {
+    const [email,setemail] = useState('');
+    const [password,setpassword] = useState('');
+    const [errMsg, setErrMsg] = useState("")
+    const errRef = useRef();
+    const navigate = useNavigate();
+    function register(){
+        navigate("/register");
+    }
+    function forgotpassword(){
+        navigate("/forgotpassword");
+    }
+    function handlelogin(event){
+        event.preventDefault();
+        if (!email || !password) {
+            setErrMsg("Fill in all fields");
+            return;
+          }
+        setErrMsg("");
+        axios.post('http://localhost:8080/login',{email,password})
+        .then(res =>{
+            console.log(res)
+            if(res.status === 200){
+                setErrMsg("");
+                const token = res.data.token;
+                document.cookie = `token=${token}`;
+                navigate("/");
+            }
+            else{
+                setErrMsg(res.data.message);
+            }
+        })
+        .catch(err => console.log(err));
+    }
+
     return (
         <>
            <Box sx={{ flexGrow: 1,}}>
@@ -26,8 +53,7 @@ export default function Homepage() {
                         src={logo}
                         alt="profile picture"    
                         ></img>
-                    </Box>
-            
+                    </Box>   
             </Toolbar>
             </Box >
            </Box>
@@ -37,9 +63,15 @@ export default function Homepage() {
                         Iniciar sessão
                     </Text> 
                     <Box sx={styles.viewcontainer}>
-                        <Box sx={styles.containerfeaturesmain}>     
+                        <Box sx={styles.containerfeaturesmain}>    
+                             <Text
+                                ref={errRef}
+                                style={errMsg ? styles.errmsg : styles.offscreen}
+                                aria-live="assertive"
+                                >
+                                {errMsg}
+                            </Text>   
                             <Box sx = {styles.boxcontainer}> 
-                        
                                 <label style={styles.textdefault1} >
                                     Email
                                 </label>
@@ -47,6 +79,8 @@ export default function Homepage() {
                                     type="email"
                                     placeholder="Email*"
                                     style={styles.inputtext}
+                                    onChange={(e) => setemail(e.target.value)}
+                                    value={email}
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -57,19 +91,22 @@ export default function Homepage() {
                                     type="password"
                                     placeholder="Password*"
                                     style={styles.inputtext}
+                                    autoComplete="off"
+                                    onChange={(e) => setpassword(e.target.value)}
+                                    value={password}
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
                                 <Text style={styles.textdefault3} >
-                                        Esqueçi-me da password? Recupera<span><a style={styles.textdefaultblue}> aqui</a></span>        
+                                        Esqueçi-me da password? Recupera<span><a style={styles.textdefaultblue}  onClick={forgotpassword}> aqui</a></span>        
                                 </Text>  
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
-                                <Button sx={styles.buttoncontainer}>Iniciar sessão</Button>
+                                <Button sx={styles.buttoncontainer} onClick={handlelogin}>Iniciar sessão</Button>
                             </Box>
                             <Box sx = {[styles.boxcontainer,{alignItems:"center"}]}> 
                                 <Text style={styles.textdefault4} >
-                                        És novo cliente?<span><a style={styles.textdefaultblue1}> Cria a tua conta</a></span>        
+                                        És novo cliente?<span><a style={styles.textdefaultblue1} onClick={register}> Cria a tua conta</a></span>        
                                 </Text>  
                             </Box>
                         </Box>
@@ -90,9 +127,17 @@ const styles = StyleSheet.create({
         marginTop:"4rem",
         marginBottom:"4rem"
     },
-
-
-
+    offscreen: {
+        display: 'none',
+        // Other styles...
+      },
+    errmsg: {
+        marginBottom: 0,
+        paddingBottom:0,
+        fontFamily: 'Montserrat',
+        fontWeight: "bold",
+        fontSize:"13px"
+    },
     buttoncontainer:{
         backgroundColor:"#1B64A7",
         color:"white",
