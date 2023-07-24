@@ -24,7 +24,7 @@ app.post('/login',async(req,res)=>{
         const user = await User.findOne({email});
         if(!user)
         {
-           return res.status(203).json({message:"User not found"})
+           return res.status(203).json({message:"Utilizador não encontrado"})
         }
       
         if(await bcrypt.compare(password,user.password)){
@@ -33,10 +33,10 @@ app.post('/login',async(req,res)=>{
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
-            return res.status(200).json({ message: "Login Successful", token: token });
+            return res.status(200).json({ message: "Sucesso", token: token });
         }
         else{
-            return res.status(203).json({message:"Invalid Password"})
+            return res.status(203).json({message:"Password errada"})
         }
         
     }catch(error){
@@ -52,14 +52,14 @@ app.post('/register',async(req,res)=>{
       const oldusername = await User.findOne({username}); 
       if(olduseremail || oldusername)
       {
-        return res.status(203).json({message:"Username or email is already used!"})
+        return res.status(203).json({message:"Username ou email já estão a ser usados!"})
       }
       else{
         await User.create({
             nome,username,email,password: encryptedPassword
         })
 
-        return res.status(201).json({message:"User created successful"});
+        return res.status(201).json({message:"Utilizador criado"});
       }
 
     }catch(error){

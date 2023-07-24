@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
 import Toolbar from "@mui/material/Toolbar";
+import { Divider } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faExclamation} from '@fortawesome/free-solid-svg-icons'
 import Box from "@mui/material/Box";
 import axios from 'axios'
 
@@ -11,7 +14,7 @@ import logo from "./../img/logo.png";
 export default function Login() {
     const [email,setemail] = useState('');
     const [password,setpassword] = useState('');
-    const [errMsg, setErrMsg] = useState("")
+    const [errMsg, setErrMsg] = useState([]);
     const errRef = useRef();
     const navigate = useNavigate();
     function register(){
@@ -22,25 +25,39 @@ export default function Login() {
     }
     function handlelogin(event){
         event.preventDefault();
-        if (!email || !password) {
-            setErrMsg("Fill in all fields");
-            return;
+        setErrMsg([]);
+        if (!email) {
+            setErrMsg((prevArray) => [
+                ...prevArray,
+                "É obrigatório o preenchimento do campo email",
+              ]);
           }
-        setErrMsg("");
-        axios.post('http://localhost:8080/login',{email,password})
-        .then(res =>{
-            console.log(res)
-            if(res.status === 200){
-                setErrMsg("");
-                const token = res.data.token;
-                document.cookie = `token=${token}`;
-                navigate("/");
-            }
-            else{
-                setErrMsg(res.data.message);
-            }
-        })
-        .catch(err => console.log(err));
+          if (!password) {
+            setErrMsg((prevArray) => [
+                ...prevArray,
+                "É obrigatório o preenchimento do campo password",
+              ]);
+          }
+          else if(password && email)
+          {
+            axios.post('http://localhost:8080/login',{email,password})
+            .then(res =>{
+                console.log(res)
+                if(res.status === 200){
+                    setErrMsg([]);
+                    const token = res.data.token;
+                    document.cookie = `token=${token}`;
+                    navigate("/");
+                }
+                else{
+                    setErrMsg((prevArray) => [
+                        ...prevArray,
+                        res.data.message,
+                    ]);
+                }
+            })
+            .catch(err => console.log(err));
+        }
     }
 
     return (
@@ -64,13 +81,6 @@ export default function Login() {
                     </Text> 
                     <Box sx={styles.viewcontainer}>
                         <Box sx={styles.containerfeaturesmain}>    
-                             <Text
-                                ref={errRef}
-                                style={errMsg ? styles.errmsg : styles.offscreen}
-                                aria-live="assertive"
-                                >
-                                {errMsg}
-                            </Text>   
                             <Box sx = {styles.boxcontainer}> 
                                 <label style={styles.textdefault1} >
                                     Email
@@ -109,6 +119,21 @@ export default function Login() {
                                         És novo cliente?<span><a style={styles.textdefaultblue1} onClick={register}> Cria a tua conta</a></span>        
                                 </Text>  
                             </Box>
+                            {errMsg.length>0 && (
+                                <Box sx = {[styles.boxcontainer,{backgroundColor:"rgb(254,242,242)",borderRadius:"4px",padding:"0.5rem"}]}> 
+                                    <Box style={{display:"flex",gap:"5px"}}>
+                                        <FontAwesomeIcon icon={faExclamation} style={{color: "#ac4343",}} />
+                                        <Text style={[styles.errmsg,{color:"rgb(172,67,67)"}]}>Foram encontrados {errMsg.length} erro(s) de validação:</Text>
+                                    </Box>    
+                                    <Divider style={{ backgroundColor: 'rgb(211,109,109)', height: 1 }}/>
+                                    {errMsg.map((message, index) =>
+                                        <Text key={index}   ref={errRef}
+                                            style={errMsg ? styles.errmsg : styles.offscreen}
+                                            aria-live="assertive" >{`\u2022 ${message}`}
+                                        </Text>     
+                                    )}
+                                </Box>       
+                            )}
                         </Box>
 
                     </Box>
@@ -136,7 +161,9 @@ const styles = StyleSheet.create({
         paddingBottom:0,
         fontFamily: 'Montserrat',
         fontWeight: "bold",
-        fontSize:"13px"
+        fontSize:"13px",
+        color:"rgb(211,109,109)",
+        textAlign:"left"
     },
     buttoncontainer:{
         backgroundColor:"#1B64A7",
