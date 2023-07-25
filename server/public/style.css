@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif,'K2D';
+  background-color:#ffffff;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.buttoncontainer {
+  background-color: #1B64A7;
+  border-radius:6px;
+  color: white;
+  font-family: 'K2D';
+  font-size: 13px;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  border: 8px;
+}
+
+.buttoncontainer:hover {
+  background-color: #134b7c;
+}
+
+.toolbarcontainer {
+  flex-grow: 1; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.maincontainer {
+  margin: auto;
+  width: 65%;
+}
+
+.textdefault {
+  font-size: 30px;
+  font-family: 'K2D';
+  color: #344054;
+  margin:0;
+}
+
+.textdefaultblue1 {
+  font-size: 13px;
+  font-family: 'Montserrat';
+  color: #1B64A7;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.textdefault3 {
+  font-size: 10px;
+  font-family: 'Montserrat';
+  font-weight: 900;
+  color: black;
+  -webkit-text-stroke-width: 0.1px; /* Note: Using '-webkit-text-stroke-width' requires the 'px' unit */
+}
+
+.textdefault4 {
+  font-size: 13px;
+  font-family: 'Montserrat';
+  font-weight: 900;
+  color: black;
+  -webkit-text-stroke-width: 0.1px; /* Note: Using '-webkit-text-stroke-width' requires the 'px' unit */
+}
+
+.textdefault1 {
+  font-size: 14px;
+  font-family: 'Montserrat';
+  color: #344054;
+  margin-block-start:0.3rem;
+}
+
+.divmain {
+  margin: auto;
+  margin-top: 3rem;
+  text-align: left;
+  max-width: 1000px; /* Note: Using 'px' unit for max-width */
+}
+
+.viewcontainer {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 2px; /* Note: Using 'px' unit for border-radius */
+  margin-top: 1rem;
+}
+
+.containerfeaturesmain {
+  background: white;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 2rem;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.boxcontainer {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 5px;
+  width: 60%; /* Note: Using '%' unit for width */
+}
+
+.inputtext {
+  border-radius: 4px;
+  padding-left: 0.5rem;
+  border: 1px solid #98A2B3;
+  height: 3ch;
+  width: auto; /* Note: Using '%' unit for width */
+  font-family: 'Montserrat';
+  font-size: 12px;
+}

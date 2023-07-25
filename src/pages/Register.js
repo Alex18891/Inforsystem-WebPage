@@ -12,7 +12,6 @@ import axios from 'axios'
 import logo from "./../img/logo.png";
 
 export default function Register() {
-    const [username,setusername] = useState('');
     const [nome,setnome] = useState('');
     const errRef = useRef();
     const userRef = useRef();
@@ -31,9 +30,8 @@ export default function Register() {
 
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
-      }
+    }
 
- 
     function login(){
         navigate("/login");
     }
@@ -47,37 +45,27 @@ export default function Register() {
               ]);
         }
        
-         if(!username)
-        {
-            setErrMsg((prevArray) => [
-                ...prevArray,
-                "É obrigatório o preenchimento do campo username",
-              ]);
-        }
-      
-       
         if (!isValidEmail(email)) {
             setErrMsg((prevArray) => [
                 ...prevArray,
                 "Email inválido",
               ]);
           }
-    if (password !== confirmpassword) {
-        setErrMsg((prevArray) => [
-            ...prevArray,
-            "Passwords não coincidem",
-            ]);
-    }
+        if (password !== confirmpassword) {
+            setErrMsg((prevArray) => [
+                ...prevArray,
+                "Passwords não coincidem",
+                ]);
+        }
        if (!validatePassword(password)) {
             setErrMsg((prevArray) => [
                 ...prevArray,
                 "Password deve conter pelo menos 8 carateres, uma letra mínuscula e um número",
               ]);
         }
-        else if(validatePassword(password) && isValidEmail(email) && username && nome){
+        else if(validatePassword(password) && isValidEmail(email) && nome){
             setErrMsg([]);
-        
-            axios.post('http://localhost:8080/register',{nome,username,email,password})
+            axios.post('http://localhost:8080/register',{nome,email,password})
             .then(res =>{
                 console.log(res)
                 if(res.status === 201){
@@ -93,7 +81,7 @@ export default function Register() {
                 }
             }) 
             .catch(err => console.log(err));
-    } 
+        } 
     }
     return (
         <>
@@ -119,30 +107,16 @@ export default function Register() {
                            
                             <Box sx = {styles.boxcontainer}> 
                                 <label style={styles.textdefault1} >
-                                    Nome
+                                    Nome do utilizador
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder="Qual é o teu nome*"
+                                    placeholder="Qual é o nome de utilizador*"
                                     style={styles.inputtext}
                                     ref={userRef}
                                     autoComplete="off"
                                     onChange={(e) => setnome(e.target.value)}
                                     value={nome}
-                                    />
-                            </Box>
-                            <Box sx = {styles.boxcontainer}> 
-                                <label style={styles.textdefault1} >
-                                    Username
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Username*"
-                                    style={styles.inputtext}
-                                    ref={userRef}
-                                    autoComplete="off"
-                                    onChange={(e) => setusername(e.target.value)}
-                                    value={username}
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -159,11 +133,11 @@ export default function Register() {
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
                                 <label style={styles.textdefault1} >
-                                    Password
+                                    Palavra passe
                                 </label>
                                 <input
                                     type="password"
-                                    placeholder="Password*"
+                                    placeholder="Palavra passe*"
                                     style={styles.inputtext}
                                     autoComplete="off"
                                     id="password"
@@ -174,11 +148,11 @@ export default function Register() {
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
                                 <label style={styles.textdefault1} >
-                                    Confirmar password
+                                    Confirmar palavra passe
                                 </label>
                                 <input
                                     type="password"
-                                    placeholder="Password*"
+                                    placeholder="Palavra passe*"
                                     style={styles.inputtext}
                                     id="confirm_password"
                                     onKeyUp={validatePassword}
@@ -198,7 +172,7 @@ export default function Register() {
                                 <Box sx = {[styles.boxcontainer,{backgroundColor:"rgb(254,242,242)",borderRadius:"4px",padding:"0.5rem"}]}> 
                                     <Box style={{display:"flex",gap:"5px"}}>
                                         <FontAwesomeIcon icon={faExclamation} style={{color: "#ac4343",}} />
-                                        <Text style={[styles.errmsg,{color:"rgb(172,67,67)"}]}>Foram encontrados {errMsg.length} erro(s)  de validação:</Text>
+                                        <Text style={[styles.errmsg,{color:"rgb(172,67,67)"}]}>Foram encontrados {errMsg.length} erro(s) de validação:</Text>
                                     </Box>    
                                     <Divider style={{ backgroundColor: 'rgb(211,109,109)', height: 1 }}/>
                                     {errMsg.map((message, index) =>
@@ -208,10 +182,8 @@ export default function Register() {
                                         </Text>     
                                     )}
                                 </Box>       
-                            )}
-                           
+                            )} 
                         </Box>
-
                     </Box>
                 </Box>
             </Box>
@@ -230,7 +202,6 @@ const styles = StyleSheet.create({
     },
     offscreen: {
         display: 'none',
-        // Other styles...
       },
       
     errmsg: {
@@ -252,7 +223,6 @@ const styles = StyleSheet.create({
         paddingBottom:"0.1rem",
         borderRadius:"8px",
         '&:hover': {
-            // Remove hover effect by setting hover styles the same as default styles
             backgroundColor: '#134b7c',
           },
     },
@@ -266,18 +236,12 @@ const styles = StyleSheet.create({
         fontFamily: 'K2D',
         color:"#344054"
       },
-      textdefaultblue:{
-        fontSize:"10px",
-        fontFamily: 'Montserrat',
-        color:"#1B64A7",
-        fontWeight:"900",
-      },
       textdefaultblue1:{
         fontSize:"13px",
         fontFamily: 'Montserrat',
         color:"#1B64A7",
         fontWeight:"900",
-        
+        cursor: "pointer"
       },
 
       textdefault3:{
@@ -286,7 +250,6 @@ const styles = StyleSheet.create({
         fontWeight:"900",
         color:"black",
         WebkitTextStrokeWidth: '0.1px', // Stroke width
-
       },
 
       textdefault4:{

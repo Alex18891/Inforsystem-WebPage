@@ -95,11 +95,11 @@ export default function Login() {
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
                                 <label style={styles.textdefault1} >
-                                    Password
+                                    Palavra passe
                                 </label>
                                 <input
                                     type="password"
-                                    placeholder="Password*"
+                                    placeholder="Palavra passe*"
                                     style={styles.inputtext}
                                     autoComplete="off"
                                     onChange={(e) => setpassword(e.target.value)}
@@ -108,7 +108,7 @@ export default function Login() {
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
                                 <Text style={styles.textdefault3} >
-                                        Esqueçi-me da password? Recupera<span><a style={styles.textdefaultblue}  onClick={forgotpassword}> aqui</a></span>        
+                                        Esqueçeu da palavra passe? Recupera<span><a style={styles.textdefaultblue}  onClick={forgotpassword}> aqui</a></span>        
                                 </Text>  
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
     },
     offscreen: {
         display: 'none',
-        // Other styles...
       },
     errmsg: {
         marginBottom: 0,
@@ -174,7 +173,6 @@ const styles = StyleSheet.create({
         paddingBottom:"0.1rem",
         borderRadius:"8px",
         '&:hover': {
-            // Remove hover effect by setting hover styles the same as default styles
             backgroundColor: '#134b7c',
           },
     },
@@ -193,13 +191,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat',
         color:"#1B64A7",
         fontWeight:"900",
+        cursor: "pointer"
       },
       textdefaultblue1:{
         fontSize:"13px",
         fontFamily: 'Montserrat',
         color:"#1B64A7",
-        fontWeight:"900",
-        
+        fontWeight:"900",  
+        cursor: "pointer" 
       },
 
       textdefault3:{
@@ -207,8 +206,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat',
         fontWeight:"900",
         color:"black",
-        WebkitTextStrokeWidth: '0.1px', // Stroke width
-
+        WebkitTextStrokeWidth: '0.1px', 
       },
 
       textdefault4:{
@@ -250,7 +248,7 @@ const styles = StyleSheet.create({
     inputtext:{
         borderRadius:"4px",
         paddingLeft:"0.5rem",
-        border:"1px solid #98A2B3", // Change the border color here
+        border:"1px solid #98A2B3", 
         height:"3ch",
         width:"auto",
         fontFamily: 'Montserrat',

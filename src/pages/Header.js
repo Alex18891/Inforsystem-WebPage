@@ -10,7 +10,6 @@ import {View, Text,StyleSheet} from 'react-native';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import pfp from "./../img/user.png";
-
 import logo from "./../img/logo.png";
 
 const Search = styled("div")(({ theme }) => ({
@@ -35,8 +34,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
 }));
-
-
 
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -66,8 +63,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },  
   },
 }));
-
-
 
 export default function PrimarySearchAppBar() {
   const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -369,6 +364,4 @@ const styles = StyleSheet.create({
         fontFamily:"K2D",
         color:"white"
       }
-     
-  
 });
