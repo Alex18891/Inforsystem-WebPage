@@ -91,6 +91,7 @@ export default function Login() {
                                     style={styles.inputtext}
                                     onChange={(e) => setemail(e.target.value)}
                                     value={email}
+                                    required
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -104,6 +105,7 @@ export default function Login() {
                                     autoComplete="off"
                                     onChange={(e) => setpassword(e.target.value)}
                                     value={password}
+                                    required
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -125,7 +127,7 @@ export default function Login() {
                                         <FontAwesomeIcon icon={faExclamation} style={{color: "#ac4343",}} />
                                         <Text style={[styles.errmsg,{color:"rgb(172,67,67)"}]}>Foram encontrados {errMsg.length} erro(s) de validação:</Text>
                                     </Box>    
-                                    <Divider style={{ backgroundColor: 'rgb(211,109,109)', height: 1 }}/>
+                                    <Divider style={{border:0, borderTop:'1px solid rgb(211,109,109)'}}/>
                                     {errMsg.map((message, index) =>
                                         <Text key={index}   ref={errRef}
                                             style={errMsg ? styles.errmsg : styles.offscreen}

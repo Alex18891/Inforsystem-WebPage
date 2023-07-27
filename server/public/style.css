@@ -76,6 +76,16 @@ body {
   margin-block-start:0.3rem;
 }
 
+.errmsg {
+  margin-bottom: 0;
+  margin-top: 0;
+  font-family: 'Montserrat';
+  font-weight: bold;
+  font-size:13px;
+  color:rgb(211,109,109);
+  text-align:left;
+}
+
 .divmain {
   margin: auto;
   margin-top: 3rem;

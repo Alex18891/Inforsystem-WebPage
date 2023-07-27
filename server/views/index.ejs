@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title> 
+    <script src="https://kit.fontawesome.com/a443185dcf.js" crossorigin="anonymous"></script>
     <link href='https://fonts.googleapis.com/css?family=K2D' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
@@ -21,7 +23,6 @@
                 </div>
             </header>
         </div>
-
         <div class="divmain">
             <div class="maincontainer">
                 <div>
@@ -35,37 +36,133 @@
                     </p>
                 </div>
                 <div class="viewcontainer">
-                    <form action="" method="post" class="containerfeaturesmain">
+                    <form method="POST" id="form"  class="containerfeaturesmain">
                         <div class="boxcontainer">
                             <label class="textdefault1" >
-                                Nova Password
+                                Nova palavra passe
                             </label>
                             <input
                                 type="password"
                                 placeholder="Password*"
                                 class="inputtext"
+                                id = "password"
+                                required
+                                />
+                        </div>
+                        <div class="boxcontainer">
+                            <label class="textdefault1" >
+                                Confirmar nova palavra passe
+                            </label>
+                            <input
+                                type="password"
+                                placeholder="Password*"
+                                class="inputtext"
+                                id = "confirmpassword"
+                                required
                                 />
                         </div>
                         <div class="boxcontainer">
                             <input type="submit" value ="Continuar"  class='buttoncontainer'/>
                         </div>
+                        <div id="errorContainer"></div>        
                     </form>
                 </div>
             </div>
 
         </div>
     </div>
-    <script>
-        var message = '<%- JSON.stringify(message) %>';
-        console.log(message)
-        if (JSON.parse(message) == "Verificado")
-        {
-            
-            window.location.href="http://localhost:3000/login";
-                    
+  <script>
+    const Form = document.getElementById('form')
+    const password = document.getElementById('password');
+    var boxContainer =  document.getElementById('errorContainer');
+    var flexDiv = document.createElement('div');
+    var icon = document.createElement('i');
+    var errorMsg = document.createElement('p');
+    var hr = document.createElement('hr');
+    var textmatch = document.createElement('p');
+    boxContainer.className = 'boxcontainer';
+    boxContainer.style = 'background-color:rgb(254,242,242);border-radius:4px;padding: 0.5rem;';  
+    flexDiv.style = 'display:flex;gap:5px;';
+    icon.className = 'far fa-exclamation';
+    icon.style = 'color: #ac4343;';
+    errorMsg.className = 'errmsg';
+    errorMsg.style = 'color:rgb(172,67,67);';
+    errorMsg.textContent = 'Foi encontrado 1 erro de validação:';
+    hr.style = 'border: none; border-top: 1px solid rgb(211,109,109);width:100%;margin:0;';
+    textmatch.className = 'errmsg';
+    textmatch.id = 'textmatch';
+    flexDiv.appendChild(icon);
+    flexDiv.appendChild(errorMsg);
+    boxContainer.appendChild(flexDiv);
+    boxContainer.appendChild(hr);
+    boxContainer.appendChild(textmatch);
+    boxContainer.style.display = 'none';
+    textmatch.style.display = 'none';
+    flexDiv.style.display = 'none';
+    hr.style.display = 'none';
+    function checkPasswordsMatch() {
+        let password = document.getElementById('password').value;
+        let confirmPassword = document.getElementById('confirmpassword').value;
+        if (validatePassword(password)) {
+            if (password === confirmPassword) {
+                boxContainer.style.display = 'none';
+                textmatch.style.display = 'none';
+                flexDiv.style.display = 'none';
+                hr.style.display = 'none';
+                return true;
+            } else {
+                boxContainer.style.display = 'flex';
+                textmatch.style.display = 'block';
+                flexDiv.style.display = 'flex';
+                hr.style.display = 'block';
+                textmatch.textContent = '\u2022' + ' Palavras passes não coincidem';
+                return false;
+            }
+        } else {
+            boxContainer.style.display = 'flex';
+            textmatch.style.display = 'block';
+            flexDiv.style.display = 'flex';
+            hr.style.display = 'block';
+            textmatch.textContent = '\u2022' + " Palavra passe deve conter pelo menos 8 carateres, uma letra mínuscula e um número";
         }
-       
-    
-    </script>
+    }
+
+    const validatePassword = (password) => 
+    {  
+        const regex = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+        console.log(regex.test(password));
+        return regex.test(password);
+    }
+    Form.addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        console.log(checkPasswordsMatch())
+        if(checkPasswordsMatch())
+        {
+            const id = "<%= id %>";
+            const token = "<%= token %>";
+            const url = "/resetpassword/" + id + "/" + token;
+            const options = {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify({ 
+                password: password.value, 
+            }),
+            };
+            await fetch(url, options)
+                .then(response => response.json())
+                .then(data=>{
+                    console.log(data)
+                    if(data.message=== 'Palavra passe alterada com sucesso')
+                    {
+                        alert(data.message);
+                        window.location.href="http://localhost:3000/login";    
+                    }
+                }) 
+                .catch(err => console.error(err));
+        }
+    });               
+  </script>
 </body>
 </html>

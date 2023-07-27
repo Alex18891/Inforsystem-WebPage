@@ -60,7 +60,7 @@ export default function Register() {
        if (!validatePassword(password)) {
             setErrMsg((prevArray) => [
                 ...prevArray,
-                "Password deve conter pelo menos 8 carateres, uma letra mínuscula e um número",
+                "Palavra passe deve conter pelo menos 8 carateres, uma letra mínuscula e um número",
               ]);
         }
         else if(validatePassword(password) && isValidEmail(email) && nome){
@@ -117,6 +117,7 @@ export default function Register() {
                                     autoComplete="off"
                                     onChange={(e) => setnome(e.target.value)}
                                     value={nome}
+                                    required
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -129,6 +130,7 @@ export default function Register() {
                                     style={styles.inputtext}
                                     onChange={(e) => setemail(e.target.value)}
                                     value={email}
+                                    required
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -144,6 +146,7 @@ export default function Register() {
                                     onKeyUp={validatePassword}
                                     onChange={(e) => setpassword(e.target.value)}
                                     value={password}
+                                    required
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -158,6 +161,7 @@ export default function Register() {
                                     onKeyUp={validatePassword}
                                     onChange={(e) => setconfirmpassword(e.target.value)}
                                     value={confirmpassword}
+                                    required
                                     />
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
@@ -174,7 +178,7 @@ export default function Register() {
                                         <FontAwesomeIcon icon={faExclamation} style={{color: "#ac4343",}} />
                                         <Text style={[styles.errmsg,{color:"rgb(172,67,67)"}]}>Foram encontrados {errMsg.length} erro(s) de validação:</Text>
                                     </Box>    
-                                    <Divider style={{ backgroundColor: 'rgb(211,109,109)', height: 1 }}/>
+                                    <Divider style={{border:0, borderTop:'1px solid rgb(211,109,109)'}}/>
                                     {errMsg.map((message, index) =>
                                         <Text key={index}   ref={errRef}
                                             style={errMsg ? styles.errmsg : styles.offscreen}

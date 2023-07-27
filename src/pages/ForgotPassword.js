@@ -98,7 +98,7 @@ export default function ForgotPassword() {
                                         <FontAwesomeIcon icon={faExclamation} style={{color: "#ac4343",}} />
                                         <Text style={[styles.errmsg,{color:"rgb(172,67,67)"}]}>Foi encontrado 1 erro de validação:</Text>
                                     </Box>    
-                                    <Divider style={{ backgroundColor: 'rgb(211,109,109)', height: 1 }}/>
+                                    <Divider style={{border:0, borderTop:'1px solid rgb(211,109,109)'}}/>
                                     <Text  ref={errRef}
                                         style={errMsg ? styles.errmsg : styles.offscreen}
                                         aria-live="assertive" >{`\u2022 ${errMsg}`}

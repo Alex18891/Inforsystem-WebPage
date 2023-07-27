@@ -131,13 +131,13 @@ app.get("/resetpassword/:id/:token",async(req,res)=>{
         const user = await User.findOne({_id:id});
         if(!user)
         {
-            return res.render("index",{message:"Utilizador não encontrado"});
+            res.render("index",{message:"Utilizador não encontrado"});
         }   
-        const verify = jwt.verify(token,process.env.JWT_SECRET);
-        return res.render("index",{email:verify.email,message:"Não verificado"});
+        jwt.verify(token,process.env.JWT_SECRET);
+        res.render("index",{id:id,token:token,message:""});
 
     }catch(error){
-        return res.render("index",{message:error}); 
+        res.render("index",{message:error,id: '', token: '' }); 
     }
 })
 
@@ -148,9 +148,9 @@ app.post("/resetpassword/:id/:token",async(req,res)=>{
         const user = await User.findOne({_id:id});
         if(!user)
         {
-            res.render("index",{message:"Utilizador não encontrado"});
+            res.status(404).json({message:"Utilizador não encontrado"});
         }   
-        const verify = jwt.verify(token,process.env.JWT_SECRET);
+        jwt.verify(token,process.env.JWT_SECRET);
         const encryptedPassword = await bcrypt.hash(password,10);
         await User.updateOne(
             {
@@ -161,9 +161,9 @@ app.post("/resetpassword/:id/:token",async(req,res)=>{
             },
             } 
         );
-        res.render("index",{email:verify.email,message:"Verificado"});
+        res.status(200).json({message:"Palavra passe alterada com sucesso"});
     }catch(error){
-        res.render("index",{message:error}); 
+        res.status(500).json({message:error.message});
     }
 })
 
