@@ -8,9 +8,12 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import {View, Text,StyleSheet} from 'react-native';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import ReactModal from 'react-modal';
 import pfp from "./../img/user.png";
 import logo from "./../img/logo.png";
+import Login from './Login';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -74,6 +77,7 @@ export default function PrimarySearchAppBar() {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
+  const [isOpenpopup, setIsOpenpopup] = useState(false);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
   const [isHoveredserv, setIsHoveredserv] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
@@ -121,6 +125,9 @@ const handleMouseEnterserv = () => {
     setIsHoveredsoft(false);
   };
 
+  const loginaccount = () =>{
+    setIsOpenpopup(true)
+  }
 
   return (
     <Box sx={{ flexGrow: 1}}>
@@ -148,7 +155,7 @@ const handleMouseEnterserv = () => {
               </Box>
               <Box sx={{...styles.seconditemfirsttoolbar,
                     ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
-                    ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }}>
+                    ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} onClick={loginaccount}>
                 <img
                     src={pfp}
                     alt="profile picture"
@@ -163,6 +170,29 @@ const handleMouseEnterserv = () => {
                     Minha conta
                 </Text> 
               </Box>
+              <ReactModal
+                isOpen={isOpenpopup}
+                onRequestClose={() => setIsOpenpopup(false)}
+                contentLabel="Login Modal"
+                style={styles.popup}
+              >
+              <button 
+                onClick={() => setIsOpenpopup(false)} 
+                  style={{
+                    cursor:'pointer',
+                    position: 'absolute', // Position the button absolutely
+                    top: '10px', // Position from the top
+                    right: '10px', // Position from the right
+                    background: 'transparent',
+                    color:'#344054', // Optionally make the button background transparent
+                    border: 'none',
+                    zIndex:2 // Optionally remove the button border
+                  }}
+                >
+                <FontAwesomeIcon size="2x" icon={faTimes} />
+              </button>
+                <Login onRequestClose={() => setIsOpenpopup(false)} />
+            </ReactModal>
             </Toolbar>
         </Box >
       <Box position="static" sx={{ background: "white" ,boxShadow: '0 0 30px rgba(0, 0, 0, 0.2)'}}>
@@ -170,7 +200,7 @@ const handleMouseEnterserv = () => {
                     ...(isSmallScreen && styles.secondtoolbarsmall),
                     ...(isExtraSmallScreen && styles.secondtoolbarsmall)  }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: "50px" }}>
-              <View  style={styles.container} onMouseEnter={handleMouseEnterprod}
+              <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1,}]} onMouseEnter={handleMouseEnterprod}
                       onMouseLeave={handleMouseLeave}>
                   <a  style={{ color: "black"}} >
                       Produtos
@@ -186,7 +216,7 @@ const handleMouseEnterserv = () => {
                           <a style={styles.acontainer} id='aheader' href="#">Acessórios</a>
                   </View>
               </View>
-              <View  style={styles.container} onMouseEnter={handleMouseEnterserv}
+              <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1}]} onMouseEnter={handleMouseEnterserv}
                       onMouseLeave={handleMouseLeave}>
                   <a  style={{ color: "black" }} >
                       Serviços
@@ -208,7 +238,7 @@ const handleMouseEnterserv = () => {
                           <a style={styles.acontainer} id='aheader' href="#">Remoção de virus</a>
                   </View>
               </View>
-              <View  style={styles.container} onMouseEnter={handleMouseEntersoft}
+              <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1,}]} onMouseEnter={handleMouseEntersoft}
                       onMouseLeave={handleMouseLeave}>
                       <a  style={{ color: "black"}} >
                           Software
@@ -231,7 +261,7 @@ const handleMouseEnterserv = () => {
           </Box>
           <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: "flex", alignItems: "center",gap: "50px" }}>
-            <View  style={styles.container} onMouseEnter={handleMouseEnter}
+            <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}>
                 <a style={{ color: "black"}} >
                     Contactos
@@ -267,7 +297,27 @@ const styles = StyleSheet.create({
     container:{
         position: "relative",
         display: "inline-block",
-        zIndex:2
+    },
+    popup:{
+      overlay: {
+        backgroundColor: 'rgba(0,0,0,0.5)', 
+        backdropFilter: 'blur(10px)', // This line adds the blur effect
+      },
+      content : {
+      position: 'relative',
+      top: '50%',
+      left: '50%',
+      right : 'auto',
+      bottom : 'auto',
+      width:"1000px",
+      transform : 'translate(-50%, -50%)',
+      backgroundColor : '#fff', 
+      borderRadius:'6px',
+      paddingBottom:'5rem',
+      padding:'0',
+      border: '1px solid #1B64A7',
+      zIndex:2
+      }
     },
     firsttoolbar:{
       alignItems:"center",

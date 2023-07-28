@@ -135,9 +135,9 @@ const styles = StyleSheet.create({
         color:"white",
         fontFamily: 'K2D',
         fontSize:"13px",
-        paddingTop:"0.1rem",
-        paddingBottom:"0.1rem",
-        borderRadius:"8px",
+        paddingTop:"0.2rem",
+        paddingBottom:"0.2rem",
+        borderRadius:"6px",
         '&:hover': {
             backgroundColor: '#134b7c',
           },
