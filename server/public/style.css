@@ -17,8 +17,9 @@ body {
   font-size: 13px;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
-  border: 8px;
+  border: 6px;
 }
+
 
 .buttoncontainer:hover {
   background-color: #134b7c;

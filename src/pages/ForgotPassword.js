@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect,useRef,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
@@ -8,6 +8,7 @@ import { Divider } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faExclamation} from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import { PopupContext } from './popupcontext';
 
 import logo from "./../img/logo.png";
 
@@ -16,9 +17,11 @@ export default function ForgotPassword() {
     const [errMsg, setErrMsg] = useState('');
     const errRef = useRef();
     const [email,setemail] = useState('');
+    const {setIsOpenLogin, setIsOpenForgotpassword} = useContext(PopupContext);
 
     function login(){
-        navigate("/login");
+        setIsOpenForgotpassword(false);
+        setIsOpenLogin(true);
     }
 
     const handleforgorpassword = (event) => {
@@ -34,7 +37,6 @@ export default function ForgotPassword() {
                 console.log(res);
                 if(res.status === 200){
                     setErrMsg('Foi enviado um email de recuperação. Verifica o email para recuperares a password');
-                    //navigate('/login')
                 }
                 else{
                     setErrMsg(res.data.message);
@@ -57,40 +59,35 @@ export default function ForgotPassword() {
             </Toolbar>
             </Box >
            </Box>
-           <Box  sx={{margin:"auto",marginTop:"3rem",textAlign: 'left',maxWidth:"1000px"}}>
-                <Box sx={styles.maincontainer}>
-                    <Box>
+           <Box  sx={styles.container}>
+                    <Box sx={[styles.containerfeaturesmain,{gap:"9px"}]}>
                         <Text style={styles.textdefault} >
                             Recuperar a palavra passe
                         </Text>
-                    </Box>
-                    <Box>
-                        <Text style={styles.textdefault1} >
+                 
+                        <Box sx = {styles.boxcontainer}> 
+                            <Text style={[styles.textdefault1,{fontSize:"13px"}]} >
                             Introduz o e-mail associado à tua conta para te enviar
-                            um link para a recuperação de password
-                        </Text>
+                                um link para a recuperação de password
+                            </Text> 
+                        </Box>
                     </Box>
-                    <Box sx={styles.viewcontainer}>
-                        <Box sx={styles.containerfeaturesmain}>     
-                            <Box sx = {styles.boxcontainer}> 
-                                <label style={styles.textdefault1} >
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    placeholder="Email*"
-                                    style={styles.inputtext}
-                                    onChange={(e) => setemail(e.target.value)}
-                                    value={email}
-                                    />
-                            </Box>
-                            <Box sx = {styles.boxcontainer}> 
+                    <Box sx={styles.containerfeaturesmain}>     
+                        <Box sx = {styles.boxcontainer}> 
+                            <label style={styles.textdefault1} >
+                                Email
+                            </label>
+                            <input
+                                type="email"
+                                placeholder="Email*"
+                                style={styles.inputtext}
+                                onChange={(e) => setemail(e.target.value)}
+                                value={email}
+                                />
+                        </Box>
+                            <Box sx = {[styles.boxcontainer,{flexDirection:"row"}]}> 
+                                <Button sx={styles.buttoncomeback} onClick={login}>Voltar a iniciar sessão</Button>
                                 <Button sx={styles.buttoncontainer} onClick={handleforgorpassword}>Enviar email</Button>
-                            </Box>
-                            <Box sx = {[styles.boxcontainer,{alignItems:"center"}]}> 
-                                <Text style={styles.textdefault4} >
-                                        Conseguiste recuperar?<span><a style={styles.textdefaultblue1}  onClick={login}> Volta a iniciar sessão</a></span>        
-                                </Text>  
                             </Box>
                             {errMsg!=="Foi enviado um email de recuperação. Verifica o email para recuperares a password" && errMsg ? (
                                 <Box sx = {[styles.boxcontainer,{backgroundColor:"rgb(254,242,242)",borderRadius:"4px",padding:"0.5rem"}]}> 
@@ -113,27 +110,47 @@ export default function ForgotPassword() {
                                 </Box>
                             )}
                         </Box>
-
-                    </Box>
                 </Box>
-            </Box>
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    container:{
+        margin:"auto",
+        marginTop:"3rem",
+        textAlign: 'left',
+        maxWidth:"600px",
+        paddingLeft:"5rem",
+        paddingRight:"5rem",
+    },
     toolbarcontainer:{
         flexGrow: 1, 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        marginTop:"4rem",
-        marginBottom:"4rem"
+        marginTop:"2rem",
+        marginBottom:"2rem"
+    },
+    buttoncomeback:{
+        color:"white",
+        '&:hover': {
+            backgroundColor: '#6B7280',
+          },
+        backgroundColor:"#a7aab0",
+        fontFamily: 'K2D',
+        marginTop:"0.3rem",
+        fontSize:"13px",
+        paddingTop:"0.2rem",
+        paddingBottom:"0.2rem",
+        borderRadius:"6px",
+        flex:1
     },
     buttoncontainer:{
         backgroundColor:"#1B64A7",
         color:"white",
         fontFamily: 'K2D',
+        marginTop:"0.3rem",
         fontSize:"13px",
         paddingTop:"0.2rem",
         paddingBottom:"0.2rem",
@@ -141,6 +158,11 @@ const styles = StyleSheet.create({
         '&:hover': {
             backgroundColor: '#134b7c',
           },
+          '&:disabled': {
+            color:"white",
+            backgroundColor: '#134b7c',
+        },
+          flex:1
     },
     offscreen: {
         display: 'none',
@@ -154,14 +176,12 @@ const styles = StyleSheet.create({
         color:"rgb(211,109,109)",
         textAlign:"left"
     },
-    maincontainer:{
-        margin:"auto",
-        width:"65%",
-    },
+ 
     textdefault:{
-        fontSize:"30px",
+        fontSize:"20px",
         fontFamily: 'K2D',
-        color:"#344054"
+        color:"#344054",
+        WebkitTextStrokeWidth: '0.1px', 
       },
       textdefaultblue1:{
         fontSize:"13px",
@@ -177,7 +197,6 @@ const styles = StyleSheet.create({
         fontWeight:"900",
         color:"black",
         WebkitTextStrokeWidth: '0.1px', 
-
       },
 
       textdefault4:{
@@ -193,32 +212,26 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat',
         color:"#344054"
       },
-      viewcontainer:{ 
-        boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
-        borderRadius: 2,
-        marginTop:"1rem"
-    },
-    containerfeaturesmain:{
+      containerfeaturesmain:{
         background: "white",
         gap:"10px",
         display:"flex",
         flexDirection:"column",
-        paddingTop:"2rem",
-        alignItems:"center",
-        paddingBottom:"2rem"
+        paddingTop:"1rem",
+        paddingBottom:"1rem"
     },
     boxcontainer:{
         display:"flex",
         flexDirection:"column",
         textAlign:"left",
         gap:"5px",
-        width:"60%"
+        width:"100%"
     },
     inputtext:{
         borderRadius:"4px",
         paddingLeft:"0.5rem",
         border:"1px solid #98A2B3", 
-        height:"3ch",
+        height:"3.7ch",
         width:"auto",
         fontFamily: 'Montserrat',
         fontSize:"12px",

@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect,useState,useContext  } from "react";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +14,9 @@ import ReactModal from 'react-modal';
 import pfp from "./../img/user.png";
 import logo from "./../img/logo.png";
 import Login from './Login';
+import Register from "./Register";
+import { PopupContext } from './popupcontext';
+import ForgotPassword from "./ForgotPassword";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -77,7 +80,7 @@ export default function PrimarySearchAppBar() {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
-  const [isOpenpopup, setIsOpenpopup] = useState(false);
+  const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword  } = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
   const [isHoveredserv, setIsHoveredserv] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
@@ -126,7 +129,7 @@ const handleMouseEnterserv = () => {
   };
 
   const loginaccount = () =>{
-    setIsOpenpopup(true)
+    setIsOpenLogin(true);
   }
 
   return (
@@ -170,14 +173,15 @@ const handleMouseEnterserv = () => {
                     Minha conta
                 </Text> 
               </Box>
+              
               <ReactModal
-                isOpen={isOpenpopup}
-                onRequestClose={() => setIsOpenpopup(false)}
+                isOpen={isOpenLogin}
+                onRequestClose={() => setIsOpenLogin(false)}
                 contentLabel="Login Modal"
                 style={styles.popup}
               >
               <button 
-                onClick={() => setIsOpenpopup(false)} 
+                onClick={() => setIsOpenLogin(false)} 
                   style={{
                     cursor:'pointer',
                     position: 'absolute', // Position the button absolutely
@@ -190,8 +194,54 @@ const handleMouseEnterserv = () => {
                   }}
                 >
                 <FontAwesomeIcon size="2x" icon={faTimes} />
+                </button>
+                <Login onRequestClose={() => setIsOpenLogin(false)} />
+            </ReactModal>
+            <ReactModal
+              isOpen={isOpenRegister}
+              onRequestClose={() => setIsOpenRegister(false)}
+              contentLabel="Register Modal"
+              style={styles.popup}
+            >
+              <button 
+                onClick={() => setIsOpenRegister(false)} 
+                style={{
+                  cursor:'pointer',
+                  position: 'absolute', // Position the button absolutely
+                  top: '10px', // Position from the top
+                  right: '10px', // Position from the right
+                  background: 'transparent',
+                  color:'#344054', // Optionally make the button background transparent
+                  border: 'none',
+                  zIndex:2 // Optionally remove the button border
+                }}
+              >
+                <FontAwesomeIcon size="2x" icon={faTimes} />
               </button>
-                <Login onRequestClose={() => setIsOpenpopup(false)} />
+              <Register onRequestClose={() => setIsOpenRegister(false)} />
+            </ReactModal>
+            <ReactModal
+              isOpen={isOpenForgotpassword}
+              onRequestClose={() => setIsOpenForgotpassword(false)}
+              contentLabel="Forgot Password Modal"
+              style={styles.popup}
+            >
+              <button 
+                onClick={() => setIsOpenForgotpassword(false)} 
+                style={{
+                  cursor:'pointer',
+                  position: 'absolute', // Position the button absolutely
+                  top: '10px', // Position from the top
+                  right: '10px', // Position from the right
+                  background: 'transparent',
+                  color:'#344054', // Optionally make the button background transparent
+                  border: 'none',
+                  zIndex:2 // Optionally remove the button border
+                }}
+              >
+                <FontAwesomeIcon size="2x" icon={faTimes} />
+              </button>
+              <ForgotPassword onRequestClose={() => setIsOpenForgotpassword(false)} />
             </ReactModal>
             </Toolbar>
         </Box >
@@ -199,8 +249,8 @@ const handleMouseEnterserv = () => {
         <Toolbar sx={{...styles.secondtoolbar,
                     ...(isSmallScreen && styles.secondtoolbarsmall),
                     ...(isExtraSmallScreen && styles.secondtoolbarsmall)  }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "50px" }}>
-              <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1,}]} onMouseEnter={handleMouseEnterprod}
+          <Box sx={{ display: "flex", alignItems: "center", gap: "50px",zIndex:0 }}>
+              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,}]} onMouseEnter={handleMouseEnterprod}
                       onMouseLeave={handleMouseLeave}>
                   <a  style={{ color: "black"}} >
                       Produtos
@@ -216,7 +266,7 @@ const handleMouseEnterserv = () => {
                           <a style={styles.acontainer} id='aheader' href="#">Acessórios</a>
                   </View>
               </View>
-              <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1}]} onMouseEnter={handleMouseEnterserv}
+              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1}]} onMouseEnter={handleMouseEnterserv}
                       onMouseLeave={handleMouseLeave}>
                   <a  style={{ color: "black" }} >
                       Serviços
@@ -238,7 +288,7 @@ const handleMouseEnterserv = () => {
                           <a style={styles.acontainer} id='aheader' href="#">Remoção de virus</a>
                   </View>
               </View>
-              <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1,}]} onMouseEnter={handleMouseEntersoft}
+              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,}]} onMouseEnter={handleMouseEntersoft}
                       onMouseLeave={handleMouseLeave}>
                       <a  style={{ color: "black"}} >
                           Software
@@ -253,15 +303,14 @@ const handleMouseEnterserv = () => {
                               <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
                                   <a style={styles.acontainer} id='aheader' href="#">Alojamento</a>
                               </View>
-                      </View>
-                          
-                          <a style={styles.acontainer} id='aheader' href="#">Faturação</a>
+                      </View> 
+                      <a style={styles.acontainer} id='aheader' href="#">Faturação</a>
                   </View>
               </View>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: "flex", alignItems: "center",gap: "50px" }}>
-            <View  style={[styles.container,{zIndex: isOpenpopup ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
+            <Box sx={{ display: "flex", alignItems: "center",gap: "50px" ,zIndex:0}}>
+            <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}>
                 <a style={{ color: "black"}} >
                     Contactos
@@ -315,7 +364,7 @@ const styles = StyleSheet.create({
       borderRadius:'6px',
       paddingBottom:'5rem',
       padding:'0',
-      border: '1px solid #1B64A7',
+      border: 0,
       zIndex:2
       }
     },

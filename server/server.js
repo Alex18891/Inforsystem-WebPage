@@ -10,6 +10,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(cors());
 app.set("view engine","ejs");
 const path = require('path');
+const crypto = require('crypto');
 app.use(express.static(path.join(__dirname, 'public')));
 
 const mongoose = require("mongoose")
@@ -26,23 +27,29 @@ app.post('/login',async(req,res)=>{
    const {email,password}=req.body;
    try{
         const user = await User.findOne({email});
+        console.log(user);
         if(!user)
         {
            return res.status(203).json({message:"Utilizador não encontrado"})
         }
-      
-        if(await bcrypt.compare(password,user.password)){
-            const token = jwt.sign(
-                { id: user._id},
-                process.env.JWT_SECRET,
-                { expiresIn: '1h' }
-            );
-            return res.status(200).json({ message: "Sucesso", token: token });
+        console.log(user.isVerified)
+        if(!user.isVerified)
+        {
+            return res.status(203).json({message:"Por favor verifica o email para fazer login"});
         }
         else{
-            return res.status(203).json({message:"Password errada"})
-        }
-        
+            if(await bcrypt.compare(password,user.password)){
+                const token = jwt.sign(
+                    { id: user._id},
+                    process.env.JWT_SECRET,
+                    { expiresIn: '1h' }
+                );
+                return res.status(200).json({ message: "Sucesso", token: token });
+            }
+            else{
+                return res.status(203).json({message:"Password errada"})
+            }
+        }   
     }catch(error){
         return res.status(500).json(error); 
     }
@@ -58,10 +65,16 @@ app.post('/register',async(req,res)=>{
         return res.status(203).json({message:"Username ou email já estão a ser usados!"})
       }
       else{
-        await User.create({
-            nome,email,password: encryptedPassword
+        const user = await User.create({
+            nome,email,password: encryptedPassword,isVerified:false
         })
 
+        const verificationToken = crypto.randomBytes(20).toString('hex');
+        console.log(verificationToken);
+        const verificationLink = `http://localhost:8080/verify-email?token=${verificationToken}`;
+        user.verificationToken = verificationToken;
+        await user.save();
+        sendVerificationlink(nome,email,verificationLink);
         return res.status(201).json({message:"Utilizador criado"});
       }
 
@@ -69,6 +82,56 @@ app.post('/register',async(req,res)=>{
         return res.status(500).json(error); 
     }
 })
+
+app.get('/verify-email',async(req,res)=>{
+    const {token} = req.query;
+    try{
+        const user = await User.findOne({verificationToken:token});
+        if(!user){
+            return res.status(203).json({message:"Token inválido"})
+        }
+        user.isVerified = true;
+        console.log(user.isVerified)
+        user.verificationToken = undefined;
+        await user.save();
+        res.render("indexverify",{message:"Email Verificado"});
+    } catch (error) {
+        res.render("indexverify",{message:error});
+  }
+
+})
+
+const sendVerificationlink = async(nome,email,link)=>{
+    try{
+        const transporter = nodemailer.createTransport({
+            service:'gmail',
+            auth:{
+                user:'noreplyloginapp18881@gmail.com',
+                pass: 'kppunrkqttoonjjh'
+            }
+        });
+        const mailOptions = {
+            from: 'noreplyloginapp18881@gmail.com',
+            to:email,
+            subject:'Verifica a tua conta',
+            html: `<b>Olá ${nome},</b><br><br>Por favor verifica a tua conta através do link:<br><br><a href="${link}">${link}</a>`,
+        }
+        transporter.sendMail(mailOptions,function(error,information){
+            if(error)
+            {
+                console.log(error);
+            }
+            else
+            {
+                console.log("Email foi enviado ",information.response);
+            }
+        });
+    }catch(error){
+        return res.status(500).json(error); 
+    }
+}
+
+
 
 const sendResetPasswordMail = async(email,link)=>{
     try{
@@ -83,7 +146,7 @@ const sendResetPasswordMail = async(email,link)=>{
             from: 'noreplyloginapp18881@gmail.com',
             to:email,
             subject:'For Reset Password',
-            html: '<p> Hi,Please enter the link and reset your password: <br/> <a href="'+link+'">'+link+'</a>'
+            html: '<p>Olá, por favor clica no link para recuperar a password: <br/> <a href="'+link+'">'+link+'</a>'
         }
         transporter.sendMail(mailOptions,function(error,information){
             if(error)
@@ -92,7 +155,7 @@ const sendResetPasswordMail = async(email,link)=>{
             }
             else
             {
-                console.log("Mail has been sent ",information.response);
+                console.log("Email foi enviado ",information.response);
             }
         });
     }catch(error){

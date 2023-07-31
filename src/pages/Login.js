@@ -1,4 +1,4 @@
-import { useState, useEffect ,useRef} from "react";
+import { useState, useEffect ,useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
@@ -7,23 +7,29 @@ import { Divider } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faExclamation} from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Box from "@mui/material/Box";
 import axios from 'axios'
+import ReactModal from 'react-modal';
+import Register from './Register';
+import { PopupContext } from './popupcontext';
 
 import logo from "./../img/logo.png";
 
-export default function Login({ onRequestClose }) {
+export default function Login() {
     const [email,setemail] = useState('');
     const [password,setpassword] = useState('');
     const [errMsg, setErrMsg] = useState([]);
     const errRef = useRef();
-    const navigate = useNavigate();
+    const { setIsOpenLogin, setIsOpenRegister,setIsOpenForgotpassword} = useContext(PopupContext);
 
     function register(){
-        navigate("/register");
+        setIsOpenLogin(false);
+        setIsOpenRegister(true);
     }
     function forgotpassword(){
-        navigate("/forgotpassword");
+        setIsOpenLogin(false);
+        setIsOpenForgotpassword(true)
     }
     function handlelogin(event){
         event.preventDefault();
@@ -49,7 +55,7 @@ export default function Login({ onRequestClose }) {
                     setErrMsg([]);
                     const token = res.data.token;
                     document.cookie = `token=${token}`;
-                    navigate("/");
+                    setIsOpenLogin(false);
                 }
                 else{
                     setErrMsg((prevArray) => [
@@ -188,11 +194,10 @@ export default function Login({ onRequestClose }) {
                                 </Text>
                             </Box>
                             </Box>   
-                   
                             <Box sx = {[styles.boxcontainer,{width:"100%"}]}> 
                                 <Button sx={styles.buttoncontainer} onClick={register}>Criar conta</Button>
                             </Box>
-                            </Box>        
+                        </Box>        
                 </Box>
           
         </>
@@ -211,13 +216,13 @@ const styles = StyleSheet.create({
         paddingLeft:"4rem",
         paddingRight:"4rem"
     },
-    toolbarcontainer:{
+      toolbarcontainer:{
         flexGrow: 1, 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        marginTop:"4rem",
-        marginBottom:"4rem"
+        marginTop:"2rem",
+        marginBottom:"2rem"
     },
     offscreen: {
         display: 'none',
