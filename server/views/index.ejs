@@ -62,7 +62,7 @@
                                 />
                         </div>
                         <div class="boxcontainer">
-                            <input type="submit" value ="Continuar"  class='buttoncontainer'/>
+                            <input type="submit" value ="CONTINUAR"  class='buttoncontainer'/>
                         </div>
                         <div id="errorContainer"></div>        
                     </form>
@@ -156,8 +156,7 @@
                     console.log(data)
                     if(data.message=== 'Palavra passe alterada com sucesso')
                     {
-                        alert(data.message);
-                        window.location.href="http://localhost:3000/login";    
+                        window.location.href="http://localhost:3000";    
                     }
                 }) 
                 .catch(err => console.error(err));

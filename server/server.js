@@ -88,13 +88,13 @@ app.get('/verify-email',async(req,res)=>{
     try{
         const user = await User.findOne({verificationToken:token});
         if(!user){
-            return res.status(203).json({message:"Token inválido"})
+            res.render("indexverify",{message:"Link expirou"});
         }
         user.isVerified = true;
         console.log(user.isVerified)
         user.verificationToken = undefined;
         await user.save();
-        res.render("indexverify",{message:"Email Verificado"});
+        res.render("indexverify",{message:"Obrigado"});
     } catch (error) {
         res.render("indexverify",{message:error});
   }
