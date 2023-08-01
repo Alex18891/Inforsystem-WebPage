@@ -23,24 +23,70 @@
                 </div>
             </header>
         </div>
+   
         <div class="divmain">
-            <div class="maincontainer">
-                <div class="viewcontainer">
-                        <div class="boxcontainer">
-                            <p class="textdefault" style="text-align: center;">
+            <% if (message === 'Obrigado') { %>   
+                <div class="maincontainer" style="width: 45%;">
+                    <div   class="containerfeaturesmain" style="gap:0px;">  
+                        <div class="boxcontainer" style="text-align: center;">
+                            <i class="fa fa-check-circle" style="font-size:36px;color: #1A65A4;margin:0.5rem;"></i>
+                        </div>
+                        <div class="boxcontainer" style="text-align: center;">
+                            <p class="textdefault">
                                 <%= message %>
                             </p>
-                            <input
-                                type="password"
-                                placeholder="Password*"
-                                class="inputtext"
-                                id = "password"
-                                required
-                                />
                         </div>
+                        <div class="boxcontainer" style="text-align: center;" >
+                            <p class="textdefault1">
+                                Email verificado
+                            </p>
+                        </div>     
+                        <div class="boxcontainer" style="min-width: 85px;">
+                            <input type="submit" onclick="login()" value ="CONTINUAR"  class='buttoncontainer' />
+                        </div>  
+                    </div>  
+            </div>  
+            <%  } 
+            else { %>   
+                <div class="maincontainer" style="width: 45%;">
+                    <div class="viewcontainer">
+                        <div   class="containerfeaturesmain" style="gap:0px;">  
+                            <div class="boxcontainer" style="text-align: center;">
+                                <i class="fa fa-times" style="font-size:36px;color: #1A65A4;margin:0.5rem;"></i>
+                            </div>
+                            <div class="boxcontainer" style="text-align: center;">
+                                <p class="textdefault">
+                                    <%= message %>
+                                </p>
+                            </div>
+                            <div class="boxcontainer" >
+                                <p class="textdefault1">
+                                    O link já não está disponível, se recebeste um email para validar a conta, por favor tenta de novo, através do botão de reenvio de email.
+                                </p>
+                            </div>     
+                            <div class="boxcontainer" style="min-width: 105px;" >
+                                <input type="submit" onclick="resendemail()" value ="REENVIAR"  class='buttoncontainer' />
+                            </div>     
+                            <div class="boxcontainer" > 
+                                <p class="textdefault4" >
+                                        Precisas de ajuda? <span><a class ="textdefaultblue1" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>        
+                                </p>  
+                            </div> 
                     </div>
+                </div>
             </div>
+            <% }  %>
+       
         </div>
+  
     </div>
+    <script>
+        const login = ()=>{
+            window.location.href="http://localhost:3000";  
+        }
+        const resendemail = ()=>{
+            console.log("top")
+        }
+    </script>
 </body>
 </html>
