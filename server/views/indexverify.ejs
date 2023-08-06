@@ -27,24 +27,26 @@
         <div class="divmain">
             <% if (message === 'Obrigado') { %>   
                 <div class="maincontainer" style="width: 45%;">
-                    <div   class="containerfeaturesmain" style="gap:0px;">  
-                        <div class="boxcontainer" style="text-align: center;">
-                            <i class="fa fa-check-circle" style="font-size:36px;color: #1A65A4;margin:0.5rem;"></i>
-                        </div>
-                        <div class="boxcontainer" style="text-align: center;">
-                            <p class="textdefault">
-                                <%= message %>
-                            </p>
-                        </div>
-                        <div class="boxcontainer" style="text-align: center;" >
-                            <p class="textdefault1">
-                                Email verificado
-                            </p>
-                        </div>     
-                        <div class="boxcontainer" style="min-width: 85px;">
-                            <input type="submit" onclick="login()" value ="CONTINUAR"  class='buttoncontainer' />
+                    <div class="viewcontainer">
+                        <div   class="containerfeaturesmain" style="gap:0px;">  
+                            <div class="boxcontainer" style="text-align: center;">
+                                <i class="fa fa-check-circle" style="font-size:36px;color: #1A65A4;margin:0.5rem;"></i>
+                            </div>
+                            <div class="boxcontainer" style="text-align: center;">
+                                <p class="textdefault">
+                                    <%= message %>
+                                </p>
+                            </div>
+                            <div class="boxcontainer" style="text-align: center;" >
+                                <p class="textdefault1">
+                                    Email verificado
+                                </p>
+                            </div>     
+                            <div class="boxcontainer" style="min-width: 85px;">
+                                <input type="submit" onclick="login()" value ="CONTINUAR"  class='buttoncontainer' />
+                            </div>  
                         </div>  
-                    </div>  
+                </div>
             </div>  
             <%  } 
             else { %>   
@@ -72,6 +74,7 @@
                                         Precisas de ajuda? <span><a class ="textdefaultblue1" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>        
                                 </p>  
                             </div> 
+                            <div id="errorContainer"></div> 
                     </div>
                 </div>
             </div>
@@ -81,11 +84,60 @@
   
     </div>
     <script>
-        const login = ()=>{
+        var boxContainer =  document.getElementById('errorContainer');
+        var flexDiv = document.createElement('div');
+        var icon = document.createElement('i');
+        var errorMsg = document.createElement('p');
+        var hr = document.createElement('hr');
+        var textmatch = document.createElement('p');
+        boxContainer.className = 'boxcontainer';
+        boxContainer.style = 'background-color:rgb(254,242,242);border-radius:4px;padding: 0.5rem;';  
+        flexDiv.style = 'display:flex;gap:5px;';
+        icon.className = 'far fa-exclamation';
+        icon.style = 'color: #ac4343;';
+        errorMsg.className = 'errmsg';
+        errorMsg.style = 'color:rgb(172,67,67);';
+        errorMsg.textContent = 'Foi encontrado 1 erro de validação:';
+        hr.style = 'border: none; border-top: 1px solid rgb(211,109,109);width:100%;margin:0;';
+        textmatch.className = 'errmsg';
+        textmatch.id = 'textmatch';
+        flexDiv.appendChild(icon);
+        flexDiv.appendChild(errorMsg);
+        boxContainer.appendChild(flexDiv);
+        boxContainer.appendChild(hr);
+        boxContainer.appendChild(textmatch);
+        boxContainer.style.display = 'none';
+        textmatch.style.display = 'none';
+        flexDiv.style.display = 'none';
+        hr.style.display = 'none';
+       
+        function login(){
             window.location.href="http://localhost:3000";  
         }
         const resendemail = ()=>{
-            console.log("top")
+            fetch('http://localhost:8080/resend-verification-email',{
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                console.log(data.message)
+                if(data.message!== 'Email de verificação enviado'){
+                    boxContainer.style.display = 'flex';
+                    textmatch.style.display = 'block';
+                    flexDiv.style.display = 'flex';
+                    hr.style.display = 'block';
+                    textmatch.textContent = '\u2022 ' + data.message;   
+                }
+                else{
+                    boxContainer.style.display = 'none';
+                    textmatch.style.display = 'none';
+                    flexDiv.style.display = 'none';
+                    hr.style.display = 'none';
+                }
+            }).catch((error) => {
+                 console.error('Error:', error);
+            });
         }
     </script>
 </body>

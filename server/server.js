@@ -3,12 +3,14 @@ const cors = require('cors');
 const bcrypt=require("bcryptjs");
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 const nodemailer = require("nodemailer");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:false}))
 app.use(cors());
 app.set("view engine","ejs");
+app.use(cookieParser());
 const path = require('path');
 const crypto = require('crypto');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -69,7 +71,11 @@ app.post('/register',async(req,res)=>{
             nome,email,password: encryptedPassword,isVerified:false
         })
 
-        const verificationToken = crypto.randomBytes(20).toString('hex');
+        const verificationToken = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '2m' } // This token will expire in 5 minutes
+          );
         console.log(verificationToken);
         const verificationLink = `http://localhost:8080/verify-email?token=${verificationToken}`;
         user.verificationToken = verificationToken;
@@ -85,21 +91,62 @@ app.post('/register',async(req,res)=>{
 
 app.get('/verify-email',async(req,res)=>{
     const {token} = req.query;
-    try{
-        const user = await User.findOne({verificationToken:token});
-        if(!user){
-            res.render("indexverify",{message:"Link expirou"});
-        }
-        user.isVerified = true;
-        console.log(user.isVerified)
-        user.verificationToken = undefined;
-        await user.save();
-        res.render("indexverify",{message:"Obrigado"});
+    try {
+            jwt.verify(token, process.env.JWT_SECRET, async function (err, decoded) {
+            if (err) { 
+                 res.render("indexverify", { message: "Link expirou" });
+            }
+            else{
+                const user = await User.findOne({_id: decoded.id, email: decoded.email, verificationToken: token});
+                console.log(user);
+                if (!user ) {
+                    res.render("indexverify", { message: "Link expirou" });
+                }
+                else{
+                    user.isVerified = true;
+                    user.verificationToken = undefined;
+                    await user.save();
+                    res.cookie('email', user.email, { httpOnly: true, maxAge: 900000 });
+                    res.render("indexverify", { message: "Obrigado" });
+                }
+            }    
+        });
     } catch (error) {
-        res.render("indexverify",{message:error});
-  }
+        res.render("indexverify", { message: error });
+    }
 
 })
+
+app.get('/resend-verification-email', async (req, res) => {
+    const email = req.cookies.email;
+     try{
+         const user = await User.findOne({email});
+        if (!user) {
+            return res.status(203).json({ message: "Link expirou" });
+        }
+        if (user.isVerified) {
+            return res.status(203).json({ message: 'Utilizador já está verificado' });
+        }
+
+            const verificationToken = jwt.sign(
+                { id: user._id, email: user.email },
+                process.env.JWT_SECRET,
+                { expiresIn: '2m' } // This token will expire in 5 minutes
+            );
+       
+           user.verificationToken = verificationToken;
+           await user.save();
+       
+           const verificationLink = `http://localhost:8080/verify-email?token=${verificationToken}`;
+           sendVerificationlink(user.nome, user.email, verificationLink);
+       
+           res.status(200).json({ message: 'Email de verificação enviado' });
+     }catch (error) {
+         return res.status(500).json(error); 
+     }
+ 
+ });
+ 
 
 const sendVerificationlink = async(nome,email,link)=>{
     try{
