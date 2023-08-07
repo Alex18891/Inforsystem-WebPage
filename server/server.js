@@ -76,7 +76,7 @@ app.post('/register',async(req,res)=>{
             process.env.JWT_SECRET,
             { expiresIn: '2m' } // This token will expire in 5 minutes
           );
-        console.log(verificationToken);
+
         const verificationLink = `http://localhost:8080/verify-email?token=${verificationToken}`;
         user.verificationToken = verificationToken;
         await user.save();
@@ -92,35 +92,37 @@ app.post('/register',async(req,res)=>{
 app.get('/verify-email',async(req,res)=>{
     const {token} = req.query;
     try {
-            jwt.verify(token, process.env.JWT_SECRET, async function (err, decoded) {
-            if (err) { 
-                 res.render("indexverify", { message: "Link expirou" });
+        jwt.verify(token, process.env.JWT_SECRET, async function (err, decoded) {
+        if (err) {   
+            res.render("indexverify", { message: "Link expirou", token: token});
+        }
+        else{
+            const user = await User.findOne({_id: decoded.id, email: decoded.email, verificationToken: token});
+            if (!user ) {
+                res.render("indexverify", { message: "Link expirou", token: token });
             }
             else{
-                const user = await User.findOne({_id: decoded.id, email: decoded.email, verificationToken: token});
-                console.log(user);
-                if (!user ) {
-                    res.render("indexverify", { message: "Link expirou" });
-                }
-                else{
-                    user.isVerified = true;
-                    user.verificationToken = undefined;
-                    await user.save();
-                    res.cookie('email', user.email, { httpOnly: true, maxAge: 900000 });
-                    res.render("indexverify", { message: "Obrigado" });
-                }
-            }    
+                user.isVerified = true;
+                user.verificationToken = undefined;
+                await user.save();
+                res.render("indexverify", { message: "Obrigado", token: token });
+            }
+        }    
         });
     } catch (error) {
-        res.render("indexverify", { message: error });
+        res.render("indexverify", { message: error,token: ''});
     }
 
 })
 
 app.get('/resend-verification-email', async (req, res) => {
-    const email = req.cookies.email;
+    const {token} = req.query;
+    if(!token) {
+        return res.status(203).json({message: "Token não existe"});
+    }
      try{
-         const user = await User.findOne({email});
+        const decoded = jwt.decode(token);
+        const user = await User.findOne({email: decoded.email});
         if (!user) {
             return res.status(203).json({ message: "Link expirou" });
         }
@@ -128,19 +130,17 @@ app.get('/resend-verification-email', async (req, res) => {
             return res.status(203).json({ message: 'Utilizador já está verificado' });
         }
 
-            const verificationToken = jwt.sign(
-                { id: user._id, email: user.email },
-                process.env.JWT_SECRET,
-                { expiresIn: '2m' } // This token will expire in 5 minutes
-            );
+        const verificationToken = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '2m' } // This token will expire in 5 minutes
+        );
        
-           user.verificationToken = verificationToken;
-           await user.save();
-       
-           const verificationLink = `http://localhost:8080/verify-email?token=${verificationToken}`;
-           sendVerificationlink(user.nome, user.email, verificationLink);
-       
-           res.status(200).json({ message: 'Email de verificação enviado' });
+        user.verificationToken = verificationToken;
+        await user.save();
+        const verificationLink = `http://localhost:8080/verify-email?token=${verificationToken}`;
+        sendVerificationlink(user.nome, user.email, verificationLink);  
+        res.status(200).json({ message: 'Foi enviado um email de verificação. Verifica o email para validares a conta' });
      }catch (error) {
          return res.status(500).json(error); 
      }
@@ -177,8 +177,6 @@ const sendVerificationlink = async(nome,email,link)=>{
         return res.status(500).json(error); 
     }
 }
-
-
 
 const sendResetPasswordMail = async(email,link)=>{
     try{
@@ -218,60 +216,97 @@ app.post("/forgotpassword", async(req,res,next)=>{
         {
             return res.status(203).json({message:"Utilizador não encontrado"})
         }
-        else
-        {
-            const token = jwt.sign(
-                {email:user.email, id: user._id},
-                process.env.JWT_SECRET,
-                { expiresIn: '5m'}
-            );
-            const link = `http://localhost:8080/resetpassword/${user._id}/${token}`;
-            sendResetPasswordMail(user.email,link);
-            console.log(link);
-            res.status(200).json("Verifica o teu email");
-        }
+     
+        const token = jwt.sign(
+            {email:user.email, id: user._id},
+            process.env.JWT_SECRET,
+            { expiresIn: '2m'}
+        );
+        const link = `http://localhost:8080/resetpassword/${token}`;
+        sendResetPasswordMail(user.email,link);
+        console.log(link);
+        return res.status(200).json({message:"Foi enviado um email de recuperação. Verifica o email para recuperares a password"});
+        
     }catch(error){
         return res.status(500).json(error); 
     }
 })
 
-app.get("/resetpassword/:id/:token",async(req,res)=>{
-    const {id,token} = req.params;
+app.get("/resetpassword/:token",async(req,res)=>{
+    const {token} = req.params;
     try{
-        const user = await User.findOne({_id:id});
-        if(!user)
-        {
-            res.render("index",{message:"Utilizador não encontrado"});
-        }   
-        jwt.verify(token,process.env.JWT_SECRET);
-        res.render("index",{id:id,token:token,message:""});
-
+        jwt.verify(token, process.env.JWT_SECRET, async function (err, decoded) {
+            if (err) {   
+                res.render("index", { message: "Link expirou", token: token});
+            }
+            else{
+                const user = await User.findOne({_id: decoded.id, email: decoded.email});
+                if(!user)
+                {
+                    res.render("index",{message:"Link expirou", token: token});
+                }  
+                else{
+                    res.render("index",{token:token,message:""}); 
+                }         
+            }
+        })
     }catch(error){
-        res.render("index",{message:error,id: '', token: '' }); 
+        res.render("index",{message:error, token: '' }); 
     }
 })
 
-app.post("/resetpassword/:id/:token",async(req,res)=>{
-    const {id,token} = req.params;
+app.get('/resend-resetpassword/:token', async (req, res) => {
+    const {token} = req.params;
+    if(!token) {
+        return res.status(203).json({message: "Token não existe"});
+    }
+     try{
+        const decoded = jwt.decode(token);
+        const user = await User.findOne({email: decoded.email});
+        if (!user) {
+            return res.status(203).json({ message: "Link expirou" });
+        }
+        const verificationToken = jwt.sign(
+            {email:user.email, id: user._id},
+            process.env.JWT_SECRET,
+            { expiresIn: '2m'}
+        );
+        const link = `http://localhost:8080/resetpassword/${verificationToken}`;
+        sendResetPasswordMail(user.email,link);
+        return res.status(200).json({message:"Foi enviado um email de recuperação. Verifica o email para recuperares a password"});
+     }catch (error) {
+         return res.status(500).json(error); 
+     }
+ 
+ });
+
+app.post("/resetpassword/:token",async(req,res)=>{
+    const {token} = req.params;
     const {password} = req.body;
     try{
-        const user = await User.findOne({_id:id});
-        if(!user)
-        {
-            res.status(404).json({message:"Utilizador não encontrado"});
-        }   
-        jwt.verify(token,process.env.JWT_SECRET);
-        const encryptedPassword = await bcrypt.hash(password,10);
-        await User.updateOne(
-            {
-                _id:id,
-            },
-           { $set: {
-                password: encryptedPassword,
-            },
-            } 
-        );
-        res.status(200).json({message:"Palavra passe alterada com sucesso"});
+        jwt.verify(token, process.env.JWT_SECRET, async function (err, decoded) {
+            if (err) {   
+               return res.status(203).json({ message: "Link expirou. Volta a abrir o link para reenviar um email."});
+            }
+            else{ 
+                const user = await User.findOne({_id: decoded.id, email: decoded.email});
+                if(!user)
+                {
+                    return res.status(203).json({message:"Utilizador não encontrado"});
+                }   
+                const encryptedPassword = await bcrypt.hash(password,10);
+                await User.updateOne(
+                {
+                    _id:decoded.id,
+                },
+                { $set: {
+                        password: encryptedPassword,
+                    },
+                } 
+                );
+               return res.status(200).json({message:"Palavra passe alterada com sucesso"});
+        }
+    })
     }catch(error){
         res.status(500).json({message:error.message});
     }

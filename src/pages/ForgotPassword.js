@@ -35,12 +35,7 @@ export default function ForgotPassword() {
             axios.post('http://localhost:8080/forgotpassword',{email})
             .then(res =>{
                 console.log(res);
-                if(res.status === 200){
-                    setErrMsg('Foi enviado um email de recuperação. Verifica o email para recuperares a password');
-                }
-                else{
-                    setErrMsg(res.data.message);
-                }
+                setErrMsg(res.data.message);
             }).catch(err => console.log(err));
         }
     }

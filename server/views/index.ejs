@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title> 
     <script src="https://kit.fontawesome.com/a443185dcf.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href='https://fonts.googleapis.com/css?family=K2D' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -24,51 +25,82 @@
             </header>
         </div>
         <div class="divmain">
-            <div class="maincontainer">
-                <div>
-                    <p class="textdefault">
-                        Recuperar a palavra passe
-                    </p>
+            <% if (message === '') { %>  
+                <div class="maincontainer">
+                    <div>
+                        <p class="textdefault">
+                            Recuperar a palavra passe
+                        </p>
+                    </div>
+                    <div>
+                        <p class="textdefault1">
+                            Introduz uma password válida para ser concluída a recuperação da password
+                        </p>
+                    </div>
+                    <div class="viewcontainer">
+                        <form method="POST" id="form"  class="containerfeaturesmain">
+                            <div class="boxcontainer">
+                                <label class="textdefault1" >
+                                    Nova palavra passe
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="Password*"
+                                    class="inputtext"
+                                    id = "password"
+                                    required
+                                    />
+                            </div>
+                            <div class="boxcontainer">
+                                <label class="textdefault1" >
+                                    Confirmar nova palavra passe
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="Password*"
+                                    class="inputtext"
+                                    id = "confirmpassword"
+                                    required
+                                    />
+                            </div>
+                            <div class="boxcontainer">
+                                <input type="submit" value ="CONTINUAR"  class='buttoncontainer'/>
+                            </div>
+                            <div id="errorContainer"></div>        
+                        </form>
+                    </div>
                 </div>
-                <div>
-                    <p class="textdefault1">
-                        Introduz uma password válida para ser concluída a recuperação da password
-                    </p>
+            <%  } 
+            else { %>   
+                    <div class="maincontainer" style="width: 45%;">
+                        <div class="viewcontainer">
+                            <div class="containerfeaturesmain" style="gap:0px;">  
+                                <div class="boxcontainer" style="text-align: center;">
+                                    <i class="fa fa-times" style="font-size:36px;color: #1A65A4;margin:0.5rem;"></i>
+                                </div>
+                                <div class="boxcontainer" style="text-align: center;">
+                                    <p class="textdefault">
+                                        <%= message %>
+                                    </p>
+                                </div>
+                                <div class="boxcontainer" >
+                                    <p class="textdefault1">
+                                        O link já não está disponível, se recebeste um email para recuperar a palavra passe, por favor tenta de novo, através do botão de reenvio.
+                                    </p>
+                                </div>     
+                                <div class="boxcontainer" style="min-width: 105px;" >
+                                    <input type="submit" onclick="resendemail()" value ="REENVIAR"  class='buttoncontainer' />
+                                </div>     
+                                <div class="boxcontainer" > 
+                                    <p class="textdefault4" >
+                                            Precisas de ajuda? <span><a class ="textdefaultblue1" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>        
+                                    </p>  
+                                </div> 
+                                <div id="errorContainer"></div> 
+                        </div>
+                    </div>
                 </div>
-                <div class="viewcontainer">
-                    <form method="POST" id="form"  class="containerfeaturesmain">
-                        <div class="boxcontainer">
-                            <label class="textdefault1" >
-                                Nova palavra passe
-                            </label>
-                            <input
-                                type="password"
-                                placeholder="Password*"
-                                class="inputtext"
-                                id = "password"
-                                required
-                                />
-                        </div>
-                        <div class="boxcontainer">
-                            <label class="textdefault1" >
-                                Confirmar nova palavra passe
-                            </label>
-                            <input
-                                type="password"
-                                placeholder="Password*"
-                                class="inputtext"
-                                id = "confirmpassword"
-                                required
-                                />
-                        </div>
-                        <div class="boxcontainer">
-                            <input type="submit" value ="CONTINUAR"  class='buttoncontainer'/>
-                        </div>
-                        <div id="errorContainer"></div>        
-                    </form>
-                </div>
-            </div>
-
+            <% }  %>
         </div>
     </div>
   <script>
@@ -138,30 +170,62 @@
         console.log(checkPasswordsMatch())
         if(checkPasswordsMatch())
         {
-            const id = "<%= id %>";
             const token = "<%= token %>";
-            const url = "/resetpassword/" + id + "/" + token;
-            const options = {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json', 
-            },
-            body: JSON.stringify({ 
+            const url = "/resetpassword/"  + token;
+            const data = {
                 password: password.value, 
-            }),
             };
-            await fetch(url, options)
-                .then(response => response.json())
-                .then(data=>{
-                    console.log(data)
-                    if(data.message=== 'Palavra passe alterada com sucesso')
-                    {
-                        window.location.href="http://localhost:3000";    
-                    }
-                }) 
-                .catch(err => console.error(err));
+            axios.post(url, data)
+            .then(response =>{
+                console.log(response)
+                if(response.status === 200)
+                {
+                    boxContainer.style.display = 'none';
+                    textmatch.style.display = 'none';
+                    flexDiv.style.display = 'none';
+                    hr.style.display = 'none';
+                    window.location.href="http://localhost:3000";    
+                }
+                else{
+                    boxContainer.style.display = 'flex';
+                    textmatch.style.display = 'block';
+                    flexDiv.style.display = 'flex';
+                    hr.style.display = 'block';
+                    textmatch.textContent = '\u2022 ' + response.data.message; 
+                }
+            }) 
+            .catch(err => console.error(err));
         }
-    });               
+    });   
+    
+    async function resendemail() {
+            const token = "<%= token %>";
+            console.log(token)
+            try {
+                const url = `http://localhost:8080/resend-resetpassword/${token}`
+                const response = await axios.get(url);
+                console.log(url);
+                console.log(response);
+                if(response.status !== 200){
+                    boxContainer.style.display = 'flex';
+                    textmatch.style.display = 'block';
+                    flexDiv.style.display = 'flex';
+                    hr.style.display = 'block';
+                    textmatch.textContent = '\u2022 ' + response.data.message;   
+                } else {
+                    boxContainer.style.display = 'flex';
+                    boxContainer.style = 'background: none;border-radius:0;padding:0;';  
+                    textmatch.style.display = 'block';
+                    textmatch.style.color = '#344054';
+                    flexDiv.style.display = 'none';
+                    hr.style.display = 'none';
+                    textmatch.textContent = response.data.message;   
+                }
+            } catch(error) {
+                console.error('Error:', error);
+            }
+    }
+
   </script>
 </body>
 </html>

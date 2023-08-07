@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify email</title> 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/a443185dcf.js" crossorigin="anonymous"></script>
     <link href='https://fonts.googleapis.com/css?family=K2D' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
@@ -63,7 +64,7 @@
                             </div>
                             <div class="boxcontainer" >
                                 <p class="textdefault1">
-                                    O link já não está disponível, se recebeste um email para validar a conta, por favor tenta de novo, através do botão de reenvio de email.
+                                    O link já não está disponível, se recebeste um email para validar a conta, por favor tenta de novo, através do botão de reenvio.
                                 </p>
                             </div>     
                             <div class="boxcontainer" style="min-width: 105px;" >
@@ -110,35 +111,36 @@
         textmatch.style.display = 'none';
         flexDiv.style.display = 'none';
         hr.style.display = 'none';
-       
+        
         function login(){
             window.location.href="http://localhost:3000";  
         }
-        const resendemail = ()=>{
-            fetch('http://localhost:8080/resend-verification-email',{
-                method: 'GET',
-                credentials: 'include'
-            })
-            .then(response=>response.json())
-            .then(data=>{
-                console.log(data.message)
-                if(data.message!== 'Email de verificação enviado'){
+        async function resendemail() {
+            const token = "<%= token %>";
+            try {
+                const response = await axios.get(`http://localhost:8080/resend-verification-email?token=${token}`);
+                console.log(response);
+                if(response.status !== 200){
                     boxContainer.style.display = 'flex';
                     textmatch.style.display = 'block';
                     flexDiv.style.display = 'flex';
                     hr.style.display = 'block';
-                    textmatch.textContent = '\u2022 ' + data.message;   
-                }
-                else{
-                    boxContainer.style.display = 'none';
-                    textmatch.style.display = 'none';
+                    textmatch.textContent = '\u2022 ' + response.data.message;   
+                } else {
+                    boxContainer.style.display = 'flex';
+                    boxContainer.style = 'background: none;border-radius:0;padding:0;';  
+                    textmatch.style.display = 'block';
+                    textmatch.style.color = '#344054';
                     flexDiv.style.display = 'none';
                     hr.style.display = 'none';
+                    textmatch.textContent = response.data.message;   
                 }
-            }).catch((error) => {
-                 console.error('Error:', error);
-            });
+            } catch(error) {
+                console.error('Error:', error);
+            }
         }
+
+           
     </script>
 </body>
 </html>
