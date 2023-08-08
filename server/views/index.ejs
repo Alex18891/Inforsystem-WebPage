@@ -155,13 +155,13 @@
             textmatch.style.display = 'block';
             flexDiv.style.display = 'flex';
             hr.style.display = 'block';
-            textmatch.textContent = '\u2022' + " Palavra passe deve conter pelo menos 8 carateres, uma letra mínuscula e um número";
+            textmatch.textContent = '\u2022' + " Palavra passe deve conter pelo menos 8 carateres, uma letra mínuscula, uma letra maiúscula, um símbolo e um número";
         }
     }
 
     const validatePassword = (password) => 
     {  
-        const regex = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
         console.log(regex.test(password));
         return regex.test(password);
     }

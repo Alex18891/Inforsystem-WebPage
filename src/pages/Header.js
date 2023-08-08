@@ -266,45 +266,16 @@ const handleMouseEnterserv = () => {
                           <a style={styles.acontainer} id='aheader' href="#">Acessórios</a>
                   </View>
               </View>
-              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1}]} onMouseEnter={handleMouseEnterserv}
-                      onMouseLeave={handleMouseLeave}>
-                  <a  style={{ color: "black" }} >
-                      Serviços
-                      <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                  </a>
-                  <View  style={[styles.container_cont,isHoveredserv && styles.containerHovered]}>
-                      <View style={styles.container}  onMouseEnter={handleMouseEnter2}
-                      onMouseLeave={handleMouseLeave2} > 
-                              <Text style={[styles.acontainer, {marginBottom:0, paddingRight:"40px"}]}>Reparação
-                                  <i class="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
-                              </Text>     
-        
-                              <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
-                                  <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
-                                  <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
-                              </View>
-                      </View>
-                          <a style={styles.acontainer} id='aheader' href="#">Instalação SO</a>
-                          <a style={styles.acontainer} id='aheader' href="#">Remoção de virus</a>
-                  </View>
-              </View>
-              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,}]} onMouseEnter={handleMouseEntersoft}
+          
+              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,minWidth: "220px",}]} onMouseEnter={handleMouseEntersoft}
                       onMouseLeave={handleMouseLeave}>
                       <a  style={{ color: "black"}} >
                           Software
                           <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
                       </a>
                   <View  style={[styles.container_cont,isHoveredsoft && styles.containerHovered]}>
-                  <View style={styles.container}  onMouseEnter={handleMouseEnter2}
-                      onMouseLeave={handleMouseLeave2} > 
-                              <Text style={[styles.acontainer, {paddingRight:"20px", marginBottom:0}]}>Serviços Web
-                                  <i class="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
-                              </Text>     
-                              <View style={[styles.container_cont2,isHovered2 && styles.containerHovered]} >
-                                  <a style={styles.acontainer} id='aheader' href="#">Alojamento</a>
-                              </View>
-                      </View> 
-                      <a style={styles.acontainer} id='aheader' href="#">Faturação</a>
+                      <a style={styles.acontainer} id='aheader' href="#">Sistemas Operativos</a>
+                      <a style={styles.acontainer} id='aheader' href="#">Software de Faturação</a>
                   </View>
               </View>
           </Box>
@@ -333,7 +304,7 @@ const handleMouseEnterserv = () => {
               Sobre a empresa
             </a> 
             <a style={{ textDecorationLine:"none" }} id='aheader' href="#">
-              Enviar ticket
+              Pedir orçamento
             </a> 
           </Box>
         </Toolbar>
@@ -414,7 +385,7 @@ const styles = StyleSheet.create({
         display: "none",
         position: "absolute",
         backgroundColor: "white",
-        minWidth: "180px",
+        minWidth: "160px",
         shadowColor: '#000',
         shadowOffset: {
         width: 0,

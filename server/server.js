@@ -34,7 +34,6 @@ app.post('/login',async(req,res)=>{
         {
            return res.status(203).json({message:"Utilizador não encontrado"})
         }
-        console.log(user.isVerified)
         if(!user.isVerified)
         {
             return res.status(203).json({message:"Por favor verifica o email para fazer login"});

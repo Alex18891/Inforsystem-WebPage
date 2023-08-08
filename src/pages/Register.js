@@ -28,10 +28,11 @@ export default function Register() {
 
     const validatePassword = (password) => 
     {  
-        const regex = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
         console.log(regex.test(password));
         return regex.test(password);
     }
+
 
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
@@ -69,7 +70,7 @@ export default function Register() {
        if (!validatePassword(password)) {
             setErrMsg((prevArray) => [
                 ...prevArray,
-                "Palavra passe deve conter pelo menos 8 carateres, uma letra mínuscula e um número",
+                "Palavra passe deve conter pelo menos 8 carateres, uma letra mínuscula, uma letra maiúscula, um símbolo e um número",
               ]);
         }
         else if(validatePassword(password) && isValidEmail(email) && nome && password === confirmpassword){
