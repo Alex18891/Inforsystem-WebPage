@@ -103,7 +103,7 @@ export default function Homepage() {
                                 height={"120px"}
                             ></img>
                             <Text style={styles.textdefault2}>
-                                Todo o tipo de<span style={{fontWeight:"bold"}}> produto</span> 
+                                Nada<span style={{fontWeight:"bold"}}> igual</span> 
                             </Text>
                         </Box>
                         <Box sx={styles.containerfeatures}>
@@ -718,8 +718,8 @@ const styles = StyleSheet.create({
     container:{
         position: "relative",
         paddingLeft:"0.5rem",
-        paddingRight:"0.5rem",    
-        zIndex:1
+        paddingRight:"0.5rem",   
+        zIndex:-1 
     },
     containersmall:{
         display:"none",
@@ -824,7 +824,6 @@ const styles = StyleSheet.create({
     imgcontainer:{
         marginTop:"0.5rem",
         width:"100%",
-        zIndex:1
     },
       textdefault:{
         fontSize:"16px",

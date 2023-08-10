@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify email</title> 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://kit.fontawesome.com/a443185dcf.js" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=K2D' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+    <div>
+        <div style="background: #1A65A4;">
+            <header>
+                <div class="toolbarcontainer"> 
+                    <img
+                        src="/img/logo.png"
+                        alt="profile picture"    
+                    ></img>
+                </div>
+            </header>
+        </div>
+   
+        <div class="divmain">
+            <% if (message === 'Obrigado') { %>   
+                <div class="maincontainer" style="width: 45%;">
+                    <div class="viewcontainer">
+                        <div   class="containerfeaturesmain" style="gap:0px;">  
+                            <div class="boxcontainer" style="text-align: center;">
+                                <i class="fa fa-check-circle" style="font-size:36px;color: #1A65A4;margin:0.5rem;"></i>
+                            </div>
+                            <div class="boxcontainer" style="text-align: center;">
+                                <p class="textdefault">
+                                    <%= message %>
+                                </p>
+                            </div>
+                            <div class="boxcontainer" style="text-align: center;" >
+                                <p class="textdefault1">
+                                    Email verificado
+                                </p>
+                            </div>     
+                            <div class="boxcontainer" style="min-width: 85px;">
+                                <input type="submit" onclick="login()" value ="CONTINUAR"  class='buttoncontainer' />
+                            </div>  
+                        </div>  
+                </div>
+            </div>  
+            <%  } 
+            else { %>   
+                <div class="maincontainer" style="width: 45%;">
+                    <div class="viewcontainer">
+                        <div   class="containerfeaturesmain" style="gap:0px;">  
+                            <div class="boxcontainer" style="text-align: center;">
+                                <i class="fa fa-times" style="font-size:36px;color: #1A65A4;margin:0.5rem;"></i>
+                            </div>
+                            <div class="boxcontainer" style="text-align: center;">
+                                <p class="textdefault">
+                                    <%= message %>
+                                </p>
+                            </div>
+                            <div class="boxcontainer" >
+                                <p class="textdefault1">
+                                    O link já não está disponível, se recebeste um email para validar a conta, por favor tenta de novo, através do botão de reenvio.
+                                </p>
+                            </div>     
+                            <div class="boxcontainer" style="min-width: 105px;" >
+                                <input type="submit" onclick="resendemail()" value ="REENVIAR"  class='buttoncontainer' />
+                            </div>     
+                            <div class="boxcontainer" > 
+                                <p class="textdefault4" >
+                                        Precisas de ajuda? <span><a class ="textdefaultblue1" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>        
+                                </p>  
+                            </div> 
+                            <div id="errorContainer"></div> 
+                    </div>
+                </div>
+            </div>
+            <% }  %>
+       
+        </div>
+  
+    </div>
+    <script>
+        var boxContainer =  document.getElementById('errorContainer');
+        var flexDiv = document.createElement('div');
+        var icon = document.createElement('i');
+        var errorMsg = document.createElement('p');
+        var hr = document.createElement('hr');
+        var textmatch = document.createElement('p');
+        boxContainer.className = 'boxcontainer';
+        boxContainer.style = 'background-color:rgb(254,242,242);border-radius:4px;padding: 0.5rem;';  
+        flexDiv.style = 'display:flex;gap:5px;';
+        icon.className = 'far fa-exclamation';
+        icon.style = 'color: #ac4343;';
+        errorMsg.className = 'errmsg';
+        errorMsg.style = 'color:rgb(172,67,67);';
+        errorMsg.textContent = 'Foi encontrado 1 erro de validação:';
+        hr.style = 'border: none; border-top: 1px solid rgb(211,109,109);width:100%;margin:0;';
+        textmatch.className = 'errmsg';
+        textmatch.id = 'textmatch';
+        flexDiv.appendChild(icon);
+        flexDiv.appendChild(errorMsg);
+        boxContainer.appendChild(flexDiv);
+        boxContainer.appendChild(hr);
+        boxContainer.appendChild(textmatch);
+        boxContainer.style.display = 'none';
+        textmatch.style.display = 'none';
+        flexDiv.style.display = 'none';
+        hr.style.display = 'none';
+        
+        function login(){
+            window.location.href="http://localhost:3000";  
+        }
+        async function resendemail() {
+            const token = "<%= token %>";
+            try {
+                const response = await axios.get(`http://localhost:8080/resend-verification-email?token=${token}`);
+                console.log(response);
+                if(response.status !== 200){
+                    boxContainer.style.display = 'flex';
+                    textmatch.style.display = 'block';
+                    flexDiv.style.display = 'flex';
+                    hr.style.display = 'block';
+                    textmatch.textContent = '\u2022 ' + response.data.message;   
+                } else {
+                    boxContainer.style.display = 'flex';
+                    boxContainer.style = 'background: none;border-radius:0;padding:0;';  
+                    textmatch.style.display = 'block';
+                    textmatch.style.color = '#344054';
+                    flexDiv.style.display = 'none';
+                    hr.style.display = 'none';
+                    textmatch.textContent = response.data.message;   
+                }
+            } catch(error) {
+                console.error('Error:', error);
+            }
+        }
+
+           
+    </script>
+</body>
+</html>

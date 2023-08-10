@@ -19,12 +19,15 @@ code {
 #afooter{
   color: white;
   font-family:"K2D"; 
+  text-decoration: none;
 }
 
 #aheader:hover {
   color: #1A65A4;
+  text-decoration: none;
 }
 #aheader{
   color: black;
   font-family:"K2D"; 
+  text-decoration: none;
 }
