@@ -1,9 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import React, { useState } from 'react';
 import Homepage from "./pages/Homepage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Forgotpassword from "./pages/ForgotPassword";
+import SoftwareFaturação from "./pages/SoftwareFaturação";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -22,9 +20,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="/" element={<Homepage/>} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgotpassword" element={<Forgotpassword/>} />
-          <Route path="/login" element={<Login/>} />
+          <Route path="/softwarefaturação" element={<SoftwareFaturação/>} />
         </Routes>
       </ThemeProvider>
     </PopupContext.Provider>
