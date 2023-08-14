@@ -24,7 +24,6 @@ mongoose.connect(mongoUrl,{
 require("./mongo");
 const User = mongoose.model("UserInfoinforsystem");
 
-
 app.post('/login',async(req,res)=>{
    const {email,password}=req.body;
    try{
@@ -146,7 +145,6 @@ app.get('/resend-verification-email', async (req, res) => {
  
  });
  
-
 const sendVerificationlink = async(nome,email,link)=>{
     try{
         const transporter = nodemailer.createTransport({
@@ -160,8 +158,48 @@ const sendVerificationlink = async(nome,email,link)=>{
             from: 'noreplyloginapp18881@gmail.com',
             to:email,
             subject:'Verifica a tua conta',
-            html: `<b>Olá ${nome},</b><br><br>Por favor verifica a tua conta através do link:<br><br><a href="${link}">${link}</a>`,
-        }
+            html: `
+            <html>
+            <head>
+            <style type="text/css">
+                body, p, div, span, a {
+                    font-family: 'Cera Round Pro',' Proxima Nova Soft',' Proxima Nova',' Helvetica Neue',Helvetica,Arial,sans-serif;  /* Using a web-safe font as default */
+                    color: #344054; 
+                    text-decoration: none;
+                }
+            </style>
+            </head>
+            <body>
+                <div>
+                    <div style="background: #1A65A4; text-align: center; padding: 4rem 0;">
+                        <img src="https://tagdetect.s3.eu-west-2.amazonaws.com/logo.png" alt="Profile picture">
+                    </div>    
+                    <div style="background: #F0F1F3; padding: 3rem 0;">
+                        <div style="border-radius: 6px; margin: auto; background: white; width: 60%; max-width: 370px; padding: 2rem;">
+                            <h1 style="font-size: 20px; margin-bottom: 1rem;text-align: center;">
+                                Verifica a tua conta
+                            </h1>
+                            
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 1rem;">
+                                Olá ${nome}, para ser possível aceder aos produtos disponíveis na loja, por favor, confirma o teu email para completar o processo de verificação da tua conta.
+                            </p>
+                            
+                            <div style="margin-bottom: 1.5rem;text-align: center;">
+                                <a href="${link}" style="display: inline-block; padding: 0.5rem 2rem; background-color: #1B64A7; border-radius: 6px; color: white; font-size: 13px;font-family: 'K2D', sans-serif;">VERIFICAR CONTA</a>
+                            </div>
+                            <hr style="border:1;width:100%;"/>
+                            <p style="font-size: 13px;">
+                                Precisas de ajuda? <span><a style="font-size: 13px; color: #1B64A7; font-weight: 700;" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>
+                            </p>
+                            <p style="font-size: 13px;">
+                                Para mais informações por favor lê os <span><a style="font-size: 13px; color: #1B64A7;font-weight: 700;" href="#"> termos e serviços</a></span> e a<span><a style="font-size: 13px; color: #1B64A7;font-weight: 700;" href="#"> política de privacidade</a></span> 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>`            
+        }        
         transporter.sendMail(mailOptions,function(error,information){
             if(error)
             {
@@ -177,7 +215,7 @@ const sendVerificationlink = async(nome,email,link)=>{
     }
 }
 
-const sendResetPasswordMail = async(email,link)=>{
+const sendResetPasswordMail = async(nome,email,link)=>{
     try{
         const transporter = nodemailer.createTransport({
             service:'gmail',
@@ -189,8 +227,48 @@ const sendResetPasswordMail = async(email,link)=>{
         const mailOptions = {
             from: 'noreplyloginapp18881@gmail.com',
             to:email,
-            subject:'For Reset Password',
-            html: '<p>Olá, por favor clica no link para recuperar a password: <br/> <a href="'+link+'">'+link+'</a>'
+            subject:'Recuperar palavra passe',
+            html: `
+            <html>
+            <head>
+            <style type="text/css">
+                body, p, div, span, a {
+                    font-family: 'Cera Round Pro',' Proxima Nova Soft',' Proxima Nova',' Helvetica Neue',Helvetica,Arial,sans-serif;  /* Using a web-safe font as default */
+                    color: #344054; 
+                    text-decoration: none;
+                }
+            </style>
+            </head>
+            <body>
+                <div>
+                    <div style="background: #1A65A4; text-align: center; padding: 4rem 0;">
+                        <img src="https://tagdetect.s3.eu-west-2.amazonaws.com/logo.png" alt="Profile picture">
+                    </div>    
+                    <div style="background: #F0F1F3; padding: 3rem 0;">
+                        <div style="border-radius: 6px; margin: auto; background: white; width: 60%; max-width: 370px; padding: 2rem;">
+                            <h1 style="font-size: 20px; margin-bottom: 1rem;text-align: center;">
+                                Recuperar a palavra passe
+                            </h1>
+                            
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 1rem;">
+                                Olá ${nome}, para ser possível recuperar a palavra passe, por favor, clica no link e digite uma nova palavra passe.
+                            </p>
+                            
+                            <div style="margin-bottom: 1.5rem;text-align: center;">
+                                <a href="${link}" style="display: inline-block; padding: 0.5rem 2rem; background-color: #1B64A7; border-radius: 6px; color: white; font-size: 13px;font-family: 'K2D', sans-serif;">RECUPERAR PALAVRA PASSE</a>
+                            </div>
+                            <hr style="border:1;width:100%;"/>
+                            <p style="font-size: 13px;">
+                                Precisas de ajuda? <span><a style="font-size: 13px; color: #1B64A7; font-weight: 700;" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>
+                            </p>
+                            <p style="font-size: 13px;">
+                                Para mais informações por favor lê os <span><a style="font-size: 13px; color: #1B64A7;font-weight: 700;" href="#"> termos e serviços</a></span> e a<span><a style="font-size: 13px; color: #1B64A7;font-weight: 700;" href="#"> política de privacidade</a></span> 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>`            
         }
         transporter.sendMail(mailOptions,function(error,information){
             if(error)
@@ -222,7 +300,7 @@ app.post("/forgotpassword", async(req,res,next)=>{
             { expiresIn: '2m'}
         );
         const link = `http://localhost:8080/resetpassword/${token}`;
-        sendResetPasswordMail(user.email,link);
+        sendResetPasswordMail(user.nome,user.email,link);
         console.log(link);
         return res.status(200).json({message:"Foi enviado um email de recuperação. Verifica o email para recuperares a password"});
         

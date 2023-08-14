@@ -367,7 +367,7 @@ export default function SoftwareFaturação() {
                                     ></img>
                                 </Box>
                                 <Text style={[styles.textdefault2,{margin:"0"}]}>
-                                    <span >Eticadata</span> 
+                                    <span >ETICADATA</span> 
                                 </Text>
                                 <Text style={[styles.textdefault,{fontSize:"15px"}]}>
                                     Gestão Comercial

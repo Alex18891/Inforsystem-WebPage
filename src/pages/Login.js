@@ -10,8 +10,6 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Box from "@mui/material/Box";
 import axios from 'axios'
-import ReactModal from 'react-modal';
-import Register from './Register';
 import { PopupContext } from './popupcontext';
 
 import logo from "./../img/logo.png";

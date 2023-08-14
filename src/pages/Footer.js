@@ -55,13 +55,13 @@ export default function FooterInforsystem() {
                 <a style={styles.acontainer} id="afooter" href="#" >
                     A nossa loja
                 </a> 
-                <a style={styles.acontainer} id="afooter" href="#" >
+                <a style={styles.acontainer} id="afooter" href="/termoseserviços" >
                    Termos e condições
                 </a>
-                <a style={styles.acontainer} id="afooter" href="#" >
+                <a style={styles.acontainer} id="afooter" href="/políticadeprivacidade" >
                     Política de Privacidade
                 </a>
-                <a style={styles.acontainer} id="afooter" href="#" >
+                <a style={styles.acontainer} id="afooter" href="/políticadecookies" >
                     Política de Cookies
                 </a>   
         </Box> 
@@ -88,7 +88,7 @@ export default function FooterInforsystem() {
             </a>   
             <a style={styles.acontainer} id="afooter"href="https://wa.me/351967687915">
                 <i className="fa fa-whatsapp" style={{marginRight:"0.5rem",marginTop:"0.2rem"}} ></i>
-                (+351) 935 213 424
+                (+351) 966218628
             </a>  
         </Box> 
         <Box sx={{maxWidth:"190px",marginTop:"45px" }}>          

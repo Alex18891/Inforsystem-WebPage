@@ -143,6 +143,8 @@ const handleMouseEnterserv = () => {
                   width={210}
                   height={42}
                   alt="profile picture"
+                  onClick={() => window.location.href = "/"}
+                  style={{cursor:"pointer"}}
                 ></img>
                 <Search>
                   <SearchIconWrapper>

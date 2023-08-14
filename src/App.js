@@ -2,6 +2,9 @@ import { Route, Routes } from "react-router-dom";
 import React, { useState } from 'react';
 import Homepage from "./pages/Homepage";
 import SoftwareFaturação from "./pages/SoftwareFaturação";
+import Termoseserviços from "./pages/Termoseserviços";
+import Politicadeprivacidade from "./pages/Politicadeprivacidade";
+import Politicadecookies from "./pages/Politicadecookies";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -21,6 +24,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage/>} />
           <Route path="/softwarefaturação" element={<SoftwareFaturação/>} />
+          <Route path="/termoseserviços" element={<Termoseserviços/>} />
+          <Route path="/políticadeprivacidade" element={<Politicadeprivacidade/>} />
+          <Route path="/políticadecookies" element={<Politicadecookies/>} />
         </Routes>
       </ThemeProvider>
     </PopupContext.Provider>
