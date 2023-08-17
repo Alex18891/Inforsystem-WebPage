@@ -1,5 +1,5 @@
 import { useState, useEffect,useRef,useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
 import Toolbar from "@mui/material/Toolbar";
@@ -183,7 +183,7 @@ export default function Register() {
                         <Box sx = {[styles.boxcontainer,{flexDirection:'row',alignItems:"center",marginLeft:"-0.6rem"}]}> 
                                 <Checkbox required value={checkbox} onChange={(e) => setcheckbox(e.target.checked)}/>
                                 <Text style={styles.textdefault4} >
-                                    LI E ACEITO OS <span><a href="/termoseserviços" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>TERMOS E CONDIÇÕES</a> </span>E CONFIRMO QUE COMPREENDO A <span><a href="/políticadeprivacidade" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>POLÍTICA DE PRIVACIDADE</a> </span>        
+                                    LI E ACEITO OS <span><Link to="/termoseserviços" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>TERMOS E CONDIÇÕES</Link> </span>E CONFIRMO QUE COMPREENDO A <span><Link to="/políticadeprivacidade" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>POLÍTICA DE PRIVACIDADE</Link> </span>        
                                 </Text>  
                         </Box>
                         <Box sx = {[styles.boxcontainer,{flexDirection:"row"}]}> 

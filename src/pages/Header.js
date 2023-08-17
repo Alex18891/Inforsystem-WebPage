@@ -1,6 +1,6 @@
 import React, { useEffect,useState,useContext  } from "react";
 import { styled } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
@@ -250,63 +250,63 @@ const handleMouseEnterserv = () => {
         <Toolbar sx={{...styles.secondtoolbar,
                     ...(isSmallScreen && styles.secondtoolbarsmall),
                     ...(isExtraSmallScreen && styles.secondtoolbarsmall)  }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "50px",zIndex:0 }}>
-              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,}]} onMouseEnter={handleMouseEnterprod}
+          <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
+              <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} onMouseEnter={handleMouseEnterprod}
                       onMouseLeave={handleMouseLeave}>
-                  <a  style={{ color: "black"}} >
+                  <Link  style={{ color: "black",textDecorationLine:"none"}} >
                       Produtos
                       <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                  </a>
+                  </Link>
                   <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered]}>
-                          <a style={styles.acontainer} id='aheader' href="#">Computadores</a>
-                          <a style={styles.acontainer} id='aheader' href="#">Sistemas Pos</a>
-                          <a style={styles.acontainer} id='aheader' href="#">All-In-On</a>
-                          <a style={styles.acontainer} id='aheader' href="#">Portateis</a>
-                          <a style={styles.acontainer} id='aheader' href="#">Monitores</a>
-                          <a style={styles.acontainer} id='aheader' href="#">Impressoras</a>
-                          <a style={styles.acontainer} id='aheader' href="#">Acessórios</a>
+                          <Link  style={styles.acontainer} id='aheader'to="/computadores?page=1">Computadores</Link>
+                          <Link style={styles.acontainer} id='aheader' to="#">Sistemas Pos</Link>
+                          <Link style={styles.acontainer} id='aheader' to="#">All-In-On</Link>
+                          <Link style={styles.acontainer} id='aheader' to="#">Portateis</Link>
+                          <Link style={styles.acontainer} id='aheader' to="#">Monitores</Link>
+                          <Link style={styles.acontainer} id='aheader' to="#">Impressoras</Link>
+                          <Link style={styles.acontainer} id='aheader' to="#">Acessórios</Link>
                   </View>
               </View>
           
-              <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,minWidth: "220px",}]} onMouseEnter={handleMouseEntersoft}
+              <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,minWidth: "220px",}]} onMouseEnter={handleMouseEntersoft}
                       onMouseLeave={handleMouseLeave}>
-                      <a  style={{ color: "black"}} >
+                      <Link  style={{ color: "black",textDecorationLine:"none"}} >
                           Software
                           <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                      </a>
+                      </Link>
                   <View  style={[styles.container_cont,isHoveredsoft && styles.containerHovered]}>
-                      <a style={styles.acontainer} id='aheader' href="#">Sistemas Operativos</a>
-                      <a style={styles.acontainer} id='aheader' href="softwarefaturação">Software de Faturação</a>
+                      <Link style={styles.acontainer} id='aheader' to="#">Sistemas Operativos</Link>
+                      <Link style={styles.acontainer} id='aheader' to="/softwarefaturação">Software de Faturação</Link>
                   </View>
               </View>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: "flex", alignItems: "center",gap: "50px" ,zIndex:0}}>
-            <View  style={[styles.container,{zIndex: isOpenLogin ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
+            <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}>
-                <a style={{ color: "black"}} >
+                <Link style={{ color: "black",textDecorationLine:"none"}} >
                     Contactos
                     <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                </a>
+                </Link>
                 <View  style={[styles.container_cont,isHovered && styles.containerHovered]}>
                   
-                    <a style={styles.acontainer} id='aheader' href="https://wa.me/351967687915">
+                    <Link style={styles.acontainer} id='aheader' to="https://wa.me/351967687915">
                         <i style={{marginTop:"0.2rem"}} className="fas fa-phone" width="21px" height="21px"  ></i>
-                        <p style={{margin:0}}>(+351) xxxxxxxxx</p>
-                    </a>
-                    <a style={styles.acontainer} id='aheader' href="mailto:loja2@inforsystem.net">
+                        <p style={{margin:0}}>(+351) 966218628</p>
+                    </Link>
+                    <Link style={styles.acontainer} id='aheader' to="mailto:loja2@inforsystem.net">
                         <i style={{marginTop:"0.2rem"}} className="fas fa-envelope" width="21px" height="24px"   ></i>
                         <p style={{margin:0}} >loja2@inforsystem.net</p>
-                    </a>
+                    </Link>
                   
                 </View>
             </View>
-            <a style={{ textDecorationLine:"none" }} id='aheader' href="#">
+            <Link style={{ textDecorationLine:"none" }} id='aheader' to="#">
               Sobre a empresa
-            </a> 
-            <a style={{ textDecorationLine:"none" }} id='aheader' href="#">
+            </Link> 
+            <Link style={{ textDecorationLine:"none" }} id='aheader' to="#">
               Pedir orçamento
-            </a> 
+            </Link> 
           </Box>
         </Toolbar>
       </Box>

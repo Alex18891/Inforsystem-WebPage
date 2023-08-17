@@ -4,6 +4,7 @@ import Header from "./Header.js";
 import Footer from "./Footer.js";
 import {View, Text,StyleSheet} from 'react-native';
 import Box from "@mui/material/Box";
+import {Link } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
@@ -32,7 +33,7 @@ export default function Politicadecookies() {
                             ...(isSmallScreen ? styles.textdefaultsmall : {}),
                             ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                         }}>
-                        <a id='aheader' style={{fontSize: "20px",zIndex:-1}} href='/'>Página Inicial</a>    
+                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Text style={{fontSize: "20px",zIndex:-1}}>   \  Politica de cookies  </Text>  
                         </Box>
                     </Box> 

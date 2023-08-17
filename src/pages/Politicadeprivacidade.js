@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link} from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
 import {View, Text,StyleSheet} from 'react-native';
@@ -32,7 +32,7 @@ export default function Politicadeprivacidade() {
                             ...(isSmallScreen ? styles.textdefaultsmall : {}),
                             ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                         }}>
-                        <a id='aheader' style={{fontSize: "20px",zIndex:-1}} href='/'>Página Inicial</a>    
+                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Text style={{fontSize: "20px",zIndex:-1}}>   \  Politica de privacidade  </Text>  
                         </Box>
                     </Box> 
@@ -71,8 +71,8 @@ export default function Politicadeprivacidade() {
                     <Text style={{fontSize: "16px",lineHeight:"2rem"}}>A Inforsystem é responsável pelos dados pessoais de seus clientes e potenciais clientes quando estes fazem uma encomenda, se registam. Para entrar em contacto connosco:
                         <br />Contactos: Rua dos Mareantes, 
                             4480-778 Vila do Conde  
-                            | Telefone: <span><a  id='aheader' href="https://wa.me/351967687915">(+351) 966218628 </a></span>  
-                            | Email:<span><a  id='aheader' href="mailto:loja2@inforsystem.net"> loja2@inforsystem.net</a></span>
+                            | Telefone: <span><Link  id='aheader' to="https://wa.me/351967687915">(+351) 966218628 </Link></span>  
+                            | Email:<span><Link  id='aheader' to="mailto:loja2@inforsystem.net"> loja2@inforsystem.net</Link></span>
                     
                     </Text> 
                     <Text style={{
@@ -173,7 +173,7 @@ export default function Politicadeprivacidade() {
                     </Text>
                     <Text style={{fontSize: "16px",lineHeight:"2rem"}}>
                         Queremos informar que pode, a qualquer momento, apresentar uma reclamação à autoridade reguladora, a Comissão Nacional de Proteção de Dados (CNPD).
-                        <br />Contactos: Rua de São Bento, n.º 148, 3º, 1200-821 Lisboa | Telefone: +351 213928400 | Fax: +351 213976832 | Email: <span><a  id='aheader' href="https://wa.me/351967687915">geral@cnpd.pt</a> </span>
+                        <br />Contactos: Rua de São Bento, n.º 148, 3º, 1200-821 Lisboa | Telefone: +351 213928400 | Fax: +351 213976832 | Email: <span><Link  id='aheader' to="mailto:geral@cnpd.pt">geral@cnpd.pt</Link> </span>
                     </Text> 
                 </Box>     
             </Box> 

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
 import {View, Text,StyleSheet} from 'react-native';
+import {Link} from "react-router-dom";
 import Box from "@mui/material/Box";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import '../index.css';
@@ -29,7 +29,7 @@ export default function Termoseserviços() {
                             ...(isSmallScreen ? styles.textdefaultsmall : {}),
                             ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                         }}>
-                        <a id='aheader' style={{fontSize: "20px",zIndex:-1}} href='/'>Página Inicial</a>    
+                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Text style={{fontSize: "20px",zIndex:-1}}>   \  Termos e condições  </Text>  
                         </Box>
                     </Box> 
@@ -219,10 +219,10 @@ export default function Termoseserviços() {
                         A Inforsystem tem várias formas de ser contactada:
                         <ul style={{listStylePosition: "inside", padding:0,margin: 0,marginLeft:"0.5rem"}}>
                             <li>
-                                Telefone: <span><a  id='aheader' href="https://wa.me/351967687915">(+351) 966218628</a></span> 
+                                Telefone: <span><Link  id='aheader' to="https://wa.me/351967687915">(+351) 966218628</Link></span> 
                             </li>
                             <li>
-                                Email: <span><a  id='aheader' href="mailto:loja2@inforsystem.net"> loja2@inforsystem.net</a></span>
+                                Email: <span><Link  id='aheader' to="mailto:loja2@inforsystem.net"> loja2@inforsystem.net</Link></span>
                             </li>
                         </ul> 
                 
