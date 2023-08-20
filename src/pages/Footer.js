@@ -51,10 +51,7 @@ export default function FooterInforsystem() {
         <Box sx={{maxWidth:"190px",marginTop:"45px" }}>          
                 <p style={styles.textdefault} >
                     INFORMAÇÕES
-                </p> 
-                <Link astyle={styles.acontainer} id="afooter" to="#" >
-                    A nossa loja
-                </Link> 
+                </p>  
                 <Link style={styles.acontainer} id="afooter" to="/termoseserviços" >
                    Termos e condições
                 </Link>
@@ -95,11 +92,15 @@ export default function FooterInforsystem() {
             <p style={styles.textdefault} >
                 SOBRE A EMPRESA
             </p> 
-            <Link style={styles.acontainer} id="afooter" to="#" >
-                Localização - Vila do Conde, Caxinas, Rua X
-            </Link> 
-            <Link style={styles.acontainer} id="afooter" to="#">
-                Quem somos?
+            <p style={styles.textdefault2} >
+                <i className="fa fa-map-marker" style={{marginRight:"0.5rem",marginTop:"0.3rem"}} ></i>
+                Localização - R. dos Mareantes, 4480-778 Vila do Conde
+            </p>  
+              
+           
+           
+            <Link style={styles.acontainer} id="afooter" to="/sobrenós">
+                Sobre nós
             </Link> 
         </Box> 
     </Container>

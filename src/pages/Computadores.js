@@ -38,6 +38,7 @@ import twelfthpcsecondpage  from "./../img/twelfthpcsecondpage.png";
 
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
+import arrowabove from "./../img/arrowabove.png"
 
 export default function Computadores() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -102,91 +103,41 @@ export default function Computadores() {
                                      <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
                                          <Box sx={styles.containerfeaturesmainproduct}> 
                                              <Box sx={styles.containermenu}>
-                                                 <Text style={styles.textdefault2}>
-                                                     <span style={{color:"black"}}>Disponibilidade</span> 
-                                                 </Text>
+                                                <Box sx={styles.titlemenu}>
+                                                    <Text style={styles.textdefault2}>
+                                                        <span style={{color:"black"}}>Tipo</span> 
+                                                    </Text>
+                                                    <img src={arrowabove} width={30} height={30}></img>
+                                                </Box>
                                                  <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                                  <Box sx={styles.containerfeatures}>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             Disponível
+                                                             Portáteis
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                         Indisponível
+                                                             Mac
                                                          </Text>
                                                      </Box>
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                             Computadores Gaming
+                                                         </Text>
+                                                     </Box>   
                                                  </Box>     
                                              </Box> 
                                              <Box sx={styles.containermenu}>
-                                                 <Text style={styles.textdefault2}>
-                                                     <span style={{color:"black"}}>Sistema operativo</span> 
-                                                 </Text>
-                                                 <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                                 <Box sx={styles.containerfeatures}>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             Windows 11
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                         Windows 11 Pro
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                         Windows 11 Home
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                         Windows 10 Pro
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             Windows 10 S
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             Windows 7
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                         Linux
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             macOS Ventura
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                         macOS Big sur
-                                                         </Text>
-                                                     </Box>
-                                                 </Box>     
-                                             </Box> 
-                                             <Box sx={styles.containermenu}>
-                                                 <Text style={styles.textdefault2}>
-                                                     <span style={{color:"black"}}>Processador</span> 
-                                                 </Text>
+                                                 <Box sx={styles.titlemenu}>
+                                                    <Text style={styles.textdefault2}>
+                                                        <span style={{color:"black"}}>Processador</span> 
+                                                    </Text>
+                                                    <img src={arrowabove} width={30} height={30}></img>
+                                                </Box>
                                                  <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                                  <Box sx={styles.containerfeatures}>
                                                      <Box sx = {styles.menuflex}> 
@@ -240,9 +191,12 @@ export default function Computadores() {
                                                  </Box>     
                                              </Box> 
                                              <Box sx={styles.containermenu}>
-                                                 <Text style={styles.textdefault2}>
-                                                     <span style={{color:"black"}}>Placa Gráfica</span> 
-                                                 </Text>
+                                                <Box sx={styles.titlemenu}>
+                                                    <Text style={styles.textdefault2}>
+                                                        <span style={{color:"black"}}>Placa Gráfica</span> 
+                                                    </Text>
+                                                    <img src={arrowabove} width={30} height={30}></img>
+                                                </Box>
                                                  <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                                  <Box sx={styles.containerfeatures}>
                                                      <Box sx = {styles.menuflex}> 
@@ -302,9 +256,12 @@ export default function Computadores() {
                                                  </Box>     
                                              </Box> 
                                              <Box sx={styles.containermenu}>
-                                                 <Text style={styles.textdefault2}>
-                                                     <span style={{color:"black"}}>Memória RAM</span> 
-                                                 </Text>
+                                                <Box sx={styles.titlemenu}>
+                                                    <Text style={styles.textdefault2}>
+                                                        <span style={{color:"black"}}>Memória RAM</span> 
+                                                    </Text>
+                                                    <img src={arrowabove} width={30} height={30}></img>
+                                                </Box>
                                                  <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                                  <Box sx={styles.containerfeatures}>
                                                      <Box sx = {styles.menuflex}> 
@@ -346,9 +303,12 @@ export default function Computadores() {
                                                  </Box>     
                                              </Box> 
                                              <Box sx={styles.containermenu}>
-                                                 <Text style={styles.textdefault2}>
-                                                     <span style={{color:"black"}}>Marca</span> 
-                                                 </Text>
+                                                <Box sx={styles.titlemenu}>
+                                                    <Text style={styles.textdefault2}>
+                                                        <span style={{color:"black"}}>Marca</span> 
+                                                    </Text>
+                                                    <img src={arrowabove} width={30} height={30}></img>
+                                                </Box>
                                                  <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                                  <Box sx={styles.containerfeatures}>
                                                      <Box sx = {styles.menuflex}> 
@@ -373,12 +333,6 @@ export default function Computadores() {
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
                                                              APPLE
-                                                         </Text>
-                                                     </Box>
-                                                     <Box sx = {styles.menuflex}> 
-                                                         <Checkbox sx={{padding:"0"}} />
-                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             COMPUTADOR GAMING
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
@@ -416,91 +370,41 @@ export default function Computadores() {
                                 <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
                                     <Box sx={styles.containerfeaturesmainproduct}> 
                                         <Box sx={styles.containermenu}>
-                                            <Text style={styles.textdefault2}>
-                                                <span style={{color:"black"}}>Disponibilidade</span> 
-                                            </Text>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                        Disponível
+                                                <Box sx={styles.titlemenu}>
+                                                    <Text style={styles.textdefault2}>
+                                                        <span style={{color:"black"}}>Tipo</span> 
                                                     </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                    Indisponível
-                                                    </Text>
-                                                </Box>
-                                            </Box>     
+                                                    <img src={arrowabove} width={30} height={30}></img>
+                                                 </Box>
+                                                 <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+                                                 <Box sx={styles.containerfeatures}>
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                             Portáteis
+                                                         </Text>
+                                                     </Box>
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                             Mac
+                                                         </Text>
+                                                     </Box>
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                             Computadores Gaming
+                                                         </Text>
+                                                     </Box>   
+                                                 </Box>     
                                         </Box> 
                                         <Box sx={styles.containermenu}>
-                                            <Text style={styles.textdefault2}>
-                                                <span style={{color:"black"}}>Sistema operativo</span> 
-                                            </Text>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                        Windows 11
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                    Windows 11 Pro
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                    Windows 11 Home
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                    Windows 10 Pro
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                        Windows 10 S
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                        Windows 7
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                    Linux
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                        macOS Ventura
-                                                    </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                    macOS Big sur
-                                                    </Text>
-                                                </Box>
-                                            </Box>     
-                                        </Box> 
-                                        <Box sx={styles.containermenu}>
-                                            <Text style={styles.textdefault2}>
-                                                <span style={{color:"black"}}>Processador</span> 
-                                            </Text>
+                                            <Box sx={styles.titlemenu}>
+                                                <Text style={styles.textdefault2}>
+                                                    <span style={{color:"black"}}>Processador</span> 
+                                                </Text>
+                                                <img src={arrowabove} width={30} height={30}></img>
+                                            </Box>
                                             <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                             <Box sx={styles.containerfeatures}>
                                                 <Box sx = {styles.menuflex}> 
@@ -554,9 +458,12 @@ export default function Computadores() {
                                             </Box>     
                                         </Box> 
                                         <Box sx={styles.containermenu}>
-                                            <Text style={styles.textdefault2}>
-                                                <span style={{color:"black"}}>Placa Gráfica</span> 
-                                            </Text>
+                                            <Box sx={styles.titlemenu}>
+                                                <Text style={styles.textdefault2}>
+                                                    <span style={{color:"black"}}>Placa Gráfica</span> 
+                                                </Text>
+                                                <img src={arrowabove} width={30} height={30}></img>
+                                            </Box>
                                             <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                             <Box sx={styles.containerfeatures}>
                                                 <Box sx = {styles.menuflex}> 
@@ -616,9 +523,12 @@ export default function Computadores() {
                                             </Box>     
                                         </Box> 
                                         <Box sx={styles.containermenu}>
-                                            <Text style={styles.textdefault2}>
-                                                <span style={{color:"black"}}>Memória RAM</span> 
-                                            </Text>
+                                            <Box sx={styles.titlemenu}>
+                                                <Text style={styles.textdefault2}>
+                                                    <span style={{color:"black"}}>Memória RAM</span> 
+                                                </Text>
+                                                <img src={arrowabove} width={30} height={30}></img>
+                                            </Box>
                                             <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                             <Box sx={styles.containerfeatures}>
                                                 <Box sx = {styles.menuflex}> 
@@ -660,9 +570,12 @@ export default function Computadores() {
                                             </Box>     
                                         </Box> 
                                         <Box sx={styles.containermenu}>
-                                            <Text style={styles.textdefault2}>
-                                                <span style={{color:"black"}}>Marca</span> 
-                                            </Text>
+                                            <Box sx={styles.titlemenu}>
+                                                <Text style={styles.textdefault2}>
+                                                    <span style={{color:"black"}}>Marca</span> 
+                                                </Text>
+                                                <img src={arrowabove} width={30} height={30}></img>
+                                            </Box>
                                             <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                             <Box sx={styles.containerfeatures}>
                                                 <Box sx = {styles.menuflex}> 
@@ -688,13 +601,7 @@ export default function Computadores() {
                                                     <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
                                                         APPLE
                                                     </Text>
-                                                </Box>
-                                                <Box sx = {styles.menuflex}> 
-                                                    <Checkbox sx={{padding:"0"}} />
-                                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                        COMPUTADOR GAMING
-                                                    </Text>
-                                                </Box>
+                                                </Box>       
                                                 <Box sx = {styles.menuflex}> 
                                                     <Checkbox sx={{padding:"0"}} />
                                                     <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
@@ -1682,6 +1589,12 @@ export default function Computadores() {
 }
 
 const styles = StyleSheet.create({
+    titlemenu:{
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center"
+    },
     pages:{
         width:"auto",
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 

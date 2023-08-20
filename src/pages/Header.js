@@ -261,8 +261,7 @@ const handleMouseEnterserv = () => {
                           <Link  style={styles.acontainer} id='aheader'to="/computadores?page=1">Computadores</Link>
                           <Link style={styles.acontainer} id='aheader' to="#">Sistemas Pos</Link>
                           <Link style={styles.acontainer} id='aheader' to="#">All-In-On</Link>
-                          <Link style={styles.acontainer} id='aheader' to="#">Portateis</Link>
-                          <Link style={styles.acontainer} id='aheader' to="#">Monitores</Link>
+                          <Link style={styles.acontainer} id='aheader' to="/monitores">Monitores</Link>
                           <Link style={styles.acontainer} id='aheader' to="#">Impressoras</Link>
                           <Link style={styles.acontainer} id='aheader' to="#">Acessórios</Link>
                   </View>
@@ -301,8 +300,8 @@ const handleMouseEnterserv = () => {
                   
                 </View>
             </View>
-            <Link style={{ textDecorationLine:"none" }} id='aheader' to="#">
-              Sobre a empresa
+            <Link style={{ textDecorationLine:"none" }} id='aheader' to="/sobrenós">
+              Sobre nós
             </Link> 
             <Link style={{ textDecorationLine:"none" }} id='aheader' to="#">
               Pedir orçamento

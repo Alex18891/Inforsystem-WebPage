@@ -5,7 +5,9 @@ import SoftwareFaturação from "./pages/SoftwareFaturação";
 import Termoseserviços from "./pages/Termoseserviços";
 import Politicadeprivacidade from "./pages/Politicadeprivacidade";
 import Politicadecookies from "./pages/Politicadecookies";
+import Sobrenos from "./pages/Sobrenos";
 import Computadores from "./pages/Computadores";
+import Monitores from "./pages/Monitores";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -28,7 +30,9 @@ function App() {
           <Route path="/termoseserviços" element={<Termoseserviços/>} />
           <Route path="/políticadeprivacidade" element={<Politicadeprivacidade/>} />
           <Route path="/políticadecookies" element={<Politicadecookies/>} />
+          <Route path="/sobrenós" element={<Sobrenos/>} />
           <Route path="/computadores" element={<Computadores/>} />
+          <Route path="/monitores" element={<Monitores/>} />
         </Routes>
       </ThemeProvider>
     </PopupContext.Provider>
