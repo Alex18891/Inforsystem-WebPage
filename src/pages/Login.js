@@ -7,11 +7,8 @@ import { Divider } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faExclamation} from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Box from "@mui/material/Box";
 import axios from 'axios'
-import ReactModal from 'react-modal';
-import Register from './Register';
 import { PopupContext } from './popupcontext';
 
 import logo from "./../img/logo.png";
@@ -125,7 +122,7 @@ export default function Login() {
                             </Box>
                             <Box sx = {styles.boxcontainer}> 
                                 <Text style={styles.textdefault3} >
-                                        Esqueçeu da palavra passe? Recupera<span><a style={styles.textdefaultblue}  onClick={forgotpassword}> aqui</a></span>        
+                                        Esqueçeu da palavra passe? Recupera<span><Text style={styles.textdefaultblue}  onClick={forgotpassword}> aqui</Text></span>        
                                 </Text>  
                             </Box>
                             <Box sx = {styles.boxcontainer}> 

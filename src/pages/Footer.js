@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import {Link} from "react-router-dom";
 import Container from "@mui/material/Container";
 import {View, Text,StyleSheet} from 'react-native';
 
@@ -10,7 +11,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 export default function FooterInforsystem() {
-
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -45,25 +45,22 @@ export default function FooterInforsystem() {
                 style={styles.inputtext}
                 />
                 <p style={styles.textdefault2} >
-                    Ao submeteres o teu email estás a concordar subscrever à newsletter da nossa loja e a aceitar os nossos <span ><a  style={{textDecorationLine:"none"}} href ='#' id='afooter'>Termos e Condições.</a></span>
+                    Ao submeteres o teu email estás a concordar subscrever à newsletter da nossa loja e a aceitar os nossos <span ><Link  style={{textDecorationLine:"none"}} to ='#' id='afooter'>Termos e Condições.</Link></span>
                 </p> 
         </Box>
         <Box sx={{maxWidth:"190px",marginTop:"45px" }}>          
                 <p style={styles.textdefault} >
                     INFORMAÇÕES
-                </p> 
-                <a style={styles.acontainer} id="afooter" href="#" >
-                    A nossa loja
-                </a> 
-                <a style={styles.acontainer} id="afooter" href="#" >
+                </p>  
+                <Link style={styles.acontainer} id="afooter" to="/termoseserviços" >
                    Termos e condições
-                </a>
-                <a style={styles.acontainer} id="afooter" href="#" >
+                </Link>
+                <Link style={styles.acontainer} id="afooter" to="/políticadeprivacidade" >
                     Política de Privacidade
-                </a>
-                <a style={styles.acontainer} id="afooter" href="#" >
+                </Link>
+                <Link style={styles.acontainer} id="afooter" to="/políticadecookies" >
                     Política de Cookies
-                </a>   
+                </Link>   
         </Box> 
         <Box sx={{maxWidth:"190px",marginTop:"45px" }}>          
             <p style={styles.textdefault} >
@@ -78,29 +75,33 @@ export default function FooterInforsystem() {
             <p style={styles.textdefault2} >
                 14h00 - 18h00
             </p>
-            <a style={styles.acontainer} id="afooter"  href="mailto:loja2@inforsystem.net">
+            <Link style={styles.acontainer} id="afooter"  to="mailto:loja2@inforsystem.net">
                 <i className="fa fa-envelope" style={{marginRight:"0.5rem",marginTop:"0.2rem"}} ></i>
                 loja2@inforsystem.net
-            </a>
-            <a style={styles.acontainer} id="afooter" href="https://www.facebook.com/people/INFORSYSTEM-LDA/100063788280384/?paipv=0&eav=AfZl0QeQ6W5KhN9QuRNoDiv7k5IxzIqLsXdD16S5GpwssNuXM9GBYl77DQfk54QzAHI&_rdr">
+            </Link>
+            <Link style={styles.acontainer} id="afooter" to="https://www.facebook.com/people/INFORSYSTEM-LDA/100063788280384/?paipv=0&eav=AfZl0QeQ6W5KhN9QuRNoDiv7k5IxzIqLsXdD16S5GpwssNuXM9GBYl77DQfk54QzAHI&_rdr">
                 <i className="fa fa-facebook" style={{marginRight:"0.5rem",marginTop:"0.2rem"}} ></i>
                 Inforsystem Lda
-            </a>   
-            <a style={styles.acontainer} id="afooter"href="https://wa.me/351967687915">
+            </Link>   
+            <Link style={styles.acontainer} id="afooter" to="https://wa.me/351967687915">
                 <i className="fa fa-whatsapp" style={{marginRight:"0.5rem",marginTop:"0.2rem"}} ></i>
-                (+351) 935 213 424
-            </a>  
+                (+351) 966218628
+            </Link>  
         </Box> 
         <Box sx={{maxWidth:"190px",marginTop:"45px" }}>          
             <p style={styles.textdefault} >
                 SOBRE A EMPRESA
             </p> 
-            <a style={styles.acontainer} id="afooter" href="#" >
-                Localização - Vila do Conde, Caxinas, Rua X
-            </a> 
-            <a style={styles.acontainer} id="afooter" href="#">
-                Quem somos?
-            </a> 
+            <p style={styles.textdefault2} >
+                <i className="fa fa-map-marker" style={{marginRight:"0.5rem",marginTop:"0.3rem"}} ></i>
+                Localização - R. dos Mareantes, 4480-778 Vila do Conde
+            </p>  
+              
+           
+           
+            <Link style={styles.acontainer} id="afooter" to="/sobrenós">
+                Sobre nós
+            </Link> 
         </Box> 
     </Container>
     </Box>

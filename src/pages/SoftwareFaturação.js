@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
 import {View, Text,StyleSheet} from 'react-native';
@@ -41,7 +41,7 @@ export default function SoftwareFaturação() {
                             ...(isSmallScreen ? styles.textdefaultsmall : {}),
                             ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                         }}>
-                        <a id='aheader' style={{fontSize: "20px",zIndex:-1}} href='/'>Página Inicial</a>    
+                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Text style={{fontSize: "20px",zIndex:-1}}>    \  Software  \    </Text>  
                         <Text  style={{fontSize: "20px",zIndex:-1}}>Software de Faturação    </Text>   
                         </Box>
@@ -367,7 +367,7 @@ export default function SoftwareFaturação() {
                                     ></img>
                                 </Box>
                                 <Text style={[styles.textdefault2,{margin:"0"}]}>
-                                    <span >Eticadata</span> 
+                                    <span >ETICADATA</span> 
                                 </Text>
                                 <Text style={[styles.textdefault,{fontSize:"15px"}]}>
                                     Gestão Comercial

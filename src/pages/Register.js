@@ -1,5 +1,5 @@
 import { useState, useEffect,useRef,useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import {Text,StyleSheet} from 'react-native';
 import Toolbar from "@mui/material/Toolbar";
@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faExclamation} from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { PopupContext } from './popupcontext';
-
 import logo from "./../img/logo.png";
 
 export default function Register() {
@@ -21,10 +20,10 @@ export default function Register() {
     const [password,setpassword] = useState('');
     const [confirmpassword,setconfirmpassword] = useState('');
     const [checkbox,setcheckbox] = useState(false);
+    
     const [errMsg, setErrMsg] = useState([]);
     const {setIsOpenLogin, setIsOpenRegister} = useContext(PopupContext);
     
-    const navigate = useNavigate();
 
     const validatePassword = (password) => 
     {  
@@ -32,7 +31,6 @@ export default function Register() {
         console.log(regex.test(password));
         return regex.test(password);
     }
-
 
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
@@ -42,9 +40,6 @@ export default function Register() {
         setIsOpenRegister(false);
         setIsOpenLogin(true);
     }
-    useEffect(()=>{
-       console.log(checkbox)
-    },[checkbox])
     function handleregister(event){
         setErrMsg([]);
         event.preventDefault();
@@ -188,7 +183,7 @@ export default function Register() {
                         <Box sx = {[styles.boxcontainer,{flexDirection:'row',alignItems:"center",marginLeft:"-0.6rem"}]}> 
                                 <Checkbox required value={checkbox} onChange={(e) => setcheckbox(e.target.checked)}/>
                                 <Text style={styles.textdefault4} >
-                                    LI E ACEITO OS <span><a href="#" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>TERMOS E CONDIÇÕES</a> </span>E CONFIRMO QUE COMPREENDO A <span><a href="#" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>POLÍTICA DE PRIVACIDADE</a> </span>        
+                                    LI E ACEITO OS <span><Link to="/termoseserviços" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>TERMOS E CONDIÇÕES</Link> </span>E CONFIRMO QUE COMPREENDO A <span><Link to="/políticadeprivacidade" style={{color:"#1B64A7",fontFamily: 'Montserrat',cursor:"pointer", textDecorationLine:"none"}}>POLÍTICA DE PRIVACIDADE</Link> </span>        
                                 </Text>  
                         </Box>
                         <Box sx = {[styles.boxcontainer,{flexDirection:"row"}]}> 
