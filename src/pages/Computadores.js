@@ -1569,11 +1569,10 @@ export default function Computadores() {
                                         | 
                                     </Text>
                                 </Box>
-                                <Box >
+                                <Link  to={`/computadores?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
                                     <img src={arrowright} height={10}></img>
                                     <img src={arrowright} height={10}></img>
-                                </Box>
-                               
+                                </Link>                             
                             </Box>
                         </Box>
                      

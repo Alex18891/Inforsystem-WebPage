@@ -261,9 +261,9 @@ const handleMouseEnterserv = () => {
                           <Link  style={styles.acontainer} id='aheader'to="/computadores?page=1">Computadores</Link>
                           <Link style={styles.acontainer} id='aheader' to="#">Sistemas Pos</Link>
                           <Link style={styles.acontainer} id='aheader' to="#">All-In-On</Link>
-                          <Link style={styles.acontainer} id='aheader' to="/monitores">Monitores</Link>
-                          <Link style={styles.acontainer} id='aheader' to="#">Impressoras</Link>
-                          <Link style={styles.acontainer} id='aheader' to="#">Acessórios</Link>
+                          <Link style={styles.acontainer} id='aheader' to="/monitores?page=1">Monitores</Link>
+                          <Link style={styles.acontainer} id='aheader' to="/impressoras?page=1">Impressoras</Link>
+                          <Link style={styles.acontainer} id='aheader' to="/acessórios?page=1">Acessórios</Link>
                   </View>
               </View>
           

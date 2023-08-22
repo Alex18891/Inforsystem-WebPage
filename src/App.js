@@ -8,6 +8,8 @@ import Politicadecookies from "./pages/Politicadecookies";
 import Sobrenos from "./pages/Sobrenos";
 import Computadores from "./pages/Computadores";
 import Monitores from "./pages/Monitores";
+import Acessórios from "./pages/Acessorios";
+import Impressoras from "./pages/Impressoras";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -33,6 +35,8 @@ function App() {
           <Route path="/sobrenós" element={<Sobrenos/>} />
           <Route path="/computadores" element={<Computadores/>} />
           <Route path="/monitores" element={<Monitores/>} />
+          <Route path="/acessórios" element={<Acessórios/>} />
+          <Route path="/impressoras" element={<Impressoras/>} />
         </Routes>
       </ThemeProvider>
     </PopupContext.Provider>

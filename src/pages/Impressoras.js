@@ -10,25 +10,25 @@ import Checkbox from '@mui/material/Checkbox';
 import { Divider } from '@mui/material';
 import '../index.css';
 
-import onemonitorfirstpage from "./../img/onemonitorfirstpage.png";
-import twomonitorfirstpage from "./../img/twomonitorfirstpage.png";
-import threemonitorfirstpage from "./../img/threemonitorfirstpage.png";
-import fourmonitorfirstpage from "./../img/fourmonitorfirstpage.png";
-import fivemonitorfirstpage from "./../img/fivemonitorfirstpage.png";
-import sixmonitorfirstpage from "./../img/sixmonitorfirstpage.png";
-import sevenmonitorfirstpage from "./../img/sevenmonitorfirstpage.png";
-import eigthmonitorfirstpage from "./../img/eigthmonitorfirstpage.png";
-import ninemonitorfirstpage from "./../img/ninemonitorfirstpage.png";
-import tenmonitorfirstpage from "./../img/tenmonitorfirstpage.png";
-import elevenmonitorfirstpage from "./../img/elevenmonitorfirstpage.png";
-import twelvemonitorfirstpage from "./../img/twelvemonitorfirstpage.png";
+import oneprint from "./../img/firstprinter.png";
+import twoprint from "./../img/secondprinter.png";
+import threeprint from "./../img/thirdprinter.png";
+import fourprint from "./../img/fourthprinter.png";
+import fiveprint from "./../img/fifthprinter.png";
+import sixprint from "./../img/sixthprinter.png";
+import sevenprint from "./../img/seventhprinter.png";
+import eigthprint from "./../img/eighthprinter.png";
+import nineprint from "./../img/ninethprinter.png";
+import tenprint from "./../img/tenthprinter.png";
+import elevenprint from "./../img/eleventhprinter.png";
+import twelveprint from "./../img/twelfthprinter.png";
 
 
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
 import arrowabove from "./../img/arrowabove.png"
 
-export default function Monitores() {
+export default function Impressoras() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -56,7 +56,7 @@ export default function Monitores() {
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Text style={{fontSize: "20px",zIndex:-1}}>    \  Produtos  \    </Text>  
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Monitores</Text>   
+                        <Text  style={{fontSize: "20px",zIndex:-1}}>Impressoras</Text>   
                         </Box>
                     </Box>     
                     <Text style={{
@@ -64,7 +64,7 @@ export default function Monitores() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Monitores</span>
+                        <span style={{fontWeight:"bold"}}>Impressoras</span>
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -72,7 +72,7 @@ export default function Monitores() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Veja os monitores disponíveis na loja
+                        Veja as impressoras disponíveis na loja
                     </Text>
                 </Box>
                 <Box sx={{...styles.containermain, 
@@ -93,7 +93,7 @@ export default function Monitores() {
                                              <Box sx={styles.containermenu}>
                                                 <Box sx={styles.titlemenu}>
                                                     <Text style={styles.textdefault2}>
-                                                        <span style={{color:"black"}}>Taxa máxima de atualização</span> 
+                                                        <span style={{color:"black"}}>Tamanho do ecrã na diagonal</span> 
                                                     </Text>
                                                     <img src={arrowabove} width={30} height={30}></img>
                                                 </Box>
@@ -102,39 +102,87 @@ export default function Monitores() {
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             60 Hz
+                                                            10.9 cm
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                            120 Hz
+                                                            6.86 cm
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             144 Hz
+                                                            6.1 cm
                                                          </Text>
                                                      </Box>  
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             165 Hz
+                                                            12.7 cm
                                                          </Text>
                                                      </Box>  
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             240 Hz
+                                                            7.62 cm
                                                          </Text>
                                                      </Box>  
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             300 Hz
+                                                            6.73 cm
                                                          </Text>
                                                      </Box>  
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            20.3 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            9.4 cm
+                                                         </Text>
+                                                     </Box> 
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                             12.2 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            5.84 cm
+                                                         </Text>
+                                                     </Box> 
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            4.57 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            3.81 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            9.3 cm
+                                                         </Text>
+                                                     </Box> 
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            10.8 cm
+                                                         </Text>
+                                                     </Box>                                      
                                                  </Box>     
                                              </Box> 
                                              <Box sx={styles.containermenu}>
@@ -149,45 +197,45 @@ export default function Monitores() {
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             ASUS
+                                                             HP
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                            LG
+                                                            CANON
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             SAMSUNG
+                                                            DDIGITAL
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             PHILIPS
+                                                            PANTUM
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             AOC
+                                                            EPSON
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                            ACER
+                                                            XEROX
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             DELL
+                                                            LEXMARK
                                                          </Text>
-                                                     </Box>
+                                                     </Box>  
                                                  </Box>     
                                              </Box> 
                                          </Box>        
@@ -197,11 +245,11 @@ export default function Monitores() {
                             :      
                             <Box  sx={styles.container1}>
                                 <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-                                         <Box sx={styles.containerfeaturesmainproduct}> 
+                                <Box sx={styles.containerfeaturesmainproduct}> 
                                              <Box sx={styles.containermenu}>
                                                 <Box sx={styles.titlemenu}>
                                                     <Text style={styles.textdefault2}>
-                                                        <span style={{color:"black"}}>Taxa máxima de atualização</span> 
+                                                        <span style={{color:"black"}}>Tamanho do ecrã na diagonal</span> 
                                                     </Text>
                                                     <img src={arrowabove} width={30} height={30}></img>
                                                 </Box>
@@ -210,39 +258,87 @@ export default function Monitores() {
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             60 Hz
+                                                            10.9 cm
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                            120 Hz
+                                                            6.86 cm
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             144 Hz
+                                                            6.1 cm
                                                          </Text>
                                                      </Box>  
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             165 Hz
+                                                            12.7 cm
                                                          </Text>
                                                      </Box>  
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             240 Hz
+                                                            7.62 cm
                                                          </Text>
                                                      </Box>  
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             300 Hz
+                                                            6.73 cm
                                                          </Text>
                                                      </Box>  
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            20.3 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            9.4 cm
+                                                         </Text>
+                                                     </Box> 
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                             12.2 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            5.84 cm
+                                                         </Text>
+                                                     </Box> 
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            4.57 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            3.81 cm
+                                                         </Text>
+                                                     </Box>   
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            9.3 cm
+                                                         </Text>
+                                                     </Box> 
+                                                     <Box sx = {styles.menuflex}> 
+                                                         <Checkbox sx={{padding:"0"}} />
+                                                         <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                                            10.8 cm
+                                                         </Text>
+                                                     </Box>                                      
                                                  </Box>     
                                              </Box> 
                                              <Box sx={styles.containermenu}>
@@ -257,51 +353,53 @@ export default function Monitores() {
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             ASUS
+                                                             HP
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                            LG
+                                                            CANON
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             SAMSUNG
+                                                            DDIGITAL
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             PHILIPS
+                                                            PANTUM
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             AOC
+                                                            EPSON
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                            ACER
+                                                            XEROX
                                                          </Text>
                                                      </Box>
                                                      <Box sx = {styles.menuflex}> 
                                                          <Checkbox sx={{padding:"0"}} />
                                                          <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                             DELL
+                                                            LEXMARK
                                                          </Text>
-                                                     </Box>
+                                                     </Box>  
                                                  </Box>     
                                              </Box> 
-                                         </Box>        
+                                         </Box>            
                                 </Box> 
                             </Box>     
-                        }          
+                        }
+                  
+                        
                     </Box>       
                     <Box  sx={{...styles.container1,
                     ...(isExtraLargeScreen && styles.container1extralarge),
@@ -316,20 +414,16 @@ export default function Monitores() {
                                         <Box sx={styles.containerfeatures}>
                                     <Box sx={styles.containerfeaturesproduts}> 
                                         <img
-                                            src={onemonitorfirstpage}
+                                            src={oneprint}
                                             style={{maxWidth:"180px"}}
                                         ></img>
                                     </Box>
                                     <Text style={[styles.textdefault2]}>
-                                        MONITOR ASUS - 23.8" FULL HD IPS / 144HZ / 1MS / AMD FREESYNC / DESIGN ERGONÓMICO / PIVOT - TUF GAMING VG249Q
+                                        CANON MULTIF JATO TINTA PIXMA TS8350A BLACK PROMO
                                     </Text>
                                     <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        1920 x 1080
+                                        10.9 cm
                                     </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        144 Hz
-                                    </Text>
-                     
                                     <Box sx={styles.disponivel}>
                                         <img
                                             src={disponivel}
@@ -356,18 +450,15 @@ export default function Monitores() {
                                     <Box sx={styles.containerfeatures}>
                                     <Box sx={styles.containerfeaturesproduts}> 
                                         <img
-                                            src={twomonitorfirstpage}
+                                            src={twoprint}
                                             style={{maxWidth:"180px"}}
                                         ></img>
                                     </Box>
                                     <Text style={[styles.textdefault2]}>
-                                        MONITOR PHILIPS - 23.8" FULL HD VA / 144HZ / 1MS / AMD FREESYNC PREMIUM - 242E1GAJ/00
-                                    </Text>
+                                        IMPRESSORA MULTIFUNÇÕES HP OFFICEJET PRO 9010E
+                                    </Text>  
                                     <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        60.5 cm
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        144 Hz
+                                        10.9 cm
                                     </Text>
                                     <Box sx={styles.disponivel}>
                                         <img
@@ -395,15 +486,15 @@ export default function Monitores() {
                                         <Box sx={styles.containerfeatures}>
                                         <Box sx={styles.containerfeaturesproduts}> 
                                             <img
-                                                src={threemonitorfirstpage}
+                                                src={threeprint}
                                                 style={{maxWidth:"180px"}}
                                             ></img>
                                         </Box>
                                         <Text style={[styles.textdefault2]}>
-                                            MONITOR GAMING LG ULTRAGEAR - 24" FULL HD VA / 165HZ / 1MS / AMD FREESYNC PREMIUM - 24GQ50F-B
+                                            XEROX IMP LASER COR C310V_DNI PROMO
                                         </Text>
                                         <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                            165 Hz
+                                            6.1 cm
                                         </Text>
                                         <Box sx={styles.disponivel}>
                                             <img
@@ -431,18 +522,15 @@ export default function Monitores() {
                                         <Box sx={styles.containerfeatures}>
                                         <Box sx={styles.containerfeaturesproduts}> 
                                         <img
-                                            src={fourmonitorfirstpage}
+                                            src={fourprint}
                                             style={{maxWidth:"180px"}}
                                         ></img>
                                         </Box>
                                         <Text style={[styles.textdefault2]}>
-                                            MONITOR AOC - 32" FULL HD CURVO VA / 240HZ / 1MS / HDMI DP - C32G2ZE/BK
+                                            PIXMA PRO-200 - IMPRESSORA FOTOGRÁFICA A3+ DE 8 TINTEIROS. IMPRESSÃO SEM FIOS A PARTIR DO SEU PC. TABLET E SMARTPHONE.
                                         </Text>
                                         <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                            240 Hz
-                                        </Text>
-                                        <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                            80 cm
+                                            7.62 cm
                                         </Text>
                                         <Box sx={styles.disponivel}>
                                             <img
@@ -470,18 +558,15 @@ export default function Monitores() {
                                     <Box sx={styles.containerfeatures}>
                                     <Box sx={styles.containerfeaturesproduts}> 
                                     <img
-                                        src={fivemonitorfirstpage}
+                                        src={fiveprint}
                                         style={{maxWidth:"180px"}}
                                     ></img>
                                     </Box>
                                     <Text style={[styles.textdefault2]}>
-                                        MONITOR PORTÁTIL LENOVO L15 IPS 15.6" FHD 16:9 60HZ
-                                    </Text>
+                                        HP COLOR LASERJET ENT MFP M578DN PRINTER
+                                    </Text>  
                                     <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        39.6 cm
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        60 Hz
+                                        20.3 cm
                                     </Text>
                                     <Box sx={styles.disponivel}>
                                         <img
@@ -509,18 +594,15 @@ export default function Monitores() {
                                     <Box sx={styles.containerfeatures}>
                                         <Box sx={styles.containerfeaturesproduts}> 
                                         <img
-                                            src={sixmonitorfirstpage}
+                                            src={sixprint}
                                             style={{maxWidth:"180px"}}
                                         ></img>
                                     </Box>
                                     <Text style={[styles.textdefault2]}>
-                                        SAMSUNG MONITOR ODYSSEY LED 32"4K ULTRA HD 3840X2160 PIXELS #PROMO EOL 31-07#
+                                        IMPRESSORA BROTHER LASER MONO HL-L6400DW - WIFI
                                     </Text>
                                     <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        81.3 cm
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        165 Hz
+                                        4.57 cm
                                     </Text>
                                     <Box sx={styles.disponivel}>
                                         <img
@@ -548,18 +630,15 @@ export default function Monitores() {
                                     <Box sx={styles.containerfeatures}>
                                     <Box sx={styles.containerfeaturesproduts}> 
                                         <img
-                                            src={sevenmonitorfirstpage}
+                                            src={sevenprint}
                                             style={{maxWidth:"180px"}}
                                         ></img>
                                     </Box>
                                     <Text style={[styles.textdefault2]}>
-                                        MONITOR LENOVO THINKVISION T27I-10 | 27" | 1920X1080 | 16:9 | IPS | HDMI | DP | VGA | 250 NITS | 187X455X715 MM | USB 3.0X4 | 3-YEAR
+                                        IMPRESSORA MULTIFUNÇÕES CANON PIXMA TS9550 - WIFI/LAN
                                     </Text>
                                     <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        68.6 cm
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        1920 x 1080
+                                        10.8 cm
                                     </Text>
                                     <Box sx={styles.disponivel}>
                                         <img
@@ -587,19 +666,13 @@ export default function Monitores() {
                                     <Box sx={styles.containerfeatures}>
                                     <Box sx={styles.containerfeaturesproduts}> 
                                     <img
-                                        src={eigthmonitorfirstpage}
+                                        src={eigthprint}
                                         style={{maxWidth:"180px"}}
                                     ></img>
                                     </Box>
                                     <Text style={[styles.textdefault2]}>
-                                        MONITOR ASROCK - 27" 2K QUAD HD CURVO VA / 165HZ / 1MS / HAS - PG27Q15R2A
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        68.6 cm
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                        165 Hz
-                                    </Text>
+                                        IMPRESSORA HP MULTIFUNÇÕES LASERJET TANK 2604DW
+                                    </Text>    
                                     <Box sx={styles.disponivel}>
                                         <img
                                             src={disponivel}
@@ -626,18 +699,12 @@ export default function Monitores() {
                                 <Box sx={styles.containerfeatures}>
                                 <Box sx={styles.containerfeaturesproduts}> 
                                     <img
-                                        src={ninemonitorfirstpage}
+                                        src={nineprint}
                                         style={{maxWidth:"180px"}}
                                     ></img>
                                 </Box>
                                 <Text style={[styles.textdefault2]}>
-                                    MONITOR DELL P2722H IPS 27" FHD 16:9 60HZ
-                                </Text>
-                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                    60 Hz
-                                </Text>
-                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                    1920 x 1080
+                                    PANTUM IMP COLOR CP1100DW 18PPM DUPLEX WIFI DIRECT (PCLM/PS3/PCL6/PCL5)
                                 </Text>
                                 <Box sx={styles.disponivel}>
                                     <img
@@ -665,18 +732,15 @@ export default function Monitores() {
                                 <Box sx={styles.containerfeatures}>
                                 <Box sx={styles.containerfeaturesproduts}> 
                                     <img
-                                        src={tenmonitorfirstpage}
+                                        src={tenprint}
                                         style={{maxWidth:"180px"}}
                                     ></img>
                                 </Box>
                                 <Text style={[styles.textdefault2]}>
-                                    MONITOR SMART SPC - 24" FULL HD / ANDROID TV / 2X USB 2.0 2X HDMI 1.4 - PRETO
-                                </Text>
+                                    IMPRESSORA MULTIFUNÇÕES EPSON ECOTANK ET-2850 WIRELESS
+                                </Text>  
                                 <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                    60 Hz
-                                </Text>
-                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                 60.5 cm
+                                    3.81 cm
                                 </Text>
                                 <Box sx={styles.disponivel}>
                                     <img
@@ -704,18 +768,15 @@ export default function Monitores() {
                                 <Box sx={styles.containerfeatures}>
                                 <Box sx={styles.containerfeaturesproduts}> 
                                     <img
-                                        src={elevenmonitorfirstpage}
+                                        src={elevenprint}
                                         style={{maxWidth:"180px"}}
                                     ></img>
                                 </Box>
                                 <Text style={[styles.textdefault2]}>
-                                    MONITOR BENQ ZOWIE 24.5" XL2540K TN FHD 240HZ 1MS
-                                </Text>
+                                    IMPRESSORA XEROX MULTIFUNÇÕES LASER VERSALINK C405V/DN
+                                </Text>  
                                 <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                    1920 x 1080
-                                </Text>
-                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                    240 Hz
+                                    12.7 cm
                                 </Text>
                                 <Box sx={styles.disponivel}>
                                     <img
@@ -743,18 +804,12 @@ export default function Monitores() {
                                 <Box sx={styles.containerfeatures}>
                                 <Box sx={styles.containerfeaturesproduts}> 
                                     <img
-                                        src={twelvemonitorfirstpage}
+                                        src={twelveprint}
                                         style={{maxWidth:"180px"}}
                                     ></img>
                                 </Box>
                                 <Text style={[styles.textdefault2]}>
-                                    THINKCENTRE TIO22GEN4 21.5-INCH WLED FHD- MONITOR 
-                                </Text>
-                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                    60 Hz
-                                </Text>
-                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>
-                                    54.6 cm
+                                    IMPRESSORA LEXMARK LASER MONO BSD M3350
                                 </Text>
                                 <Box sx={styles.disponivel}>
                                     <img
@@ -778,7 +833,7 @@ export default function Monitores() {
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>
                                 <Box>
-                                    <Link to="/monitores?page=1" id='aheader' >
+                                    <Link to="/impressoras?page=1" id='aheader' >
                                         1   &nbsp; 
                                     </Link>
                                     <Text>
@@ -786,7 +841,7 @@ export default function Monitores() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link  to="/monitores?page=2" id='aheader' >
+                                    <Link  to="/impressoras?page=2" id='aheader' >
                                         2  &nbsp; 
                                     </Link>
                                     <Text>
@@ -794,7 +849,7 @@ export default function Monitores() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link  to="/monitores?page=3" id='aheader' >
+                                    <Link  to="/impressoras?page=3" id='aheader' >
                                         3   &nbsp; 
                                     </Link>
                                     <Text>
@@ -802,7 +857,7 @@ export default function Monitores() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link to="/monitores?page=4" id='aheader' >
+                                    <Link to="/impressoras?page=4" id='aheader' >
                                         4   &nbsp; 
                                     </Link>
                                     <Text>
@@ -810,7 +865,7 @@ export default function Monitores() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link to="/monitores?page=5" id='aheader' >
+                                    <Link to="/impressoras?page=5" id='aheader' >
                                         5  &nbsp; 
                                     </Link>
                                     <Text>
@@ -818,7 +873,7 @@ export default function Monitores() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link  to="/monitores?page=6" id='aheader' >
+                                    <Link  to="/impressoras?page=6" id='aheader' >
                                         6   &nbsp; 
                                     </Link>
                                     <Text>
@@ -826,14 +881,14 @@ export default function Monitores() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link  to="/monitores?page=7" id='aheader' >
+                                    <Link  to="/impressoras?page=7" id='aheader' >
                                         7   &nbsp; 
                                     </Link>
                                     <Text>
                                         | 
                                     </Text>
                                 </Box>
-                                <Link  to={`/monitores?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                <Link   to={`/impressoras?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
                                     <img src={arrowright} height={10}></img>
                                     <img src={arrowright} height={10}></img>
                                 </Link>
