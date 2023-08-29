@@ -45,7 +45,7 @@ export default function FooterInforsystem() {
                 style={styles.inputtext}
                 />
                 <p style={styles.textdefault2} >
-                    Ao submeteres o teu email estás a concordar subscrever à newsletter da nossa loja e a aceitar os nossos <span ><Link  style={{textDecorationLine:"none"}} to ='#' id='afooter'>Termos e Condições.</Link></span>
+                    Ao submeteres o teu email estás a concordar subscrever à newsletter da nossa loja e a aceitar os nossos <span ><Link  style={{textDecorationLine:"none"}} to ='/termoseserviços' id='afooter'>Termos e Condições.</Link></span>
                 </p> 
         </Box>
         <Box sx={{maxWidth:"190px",marginTop:"45px" }}>          
@@ -96,9 +96,6 @@ export default function FooterInforsystem() {
                 <i className="fa fa-map-marker" style={{marginRight:"0.5rem",marginTop:"0.3rem"}} ></i>
                 Localização - R. dos Mareantes, 4480-778 Vila do Conde
             </p>  
-              
-           
-           
             <Link style={styles.acontainer} id="afooter" to="/sobrenós">
                 Sobre nós
             </Link> 

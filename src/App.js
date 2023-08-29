@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import React, { useState } from 'react';
 import Homepage from "./pages/Homepage";
 import SoftwareFaturação from "./pages/SoftwareFaturação";
+import SuporteManutenção from "./pages/SuporteManutenção";
 import Termoseserviços from "./pages/Termoseserviços";
 import Politicadeprivacidade from "./pages/Politicadeprivacidade";
 import Politicadecookies from "./pages/Politicadecookies";
@@ -10,6 +11,7 @@ import Computadores from "./pages/Computadores";
 import Monitores from "./pages/Monitores";
 import Acessórios from "./pages/Acessorios";
 import Impressoras from "./pages/Impressoras";
+import Allinone from "./pages/Allinone";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -29,6 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage/>} />
           <Route path="/softwarefaturação" element={<SoftwareFaturação/>} />
+          <Route path="/suportemanutenção" element={<SuporteManutenção/>} />
           <Route path="/termoseserviços" element={<Termoseserviços/>} />
           <Route path="/políticadeprivacidade" element={<Politicadeprivacidade/>} />
           <Route path="/políticadecookies" element={<Politicadecookies/>} />
@@ -37,6 +40,7 @@ function App() {
           <Route path="/monitores" element={<Monitores/>} />
           <Route path="/acessórios" element={<Acessórios/>} />
           <Route path="/impressoras" element={<Impressoras/>} />
+          <Route path="/allinone" element={<Allinone/>} />
         </Routes>
       </ThemeProvider>
     </PopupContext.Provider>

@@ -9,8 +9,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import examplepromotion from "./../img/examplepromotion.png";
 import runningman from "./../img/running-man.png";
 import quality from "./../img/quality-of-life.png";
-import hand from "./../img/hand.png";
-import help from "./../img/help.png";
+import hand from "./../img/cheap.png";
+import help from "./../img/cloudstorage.png";
 import distributed from "./../img/distributed.png";
 import pcgamingexample from "./../img/pcgamingexample.png"
 import portatelexample from "./../img/portablepcexample.png"
@@ -79,8 +79,8 @@ export default function Homepage() {
                         <Box sx={styles.containerfeatures}>
                             <img
                                 src={quality}
-                                width={"125px"}
-                                height={"120px"}
+                                width={"145px"}
+                                height={"130px"}
                             ></img>
                             <Text style={styles.textdefault2}>
                                 Qualidade <span style={{fontWeight:"bold"}}> garantida</span> 
@@ -99,18 +99,18 @@ export default function Homepage() {
                         <Box sx={styles.containerfeatures}>
                             <img
                                 src={help}
-                                width={"125px"}
-                                height={"120px"}
+                                width={"100px"}
+                                height={"100px"}
                             ></img>
                             <Text style={styles.textdefault2}>
-                                Nada<span style={{fontWeight:"bold"}}> igual</span> 
+                                Alojamento de <span style={{fontWeight:"bold"}}> serviços</span> 
                             </Text>
                         </Box>
                         <Box sx={styles.containerfeatures}>
                             <img
                                 src={hand}
-                                width={"125px"}
-                                height={"120px"}
+                                width={"120px"}
+                                height={"110px"}
                             ></img>
                             <Text style={styles.textdefault2}>
                             Mais barato<span style={{fontWeight:"bold"}}> impossível</span> 
@@ -133,7 +133,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={pcgamingexample}
-                                    width={"155px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -145,7 +145,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={portatelexample}
-                                    width={"215px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -157,7 +157,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={tabletexample}
-                                    width={"135px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -169,7 +169,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={monitorexample}
-                                    width={"185px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -181,7 +181,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                             <img
                                 src={printerexample}
-                                width={"165px"}
+                                width={"100%"}
                                 height={"130px"}
                             ></img>
                             </Box>
@@ -206,7 +206,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={pcgamingasus}
-                                    width={"155px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                               </Box>
@@ -232,7 +232,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={monitorasus}
-                                    width={"155px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img> 
                                 </Box>
@@ -258,7 +258,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={fontedealimentaçãoax70}
-                                    width={"135px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -284,7 +284,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={adaptadorusba}
-                                    width={"165px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -310,7 +310,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={xboxcontroller}
-                                    width={"145px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -349,7 +349,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={rtx3070}
-                                    width={"155px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                               </Box>
@@ -375,7 +375,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={appletablet}
-                                    width={"125px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img> 
                                 </Box>
@@ -401,7 +401,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={intelcorei9}
-                                    width={"165px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -427,7 +427,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={B760MGAMINGXDDR4MOTHERBOARD}
-                                    width={"165px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -453,7 +453,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={capaa14galaxy}
-                                    width={"175px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -492,7 +492,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={ratox19000dpi}
-                                    width={"135px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                               </Box>
@@ -518,7 +518,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={tapeterazer}
-                                    width={"175px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img> 
                                 </Box>
@@ -544,7 +544,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={tecladogaming}
-                                    width={"165px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -570,7 +570,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={impressora}
-                                    width={"155px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -596,7 +596,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={xboxcontroller}
-                                    width={"145px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -650,7 +650,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={rapairprinter}
-                                    width={"155px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img> 
                                 </Box>
@@ -665,7 +665,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={alojamento}
-                                    width={"170px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -680,7 +680,7 @@ export default function Homepage() {
                             <Box style={styles.containerfeaturesproduts}> 
                                 <img
                                     src={removalvirus}
-                                    width={"160px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>
@@ -695,7 +695,7 @@ export default function Homepage() {
                             <Box sx={styles.containerfeaturesproduts}> 
                                 <img
                                     src={windowsinstallation}
-                                    width={"145px"}
+                                    width={"100%"}
                                     height={"130px"}
                                 ></img>
                             </Box>

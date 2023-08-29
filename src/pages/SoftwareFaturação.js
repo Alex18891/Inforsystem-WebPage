@@ -482,10 +482,10 @@ const styles = StyleSheet.create({
     zIndex:-1
     },
     textdefaultsmall:{
-      textAlign:"center"
+      textAlign:"left"
      },
     textdefaultextrasmall:{
-        textAlign:"center"
+        textAlign:"left"
      },
     textdefault2:{
     fontSize:"15px",

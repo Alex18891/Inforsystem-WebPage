@@ -180,14 +180,14 @@ export default function Login() {
                             <Box sx = {[styles.boxcontainer,{flexDirection: "row"}]}>   
                                 <FontAwesomeIcon icon={faCheck} style={{color: "#1b64a7"}} />
                                 <Text style={[styles.textdefault1,{fontSize:"13px"}]} >
-                                    Nada <span style={{fontWeight:"bold", WebkitTextStrokeWidth: '0.1px'}}> igual</span> 
+                                    Alojamento de <span style={{fontWeight:"bold", WebkitTextStrokeWidth: '0.1px'}}> serviços</span> 
                                 </Text>
                             </Box>
                 
                             <Box sx = {[styles.boxcontainer,{flexDirection: "row"}]}> 
                                 <FontAwesomeIcon icon={faCheck} style={{color: "#1b64a7"}} />
                                 <Text style={[styles.textdefault1,{fontSize:"13px"}]} >
-                                    Mais barato <span style={{fontWeight:"bold", WebkitTextStrokeWidth: '0.1px'}}> impossível</span> 
+                                    Mais barato <span style={{fontWeight:"bold", WebkitTextStrokeWidth: '0.1px'}}>impossível</span> 
                                 </Text>
                             </Box>
                             </Box>   
