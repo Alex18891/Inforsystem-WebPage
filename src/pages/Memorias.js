@@ -19,7 +19,7 @@ import arrowright from "./../img/arrowright.png"
 import arrowleft from "./../img/arrowleft.png"
 import arrowabove from "./../img/arrowabove.png"
 
-export default function Acessórios() {
+export default function Memorias() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -28,12 +28,12 @@ export default function Acessórios() {
     const itemsPerPage = 16;
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const [acessorios, setacessorios] = useState([]);
+    const [memorias, setmemorias] = useState([]);
     const [maxpages, setmaxpages] = useState([]);
-    const [marcaacessorios, setmarcaacessorios] = useState([]);
-    const [familyacessorios, setfamilyacessorios] = useState([]);
+    const [marcamemorias, setmarcamemorias] = useState([]);
+    const [familymemorias, setfamilymemorias] = useState([]);
     const pageNumber = queryParams.get("page");
-    const itemsToShow = acessorios.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
+    const itemsToShow = memorias.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [filtro, setfiltro] = useState(false);
     const readFile = async () => {
         try {
@@ -49,59 +49,43 @@ export default function Acessórios() {
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
             if (jsonData && jsonData.length > 0) {
-                const PCs = jsonData.filter(row => row[1] === "PCs_Acessórios");
-                const adaptadorescabos = jsonData.filter(row => row[1] === "Adaptadores_e_Cabos");      
-                const conectividade = jsonData.filter(row => row[1] === "Conectividade");
-                const motherboards = jsonData.filter(row => row[1] === "Motherboard_Acessórios");
-                const ratos = jsonData.filter(row => row[1] === "Ratos_Acessórios");
-                const discos = jsonData.filter(row => row[1] === "Discos_Acessórios");
-                const pos = jsonData.filter(row => row[1] === "POS_Acessorios");
-                const portateis = jsonData.filter(row => row[1] === "Portateis_Acessorios");
-                const tomadas = jsonData.filter(row => row[1] === "Tomadas");
+                const PCs = jsonData.filter(row => row[1] === "Memorias_PCs");
+                const memoriasportateis = jsonData.filter(row => row[1] === "Memorias_Portateis");      
+                const memoriasusb = jsonData.filter(row => row[1] === "Memorias_USB");
+                const memoriascartoes = jsonData.filter(row => row[1] === "Memorias_Cartoes");
+                const memoriasespecificias = jsonData.filter(row => row[1] === "Memorias_Especificas");
                 const combinedmarcaarray =Array.from(new Set(
                     [
                         ...PCs.map(value => value[0]),
-                        ...adaptadorescabos.map(value => value[0]),
-                        ...conectividade.map(value => value[0]),
-                        ...motherboards.map(value => value[0]),
-                        ...ratos.map(value => value[0]),
-                        ...discos.map(value => value[0]),
-                        ...pos.map(value => value[0]),
-                        ...portateis.map(value => value[0]),
-                        ...tomadas.map(value => value[0])
+                        ...memoriasportateis.map(value => value[0]),
+                        ...memoriasusb.map(value => value[0]),
+                        ...memoriascartoes.map(value => value[0]),
+                        ...memoriasespecificias.map(value => value[0]),
                     ]
                 )) 
-                setmarcaacessorios(combinedmarcaarray)
+                setmarcamemorias(combinedmarcaarray)
                 const combinedfamilyarray = Array.from(new Set(
                     [
                         ...PCs.map(value => value[1]),
-                        ...adaptadorescabos.map(value => value[1]),
-                        ...conectividade.map(value => value[1]),
-                        ...motherboards.map(value => value[1]),
-                        ...ratos.map(value => value[1]),
-                        ...discos.map(value => value[1]),
-                        ...pos.map(value => value[1]),
-                        ...portateis.map(value => value[1]),
-                        ...tomadas.map(value => value[1])
+                        ...memoriasportateis.map(value => value[1]),
+                        ...memoriasusb.map(value => value[1]),
+                        ...memoriascartoes.map(value => value[1]),
+                        ...memoriasespecificias.map(value => value[1]),
                     ]
                 ))
-                setfamilyacessorios(combinedfamilyarray)
-                const combinedacessoriosarray = Array.from(new Set(
+                setfamilymemorias(combinedfamilyarray)
+                const combinedmemoriasarray = Array.from(new Set(
                     [
                         ...PCs,
-                        ...adaptadorescabos,
-                        ...conectividade,
-                        ...motherboards,
-                        ...ratos,
-                        ...discos,
-                        ...pos,
-                        ...portateis,
-                        ...tomadas
+                        ...memoriasportateis,
+                        ...memoriasusb,
+                        ...memoriascartoes,
+                        ...memoriasespecificias,
                     ]
                 ))
-                const maxPages = Math.ceil(combinedacessoriosarray.length / itemsPerPage);
+                const maxPages = Math.ceil(combinedmemoriasarray.length / itemsPerPage);
                 setmaxpages(maxPages)
-                setacessorios(combinedacessoriosarray)
+                setmemorias(combinedmemoriasarray)
             }
         };
         
@@ -132,7 +116,7 @@ export default function Acessórios() {
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Text style={{fontSize: "20px",zIndex:-1}}>    \  Produtos  \    </Text>  
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Acessórios</Text>   
+                        <Text  style={{fontSize: "20px",zIndex:-1}}>Memórias</Text>   
                         </Box>
                     </Box>     
                     <Text style={{
@@ -140,7 +124,7 @@ export default function Acessórios() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Acessórios</span>
+                        <span style={{fontWeight:"bold"}}>Memórias</span>
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -148,7 +132,7 @@ export default function Acessórios() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Veja os acessórios disponíveis na loja
+                        Veja as memórias disponíveis na loja
                     </Text>
                 </Box>
                 <Box sx={{...styles.containermain, 
@@ -176,12 +160,12 @@ export default function Acessórios() {
                                             <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                             <Box sx={styles.containerfeatures}>
                                                 {
-                                                    acessorios.length>0  &&(
-                                                        marcaacessorios.map((pc, index) => (
+                                                    memorias.length>0  &&(
+                                                        marcamemorias.map((pc, index) => (
                                                             <Box sx = {styles.menuflex}> 
                                                             <Checkbox sx={{padding:"0"}} />
                                                             <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {marcaacessorios[index]}
+                                                                {marcamemorias[index]}
                                                             </Text>
                                                             </Box>
                                                         ))                                                                                                       
@@ -200,12 +184,12 @@ export default function Acessórios() {
                                                 <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                                 <Box sx={styles.containerfeatures}>
                                                     {
-                                                        acessorios.length>0  &&(
-                                                            familyacessorios.map((pc, index) => (
+                                                        memorias.length>0  &&(
+                                                            familymemorias.map((pc, index) => (
                                                                 <Box sx = {styles.menuflex}> 
                                                                 <Checkbox sx={{padding:"0"}} />
                                                                 <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                    {familyacessorios[index]}
+                                                                    {familymemorias[index]}
                                                                 </Text>
                                                                 </Box>
                                                             ))                                                                                                       
@@ -233,12 +217,12 @@ export default function Acessórios() {
                                             <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                             <Box sx={styles.containerfeatures}>
                                                 {
-                                                     acessorios.length>0  &&(
-                                                        marcaacessorios.map((pc, index) => (
+                                                     memorias.length>0  &&(
+                                                        marcamemorias.map((pc, index) => (
                                                             <Box sx = {styles.menuflex}> 
                                                             <Checkbox sx={{padding:"0"}} />
                                                             <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {marcaacessorios[index]}
+                                                                {marcamemorias[index]}
                                                             </Text>
                                                             </Box>
                                                         ))
@@ -256,12 +240,12 @@ export default function Acessórios() {
                                             <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                                             <Box sx={styles.containerfeatures}>
                                                 {
-                                                    acessorios.length>0  &&(
-                                                        familyacessorios.map((pc, index) => (
+                                                    memorias.length>0  &&(
+                                                        familymemorias.map((pc, index) => (
                                                             <Box sx = {styles.menuflex}> 
                                                             <Checkbox sx={{padding:"0"}} />
                                                             <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {familyacessorios[index]}
+                                                                {familymemorias[index]}
                                                             </Text>
                                                             </Box>
                                                         ))                                                                                                       
@@ -279,8 +263,8 @@ export default function Acessórios() {
                     ...(isMediumScreen && styles.container1medium), 
                     ...(isSmallScreen && styles.container1small), 
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
-                        {acessorios.length>0  &&(
-                                itemsToShow.map((ac, index) => (
+                        {memorias.length>0  &&(
+                                itemsToShow.map((mem, index) => (
                                         <Box sx={styles.viewcontainer}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
@@ -291,9 +275,10 @@ export default function Acessórios() {
                                             </Box>
                                             <Box sx={styles.containerfeatures}>
                                                 <Text style={[styles.textdefault2]} key={index}>
-                                                    {ac[3]}   
+                                                    {mem[3]}   
                                                 </Text>
-                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {ac[2]} </Text>        
+                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {mem[2]} </Text>    
+                                     
                                                 <Box sx={styles.disponivel}>
                                                     <img
                                                         src={disponivel}
@@ -306,7 +291,7 @@ export default function Acessórios() {
                                                     </Text>
                                                 </Box>
                                                 <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>{ac[5]} €</span> 
+                                                    <span style={{color:"black"}}>{mem[5]} €</span> 
                                                 </Text>
                                             </Box>
                                         </Box>
@@ -316,7 +301,7 @@ export default function Acessórios() {
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>
                                 {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
-                                    <Link  to={`/acessórios?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                    <Link  to={`/memórias?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
                                         <Text>
@@ -326,7 +311,7 @@ export default function Acessórios() {
                               
                                )}   
                                 <Box>
-                                    <Link to="/acessórios?page=1" id='aheader' >
+                                    <Link to="/memórias?page=1" id='aheader' >
                                         1   &nbsp; 
                                     </Link>
                                     <Text>
@@ -334,7 +319,7 @@ export default function Acessórios() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link  to="/acessórios?page=2" id='aheader' >
+                                    <Link  to="/memórias?page=2" id='aheader' >
                                         2  &nbsp; 
                                     </Link>
                                     <Text>
@@ -342,7 +327,7 @@ export default function Acessórios() {
                                     </Text>
                                 </Box>
                                 <Box>
-                                    <Link  to="/acessórios?page=3" id='aheader' >
+                                    <Link  to="/memórias?page=3" id='aheader' >
                                         3   &nbsp; 
                                     </Link> 
                                     <Text>
@@ -350,7 +335,7 @@ export default function Acessórios() {
                                     </Text>           
                                 </Box>  
                                 <Box>
-                                    <Link  to="/acessórios?page=4" id='aheader' >
+                                    <Link  to="/memórias?page=4" id='aheader' >
                                         4   &nbsp; 
                                     </Link>  
                                     <Text>
@@ -358,7 +343,7 @@ export default function Acessórios() {
                                     </Text>          
                                 </Box>  
                                 <Box>
-                                    <Link  to="/acessórios?page=5" id='aheader' >
+                                    <Link  to="/memórias?page=5" id='aheader' >
                                         5   &nbsp; 
                                     </Link>  
                                     <Text>
@@ -366,7 +351,7 @@ export default function Acessórios() {
                                     </Text>          
                                 </Box>  
                                 <Box>
-                                    <Link  to="/acessórios?page=6" id='aheader' >
+                                    <Link  to="/memórias?page=6" id='aheader' >
                                         6   &nbsp; 
                                     </Link> 
                                     <Text>
@@ -374,7 +359,7 @@ export default function Acessórios() {
                                     </Text>           
                                 </Box>  
                                 <Box>
-                                    <Link  to="/acessórios?page=7" id='aheader' >
+                                    <Link  to="/memórias?page=7" id='aheader' >
                                         7   &nbsp; 
                                     </Link>  
                                     <Text>
@@ -382,7 +367,7 @@ export default function Acessórios() {
                                     </Text>          
                                 </Box>  
                                 {parseInt(pageNumber, 10) < maxpages && (
-                                    <Link  to={`/acessórios?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                    <Link  to={`/memórias?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
                                         <img src={arrowright} height={10}></img>
                                         <img src={arrowright} height={10}></img>
                                     </Link> 

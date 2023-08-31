@@ -78,10 +78,9 @@ export default function PrimarySearchAppBar() {
   const [searchValue, setSearchValue] = React.useState("");
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
-  const [isHovered2, setIsHovered2] = useState(false);
   const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword  } = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
-  const [isHoveredserv, setIsHoveredserv] = useState(false);
+  const [isHoveredcomp, setIsHoveredcomp] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -89,41 +88,37 @@ export default function PrimarySearchAppBar() {
   const handleMouseEnter = () => {
     setIsHovered(true);
     setIsHoveredprodu(false)
-    setIsHoveredserv(false);
     setIsHoveredsoft(false);
-  };
-
-  const handleMouseEnter2 = () => {
-    setIsHovered2(true);
-  };
-  const handleMouseLeave2 = () => {
-    setIsHovered2(false);
   };
 
   const handleMouseEnterprod = () => {
     setIsHoveredprodu(true)
     setIsHovered(false);
-    setIsHoveredserv(false);
     setIsHoveredsoft(false);
+};
+
+const handleMouseEntercomp = () => {
+  setIsHoveredprodu(true);
+  setIsHoveredcomp(true)
+  setIsHovered(false);
+  setIsHoveredsoft(false);
 };
 
 const handleMouseEntersoft = () => {
-    setIsHoveredprodu(false);
     setIsHovered(false);
-    setIsHoveredserv(false);
     setIsHoveredsoft(true);
 };
 
-const handleMouseEnterserv = () => {
-    setIsHoveredprodu(false)
+  const handleMouseLeavecomp = () => {
     setIsHovered(false);
-    setIsHoveredserv(true);
+    setIsHoveredcomp(false)
     setIsHoveredsoft(false);
-};
+  };
+
   const handleMouseLeave = () => {
     setIsHovered(false);
+    setIsHoveredcomp(false)
     setIsHoveredprodu(false)
-    setIsHoveredserv(false);
     setIsHoveredsoft(false);
   };
 
@@ -261,9 +256,21 @@ const handleMouseEnterserv = () => {
                           <Link  style={styles.acontainer} id='aheader'to="/computadores?page=1">Computadores</Link>
                           <Link style={styles.acontainer} id='aheader' to="#">Sistemas Pos</Link>
                           <Link style={styles.acontainer} id='aheader' to="/allinone?page=1">All-In-One</Link>
-                          <Link style={styles.acontainer} id='aheader' to="/monitores?page=1">Monitores</Link>
-                          <Link style={styles.acontainer} id='aheader' to="/impressoras?page=1">Impressoras</Link>
-                          <Link style={styles.acontainer} id='aheader' to="/acessórios?page=1">Acessórios</Link>
+                          <View  style={styles.container} onMouseEnter={handleMouseEntercomp}  onMouseLeave={handleMouseLeavecomp}>
+                            <Link style={styles.acontainer} id='aheader' to="/componentes?page=1">Componentes
+                              <i className="fa fa-caret-right" style={{marginTop:"0.3rem"}} ></i>
+                            </Link>
+                            <View  style={[styles.container_cont2,isHoveredcomp && styles.containerHovered,{minWidth: "170px"}]}> 
+                              <Link style={styles.acontainer} id='aheader' to="/memórias?page=1">Memórias</Link>        
+                              <Link style={styles.acontainer} id='aheader' to="/placasgráficas?page=1">Placas Gráficas</Link>
+                              <Link style={styles.acontainer} id='aheader' to="/caixas?page=1">Caixas</Link>
+                              <Link style={styles.acontainer} id='aheader' to="#">Motherboards</Link>
+                              <Link style={styles.acontainer} id='aheader' to="#">Processadores</Link>
+                              <Link style={styles.acontainer} id='aheader' to="#">Discos</Link>
+                            </View>
+                          </View>
+                            <Link style={styles.acontainer} id='aheader' to="/impressoras?page=1">Impressoras</Link>
+                            <Link style={styles.acontainer} id='aheader' to="/acessórios?page=1">Acessórios</Link>            
                   </View>
               </View>      
               <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,minWidth: "380px",}]} onMouseEnter={handleMouseEntersoft}
@@ -338,6 +345,22 @@ const styles = StyleSheet.create({
       zIndex:2
       }
     },
+    container_cont2:{
+      display: "none",
+      position: "absolute",
+      backgroundColor: "white",
+      paddingRight:"20px",
+      left:"150px",
+      top:"0px",
+      shadowColor: '#000',
+      shadowOffset: {
+      width: 0,
+      height: 8,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 16,
+      borderRadius:"10px"  
+  },
     firsttoolbar:{
       alignItems:"center",
       display:"flex",
