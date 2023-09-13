@@ -19,7 +19,7 @@ import arrowright from "./../img/arrowright.png"
 import arrowleft from "./../img/arrowleft.png"
 import arrowabove from "./../img/arrowabove.png"
 
-export default function Caixas() {
+export default function Coolers() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -29,14 +29,14 @@ export default function Caixas() {
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
-    const [caixas, setcaixas] = useState([]);
-    const [caixasfilter, setcaixasfilter] = useState([]);
+    const [processadores, setprocessadores] = useState([]);
+    const [processadoresfilter, setprocessadoresfilter] = useState([]);
     const [maxpages, setmaxpages] = useState([]);
     const [maxpagesfilter, setmaxpagesfilter] = useState([]);
-    const [marcacaixas, setmarcacaixas] = useState([]);
-    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcacaixas.length).fill(false));
+    const [marcaprocessadores, setmarcaprocessadores] = useState([]);
+    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcaprocessadores.length).fill(false));
     const pageNumber = queryParams.get("page");
-    const itemsToShow = caixas.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
+    const itemsToShow = processadores.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [filtro, setfiltro] = useState(false);
 
     const renderLinks = () => {
@@ -45,7 +45,7 @@ export default function Caixas() {
           let currentNumber = 1 + i;
           if (currentNumber <= maxpages && currentNumber <= 7) {
             elements.push(
-              <Link to={`/caixas?page=${currentNumber}`} id='aheader' key={currentNumber}>
+              <Link to={`/coolers?page=${currentNumber}`} id='aheader' key={currentNumber}>
                 {currentNumber}
                 <Text>&nbsp; | </Text>
               </Link>
@@ -69,13 +69,13 @@ export default function Caixas() {
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
             if (jsonData && jsonData.length > 0) {
-                const caixas = jsonData.filter(row => row[1] === "Caixas");
-                const combinedmarcaarray =Array.from(new Set(caixas.map(value => value[0]))) 
-                setmarcacaixas(combinedmarcaarray)
-                const maxPages = Math.ceil(caixas.length / itemsPerPage);
+                const processadores = jsonData.filter(row => row[1] === "Soluções_de_Arrefecimento");
+                const combinedmarcaarray =Array.from(new Set(processadores.map(value => value[0]))) 
+                setmarcaprocessadores(combinedmarcaarray)
+                const maxPages = Math.ceil(processadores.length / itemsPerPage);
                 setmaxpages(maxPages)
-                setcaixas(caixas)
-                setcaixasfilter(caixas)
+                setprocessadores(processadores)
+                setprocessadoresfilter(processadores)
                 setmaxpagesfilter(maxPages)
             }
         };
@@ -92,11 +92,11 @@ export default function Caixas() {
 
     useEffect(()=>{       
         const filterBySelectedCheckboxes = () => {
-            return caixasfilter.filter(item=>{      //Filter the pcs by family     
+            return processadoresfilter.filter(item=>{      //Filter the pcs by family     
                 for(let i = 0; i<checkboxmarca.length;i++)//For that runs up to all the checkboxs
                 {
-                    console.log( marcacaixas[i])
-                    if(checkboxmarca[i] && item[0] ==  marcacaixas[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
+                    console.log( marcaprocessadores[i])
+                    if(checkboxmarca[i] && item[0] ==  marcaprocessadores[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
                     {    
                         return true;
                     }   
@@ -111,16 +111,16 @@ export default function Caixas() {
         {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
-            setcaixas(deduplicated);
+            setprocessadores(deduplicated);
             navigate('?page=1');
         }
         else{
-            setcaixas(caixasfilter);
+            setprocessadores(processadoresfilter);
             setmaxpages(maxpagesfilter);
             navigate('?page=1');
         }
       
-    },[checkboxmarca, marcacaixas, caixasfilter])
+    },[checkboxmarca, marcaprocessadores, processadoresfilter])
 
     const marcafunction = (event,index) =>{
         const updatedCheckboxes = [...checkboxmarca];
@@ -128,34 +128,35 @@ export default function Caixas() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
+
     const commonContainer1 = (
         <Box  sx={styles.container1}>
-        <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-            <Box sx={styles.containerfeaturesmainproduct}> 
-               <Box sx={styles.containermenu}>
-               <Box sx={styles.titlemenu}>
-                   <Text style={styles.textdefault2}>
-                       <span style={{color:"black"}}>Marca</span> 
-                   </Text>
-                   <img src={arrowabove} width={30} height={30}></img>
-               </Box>
-               <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-               <Box sx={styles.containerfeatures}>
-                   {
-                       caixas.length>0  &&(
-                           marcacaixas.map((pc, index) => (
-                               <Box sx = {styles.menuflex}> 
-                                <Checkbox sx={{padding:"0"}} checked={checkboxmarca[index]} onChange={(e) => marcafunction(e, index)} />
-                               <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                   {marcacaixas[index]}
-                               </Text>
-                               </Box>
-                           ))                                                                                                       
-                   )}         
-               </Box>     
-               </Box> 
-            </Box>        
-        </Box> 
+            <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
+                <Box sx={styles.containerfeaturesmainproduct}> 
+                <Box sx={styles.containermenu}>
+                <Box sx={styles.titlemenu}>
+                    <Text style={styles.textdefault2}>
+                        <span style={{color:"black"}}>Marca</span> 
+                    </Text>
+                    <img src={arrowabove} width={30} height={30}></img>
+                </Box>
+                <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+                <Box sx={styles.containerfeatures}>
+                    {
+                        processadores.length>0  &&(
+                            marcaprocessadores.map((pc, index) => (
+                                <Box sx = {styles.menuflex}> 
+                                 <Checkbox sx={{padding:"0"}} checked={checkboxmarca[index]} onChange={(e) => marcafunction(e, index)} />
+                                <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                    {marcaprocessadores[index]}
+                                </Text>
+                                </Box>
+                            ))                                                                                                       
+                    )}         
+                </Box>     
+                </Box> 
+                </Box>        
+            </Box> 
     </Box>
     )
 
@@ -176,7 +177,7 @@ export default function Caixas() {
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Text style={{fontSize: "20px",zIndex:-1}}>    \  Produtos  \    </Text>  
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Caixas</Text>   
+                        <Text  style={{fontSize: "20px",zIndex:-1}}>Coolers</Text>   
                         </Box>
                     </Box>     
                     <Text style={{
@@ -184,7 +185,7 @@ export default function Caixas() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Caixas</span>
+                        <span style={{fontWeight:"bold"}}>Coolers</span>
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -192,13 +193,13 @@ export default function Caixas() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Veja as caixas disponíveis na loja
+                        Veja as coolers disponíveis na loja
                     </Text>
                 </Box>
                 <Box sx={{...styles.containermain, 
                          ...(isSmallScreen && styles.containermainsmall), 
                          ...(isExtraSmallScreen && styles.containermainextrasmall),}}>
-                    <Box>
+                     <Box>
                         {
                             (isSmallScreen || isExtraSmallScreen) && (
                                 <>
@@ -209,15 +210,15 @@ export default function Caixas() {
                                 </>  
                             )}
                              {!isSmallScreen && !isExtraSmallScreen && commonContainer1}        
-                    </Box>             
+                    </Box>            
                     <Box  sx={{...styles.container1,
                     ...(isExtraLargeScreen && styles.container1extralarge),
                     ...(isLargeScreen && styles.container1large), 
                     ...(isMediumScreen && styles.container1medium), 
                     ...(isSmallScreen && styles.container1small), 
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
-                        {caixas.length>0  &&(
-                                itemsToShow.map((caixa, index) => (
+                        {processadores.length>0  &&(
+                                itemsToShow.map((processadores, index) => (
                                         <Box sx={styles.viewcontainer}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
@@ -228,9 +229,9 @@ export default function Caixas() {
                                             </Box>
                                             <Box sx={styles.containerfeatures}>
                                                 <Text style={[styles.textdefault2]} key={index}>
-                                                    {caixa[3]}   
+                                                    {processadores[3]}   
                                                 </Text>
-                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {caixa[2]} </Text>    
+                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {processadores[2]} </Text>    
                                                 <Box sx={styles.disponivel}>
                                                     <img
                                                         src={disponivel}
@@ -243,7 +244,7 @@ export default function Caixas() {
                                                     </Text>
                                                 </Box>
                                                 <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>{caixa[5]} €</span> 
+                                                    <span style={{color:"black"}}>{processadores[5]} €</span> 
                                                 </Text>
                                             </Box>
                                         </Box>
@@ -253,7 +254,7 @@ export default function Caixas() {
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>    
                                 {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
-                                    <Link  to={`/caixas?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                    <Link  to={`/coolers?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
                                     
@@ -261,11 +262,11 @@ export default function Caixas() {
                                 )}     
                                 {renderLinks()}
                                 {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
-                                    <Link  to={`/caixas?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
+                                    <Link  to={`/coolers?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
                                         <img src={arrowright} height={10}></img>
                                         <img src={arrowright} height={10}></img>      
                                     </Link> 
-                                )}                               
+                                )}                
                             </Box>
                         </Box>
                     </Box>                   

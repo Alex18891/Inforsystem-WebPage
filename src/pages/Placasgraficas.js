@@ -50,15 +50,35 @@ export default function Placasgraficas() {
     const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     const itemsPerPage = 16;
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const [pgraficas, setpgraficas] = useState([]);
+    const [pgraficasfilter, setpgraficasfilter] = useState([]);
     const [maxpages, setmaxpages] = useState([]);
+    const [maxpagesfilter, setmaxpagesfilter] = useState([]);
     const [marcapgraficas, setmarcapgraficas] = useState([]);
-    const [familypgraficas, setfamilypgraficas] = useState([]);
+    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcapgraficas.length).fill(false));
     const pageNumber = queryParams.get("page");
     const itemsToShow = pgraficas.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [filtro, setfiltro] = useState(false);
+
+    const renderLinks = () => {
+        let elements = [];
+        for (let i = 0; i < maxpages; i++) {
+          let currentNumber = 1 + i;
+          if (currentNumber <= maxpages && currentNumber <= 7) {
+            elements.push(
+              <Link to={`/placasgráficas?page=${currentNumber}`} id='aheader' key={currentNumber}>
+                {currentNumber}
+                <Text>&nbsp; | </Text>
+              </Link>
+            );
+          }     
+        } 
+        return elements;
+      };
+
     const readFile = async () => {
         try {
         const response = await fetch("/data/Comp_Filtros.xlsx");
@@ -76,11 +96,11 @@ export default function Placasgraficas() {
                 const pgraficas = jsonData.filter(row => row[1] === "Placas_Graficas");
                 const combinedmarcaarray =Array.from(new Set(pgraficas.map(value => value[0]))) 
                 setmarcapgraficas(combinedmarcaarray)
-                const combinedfamilyarray = Array.from(new Set(pgraficas.map(value => value[1])))
-                setfamilypgraficas(combinedfamilyarray)  
                 const maxPages = Math.ceil(pgraficas.length / itemsPerPage);
                 setmaxpages(maxPages)
                 setpgraficas(pgraficas)
+                setpgraficasfilter(pgraficas)
+                setmaxpagesfilter(maxPages)
             }
         };
         
@@ -93,6 +113,75 @@ export default function Placasgraficas() {
     useEffect(() => {
         readFile();
     }, []);
+
+    useEffect(()=>{       
+        const filterBySelectedCheckboxes = () => {
+            return pgraficasfilter.filter(item=>{      //Filter the pcs by family     
+                for(let i = 0; i<checkboxmarca.length;i++)//For that runs up to all the checkboxs
+                {
+                    console.log( marcapgraficas[i])
+                    if(checkboxmarca[i] && item[0] ==  marcapgraficas[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
+                    {    
+                        return true;
+                    }   
+                }
+                return false;
+            })
+        };
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse); //JSON.stringify converts all array to string to removes all the repeated arrays
+        //after the JSON.parse put the array into the initial state.
+        console.log(deduplicated);
+        if(deduplicated.length>0)
+        {
+            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
+            setmaxpages(maxPages);
+            setpgraficas(deduplicated);
+            navigate('?page=1');
+        }
+        else{
+            setpgraficas(pgraficasfilter);
+            setmaxpages(maxpagesfilter);
+            navigate('?page=1');
+        }
+      
+    },[checkboxmarca, marcapgraficas, pgraficasfilter])
+
+    const marcafunction = (event,index) =>{
+        const updatedCheckboxes = [...checkboxmarca];
+        updatedCheckboxes[index] = event.target.checked;
+        setcheckboxmarca(updatedCheckboxes)    
+    }
+
+    const commonContainer1 = (
+        <Box  sx={styles.container1}>
+            <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
+            <Box sx={styles.containerfeaturesmainproduct}> 
+               <Box sx={styles.containermenu}>
+               <Box sx={styles.titlemenu}>
+                   <Text style={styles.textdefault2}>
+                       <span style={{color:"black"}}>Marca</span> 
+                   </Text>
+                   <img src={arrowabove} width={30} height={30}></img>
+               </Box>
+               <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+               <Box sx={styles.containerfeatures}>
+                   {
+                       pgraficas.length>0  &&(
+                           marcapgraficas.map((pc, index) => (
+                               <Box sx = {styles.menuflex}> 
+                               <Checkbox sx={{padding:"0"}} checked={checkboxmarca[index]} onChange={(e) => marcafunction(e, index)} />
+                               <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                   {marcapgraficas[index]}
+                               </Text>
+                               </Box>
+                           ))                                                                                                       
+                   )}         
+               </Box>     
+               </Box> 
+            </Box>        
+            </Box> 
+        </Box>
+    )
 
     return (
         <>
@@ -135,73 +224,16 @@ export default function Placasgraficas() {
                          ...(isExtraSmallScreen && styles.containermainextrasmall),}}>
                     <Box>
                         {
-                            isSmallScreen || isExtraSmallScreen ?
+                            (isSmallScreen || isExtraSmallScreen) && (
                                 <>
                                     <Box sx ={{textAlign:"right"}}>  
                                         <Button sx={ filtro? { ...styles.buttoncontainer, backgroundColor: '#1B64A7',color:"white"}: styles.buttoncontainer} onClick={(e) => setfiltro(prevFiltro => !prevFiltro)}>Mostrar filtros</Button> 
-                                    </Box>          
-                                    { filtro &&
-                                     <Box  sx={styles.container1}>
-                                     <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-                                         <Box sx={styles.containerfeaturesmainproduct}> 
-                                            <Box sx={styles.containermenu}>
-                                            <Box sx={styles.titlemenu}>
-                                                <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>Marca</span> 
-                                                </Text>
-                                                <img src={arrowabove} width={30} height={30}></img>
-                                            </Box>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                {
-                                                    pgraficas.length>0  &&(
-                                                        marcapgraficas.map((pc, index) => (
-                                                            <Box sx = {styles.menuflex}> 
-                                                            <Checkbox sx={{padding:"0"}} />
-                                                            <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {marcapgraficas[index]}
-                                                            </Text>
-                                                            </Box>
-                                                        ))                                                                                                       
-                                                )}         
-                                            </Box>     
-                                            </Box> 
-                                         </Box>        
-                                     </Box> 
-                                 </Box>}
-                                </>
-                            :      
-                            <Box  sx={styles.container1}>
-                                <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-                                    <Box sx={styles.containerfeaturesmainproduct}> 
-                                        <Box sx={styles.containermenu}>
-                                            <Box sx={styles.titlemenu}>
-                                                <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>Marca</span> 
-                                                </Text>
-                                                <img src={arrowabove} width={30} height={30}></img>
-                                            </Box>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                {
-                                                    pgraficas.length>0  &&(
-                                                        marcapgraficas.map((pc, index) => (
-                                                            <Box sx = {styles.menuflex}> 
-                                                            <Checkbox sx={{padding:"0"}} />
-                                                            <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {marcapgraficas[index]}
-                                                            </Text>
-                                                            </Box>
-                                                        ))
-                                                )}   
-                                            </Box>     
-                                        </Box> 
-                                
-                                    </Box>        
-                                </Box> 
-                            </Box>     
-                        }     
-                    </Box>       
+                                    </Box> 
+                                    {filtro ? commonContainer1 : null}
+                                </>  
+                            )}
+                             {!isSmallScreen && !isExtraSmallScreen && commonContainer1}        
+                    </Box>           
                     <Box  sx={{...styles.container1,
                     ...(isExtraLargeScreen && styles.container1extralarge),
                     ...(isLargeScreen && styles.container1large), 
@@ -248,74 +280,16 @@ export default function Placasgraficas() {
                                     <Link  to={`/placasgráficas?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
-                                        <Text>
-                                        &nbsp; | 
-                                        </Text>
+                                    
                                     </Link> 
-                              
-                               )}   
-                                <Box>
-                                    <Link to="/placasgráficas?page=1" id='aheader' >
-                                        1   &nbsp; 
-                                    </Link>
-                                    <Text>
-                                        | 
-                                    </Text>
-                                </Box>
-                                <Box>
-                                    <Link  to="/placasgráficas?page=2" id='aheader' >
-                                        2  &nbsp; 
-                                    </Link>
-                                    <Text>
-                                        | 
-                                    </Text>
-                                </Box>
-                                <Box>
-                                    <Link  to="/placasgráficas?page=3" id='aheader' >
-                                        3   &nbsp; 
-                                    </Link> 
-                                    <Text>
-                                        | 
-                                    </Text>           
-                                </Box>  
-                                <Box>
-                                    <Link  to="/placasgráficas?page=4" id='aheader' >
-                                        4   &nbsp; 
-                                    </Link>  
-                                    <Text>
-                                        | 
-                                    </Text>          
-                                </Box>  
-                                <Box>
-                                    <Link  to="/placasgráficas?page=5" id='aheader' >
-                                        5   &nbsp; 
-                                    </Link>  
-                                    <Text>
-                                        | 
-                                    </Text>          
-                                </Box>  
-                                <Box>
-                                    <Link  to="/placasgráficas?page=6" id='aheader' >
-                                        6   &nbsp; 
-                                    </Link> 
-                                    <Text>
-                                        | 
-                                    </Text>           
-                                </Box>  
-                                <Box>
-                                    <Link  to="/placasgráficas?page=7" id='aheader' >
-                                        7   &nbsp; 
-                                    </Link>  
-                                    <Text>
-                                        | 
-                                    </Text>          
-                                </Box>  
-                                {parseInt(pageNumber, 10) < maxpages && (
-                                    <Link  to={`/placasgráficas?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                )}     
+                                {renderLinks()}
+                                {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
+                                    <Link  to={`/placasgráficas?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
                                         <img src={arrowright} height={10}></img>
-                                        <img src={arrowright} height={10}></img>
+                                        <img src={arrowright} height={10}></img>      
                                     </Link> 
-                                )}                                
+                                )}            
                             </Box>
                         </Box>
                     </Box>                   

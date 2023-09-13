@@ -41,6 +41,10 @@ import twelfthpcsecondpage  from "./../img/twelfthpcsecondpage.png";
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
 import arrowabove from "./../img/arrowabove.png"
+import arrowleft from "./../img/arrowleft.png"
+
+let filterfamily = []
+
 
 export default function Computadores() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -50,15 +54,43 @@ export default function Computadores() {
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     const itemsPerPage = 16;
     const location = useLocation();
+    const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const [pcs, setpcs] = useState([]);
+    const [pcsfilter, setpcsfilter] = useState([]);
     const [specif,setspecif] = useState([]);
+    const [speciffilter,setspeciffilter] = useState([]);
+    const [familypcs, setfamilypcs] = useState([]);
     const [proce,setprocessador] = useState([]);
     const [capa,setcapacidade] = useState([]);
     const [memo,setmemoria] = useState([]);
+    const [checkboxfamily,setcheckboxfamily] = useState(Array(familypcs.length).fill(false));
+    const [checkboxproce,setcheckboxproc] = useState(Array(proce.length).fill(false));
+    const [checkboxcapacity,setcheckboxcapacity] = useState(Array(capa.length).fill(false));
+    const [checkboxmemo,setcheckboxmemo] = useState(Array(capa.length).fill(false));
+    const [maxpages, setmaxpages] = useState([]);
+    const [maxpagesfilter, setmaxpagesfilter] = useState([]);
     const pageNumber = queryParams.get("page");
     const itemsToShow = pcs.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
+    const specifItemsToShow = specif.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [filtro, setfiltro] = useState(false);
+
+    const renderLinks = () => {
+        let elements = [];
+        for (let i = 0; i < maxpages; i++) {
+          let currentNumber = 1 + i;
+          if (currentNumber <= maxpages && currentNumber <= 7) {
+            elements.push(
+              <Link to={`/computadores?page=${currentNumber}`} id='aheader' key={currentNumber}>
+                {currentNumber}
+                <Text>&nbsp; | </Text>
+              </Link>
+            );
+          }     
+        } 
+        return elements;
+      };
+    
     const readFile = async () => {
         try {
         const response = await fetch("/data/Comp_Filtros.xlsx");
@@ -74,16 +106,65 @@ export default function Computadores() {
         
             if (jsonData && jsonData.length > 0) {
                 const PCs = jsonData.filter(row => row[1] === "PCs");
+                const PCacc = jsonData.filter(row => row[1] === "PCs_Acessórios");  
+            
+                const combinedpcarray = Array.from(new Set(
+                    [
+                        ...PCs,
+                    ]
+                ))
+                const combinedspecarray = Array.from(new Set(
+                    [
+                        ...PCs,
+                        ...PCacc,
+                    ]
+                ))
+                const combinedfamilyarray = Array.from(new Set(
+                    [
+                        ...PCs.map(value => value[1].replace(/_/g, ' ')),
+                        ...PCacc.map(value => value[1].replace(/_/g, ' ')),
+                    ]
+                ))
                 //console.log(PCs.map(value=>value[3]))
-                setpcs(PCs)
-                const specifications = PCs.map(value=>value[3].split(','));
-                const processador = Array.from(new Set(specifications.map(value=>value[0])));
-                const capacidade = Array.from(new Set(specifications.map(value=>value[3])));
-                const memoria = Array.from(new Set(specifications.map(value=>value[2])));
+                setpcs(combinedspecarray)
+                setpcsfilter(combinedspecarray)
+                const specificationseach = combinedpcarray.map(value=>value[3].split(','));
+                console.log(specificationseach)
+                const processador = Array.from(new Set(specificationseach.map(value=>value[0])));
+                let capacidade = []
+                let memoria = []
+                specificationseach.map((value)=>{
+                        if (value.some((element) => {
+                           // console.log(element);
+                            if(element.includes("SSD"))
+                            {
+                              //  console.log(element)
+                                if (!capacidade.includes(element)) {
+                                    capacidade.push(element);
+                                }
+                                
+                            }
+                            else if(element.includes("DDR") || element.includes("MHz")){
+                               
+                                if (!memoria.includes(element)) {
+                                    memoria.push(element);
+                                }
+                            }
+                        }))
+                         {           
+                    }
+                })
+               
+                //const memoria = Array.from(new Set(specificationseach.map(value=>value[2])));
+                setfamilypcs(combinedfamilyarray);
                 setprocessador(processador);
                 setmemoria(memoria);
                 setcapacidade(capacidade);
-                setspecif(specifications);
+                setspecif(specificationseach);
+                setspeciffilter(specificationseach)
+                const maxPages = Math.ceil(combinedspecarray.length / itemsPerPage);
+                setmaxpages(maxPages)
+                setmaxpagesfilter(maxPages)
             }
         };
         
@@ -96,6 +177,246 @@ export default function Computadores() {
     useEffect(() => {
         readFile();
     }, []);
+
+    useEffect(()=>{       
+        const filterBySelectedCheckboxes = () => {
+            return pcsfilter.filter(item=>{      //Filter the pcs by family     
+                for(let i = 0; i<checkboxfamily.length;i++)//For that runs up to all the checkboxs
+                {
+                    console.log(familypcs[i])
+                    if(checkboxfamily[i] && item[1].replace(/_/g, ' ') == familypcs[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
+                    {    
+                        return true;
+                    }   
+                }
+                return false;
+            })
+        };
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse); //JSON.stringify converts all array to string to removes all the repeated arrays
+        //after the JSON.parse put the array into the initial state.
+        console.log(deduplicated);
+        if(deduplicated.length>0)
+        {
+            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
+            setmaxpages(maxPages);
+            setpcs(deduplicated);
+            navigate('?page=1');
+        }
+        else{
+            setpcs(pcsfilter);
+            setmaxpages(maxpagesfilter);
+            navigate('?page=1');
+        }
+      
+    },[checkboxfamily,familypcs, pcsfilter])
+
+    const familyfunction = (event,index) =>{
+        const updatedCheckboxes = [...checkboxfamily];
+        updatedCheckboxes[index] = event.target.checked;
+        setcheckboxfamily(updatedCheckboxes)    
+    }
+
+    useEffect(() => {
+        const filterBySelectedCheckboxes = () => {
+            return pcsfilter.filter(item => {
+                for (let i = 0; i < checkboxproce.length; i++) {
+                    if (checkboxproce[i] && item[3].split(',')[0] === proce[i]) {
+                        return true;  // Return true and all the elements contained in the condiction
+                    }
+                }
+                return false;  // No matching checkbox found for this item
+            });
+        };
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
+        console.log(deduplicated);
+        if (deduplicated.length > 0) {
+            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
+            setmaxpages(maxPages);
+            setpcs(deduplicated);
+            navigate('?page=1');
+        } else {
+            setpcs(pcsfilter);
+            setmaxpages(maxpagesfilter);
+            navigate('?page=1');
+        }
+    
+    }, [checkboxproce, proce, pcsfilter]);
+    
+    const procefunction = (event,index) =>{ 
+        const updatedCheckboxes = [...checkboxproce];
+        updatedCheckboxes[index] = event.target.checked;
+        setcheckboxproc(updatedCheckboxes)    
+    }
+
+    useEffect(() => {
+        const filterBySelectedCheckboxes = () => {
+            return pcsfilter.filter(item => {
+                for (let i = 0; i < checkboxcapacity.length; i++) {
+                    if (checkboxcapacity[i] && (item[3].split(',')[0] === capa[i] || item[3].split(',')[1] === capa[i] || item[3].split(',')[5] === capa[i] || item[3].split(',')[3] === capa[i] || item[3].split(',')[4] === capa[i] || item[3].split(',')[2] === capa[i] )) {
+                        return true;  // Return true and all the elements contained in the condiction
+                    }
+                }
+                return false;  // No matching checkbox found for this item
+            });
+        };
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
+        const specificationseach = deduplicated.map(value=>value[3].split(','));
+        console.log(deduplicated);
+        console.log(specificationseach);
+        if (deduplicated.length > 0) {
+            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
+            setmaxpages(maxPages);
+            setspecif(specificationseach);
+            setpcs(deduplicated);
+            navigate('?page=1');
+        } else {
+            setpcs(pcsfilter);
+            setspecif(speciffilter)
+            setmaxpages(maxpagesfilter);
+            navigate('?page=1');
+        }
+    
+    }, [checkboxcapacity, capa, pcsfilter]);
+
+    const capacityfunction = (event,index) =>{ 
+        const updatedCheckboxes = [...checkboxcapacity];
+        updatedCheckboxes[index] = event.target.checked;
+        setcheckboxcapacity(updatedCheckboxes)    
+    }
+
+    useEffect(() => {
+        const filterBySelectedCheckboxes = () => {
+            return pcsfilter.filter(item => {
+                for (let i = 0; i < checkboxmemo.length; i++) {
+                    if (checkboxmemo[i] && (item[3].split(',')[0] === memo[i] || item[3].split(',')[5] === memo[i] || item[3].split(',')[3] === memo[i] || item[3].split(',')[2] === memo[i] || item[3].split(',')[4] === memo[i])) {
+                        console.log(item)
+                        return true;  // Return true and all the elements contained in the condiction
+                    }
+                }
+                return false;  // No matching checkbox found for this item
+            });
+        };
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
+        const specificationseach = deduplicated.map(value=>value[3].split(','));
+        console.log(deduplicated);
+        console.log(specificationseach);
+        if (deduplicated.length > 0) {
+            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
+            setmaxpages(maxPages);
+            setspecif(specificationseach);
+            setpcs(deduplicated);
+            navigate('?page=1');
+        } else {
+            setpcs(pcsfilter);
+            setspecif(speciffilter)
+            setmaxpages(maxpagesfilter);
+            navigate('?page=1');
+        }
+    
+    }, [checkboxmemo, memo, pcsfilter]);
+
+    const memofunction = (event,index) =>{ 
+        const updatedCheckboxes = [...checkboxmemo];
+        updatedCheckboxes[index] = event.target.checked;
+        setcheckboxmemo(updatedCheckboxes)    
+    }
+
+    const commonContainer1 = (
+        <Box  sx={styles.container1}>
+        <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
+            <Box sx={styles.containerfeaturesmainproduct}> 
+               <Box sx={styles.containermenu}>
+                   <Box sx={styles.titlemenu}>
+                       <Text style={styles.textdefault2}>
+                           <span style={{color:"black"}}>Família</span> 
+                       </Text>
+                       <img src={arrowabove} width={30} height={30}></img>
+                   </Box>
+                   <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+                   <Box sx={styles.containerfeatures}>
+                       {
+                           pcs.length>0 &&(
+                               familypcs.map((pc, index) => (
+                                   <Box sx = {styles.menuflex}> 
+                                    <Checkbox sx={{padding:"0"}} checked={checkboxfamily[index]} onChange={(e) => familyfunction(e, index)} />
+                                   <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                       {familypcs[index]}
+                                   </Text>
+                                   </Box>
+                               ))
+                       )}
+                   </Box>     
+               </Box> 
+               <Box sx={styles.containermenu}>
+               <Box sx={styles.titlemenu}>
+                   <Text style={styles.textdefault2}>
+                       <span style={{color:"black"}}>Processador</span> 
+                   </Text>
+                   <img src={arrowabove} width={30} height={30}></img>
+               </Box>
+               <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+               <Box sx={styles.containerfeatures}>
+                   {
+                       pcs.length>0 &&(
+                           proce.map((pc, index) => (
+                               <Box sx = {styles.menuflex}> 
+                               <Checkbox sx={{padding:"0"}} checked={checkboxproce[index]} onChange={(e) => procefunction(e, index)} />
+                               <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                   {proce[index]}
+                               </Text>
+                               </Box>
+                           ))
+                   )}
+               </Box>     
+               </Box> 
+               <Box sx={styles.containermenu}>
+                   <Box sx={styles.titlemenu}>
+                       <Text style={styles.textdefault2}>
+                           <span style={{color:"black"}}>Capacidade</span> 
+                       </Text>
+                       <img src={arrowabove} width={30} height={30}></img>
+                   </Box>
+                   <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+                   <Box sx={styles.containerfeatures}>
+                       {
+                           pcs.length>0 &&(
+                               capa.map((pc, index) => (
+                                   <Box sx = {styles.menuflex}> 
+                                   <Checkbox sx={{padding:"0"}} checked={checkboxcapacity[index]} onChange={(e) => capacityfunction(e, index)} />
+                                   <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                       {capa[index]}
+                                   </Text>
+                                   </Box>    
+                           ))
+                       )}
+                   </Box>     
+               </Box> 
+               <Box sx={styles.containermenu}>
+                   <Box sx={styles.titlemenu}>
+                       <Text style={styles.textdefault2}>
+                           <span style={{color:"black"}}>Memória RAM</span> 
+                       </Text>
+                       <img src={arrowabove} width={30} height={30}></img>
+                   </Box>
+                   <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+                   <Box sx={styles.containerfeatures}>
+                       {
+                           pcs.length>0 &&(
+                               memo.map((pc, index) => (  
+                                <Box sx = {styles.menuflex}> 
+                                <Checkbox sx={{padding:"0"}} checked={checkboxmemo[index]} onChange={(e) => memofunction(e, index)} />
+                                <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                    {memo[index]}
+                                </Text>
+                                </Box>       
+                           ))
+                       )}
+                   </Box>     
+               </Box>
+            </Box>        
+        </Box> 
+       </Box>
+    )
 
     return (
         <>
@@ -138,160 +459,15 @@ export default function Computadores() {
                          ...(isExtraSmallScreen && styles.containermainextrasmall),}}>
                     <Box>
                         {
-                            isSmallScreen || isExtraSmallScreen ?
+                            (isSmallScreen || isExtraSmallScreen) && (
                                 <>
                                     <Box sx ={{textAlign:"right"}}>  
                                         <Button sx={ filtro? { ...styles.buttoncontainer, backgroundColor: '#1B64A7',color:"white"}: styles.buttoncontainer} onClick={(e) => setfiltro(prevFiltro => !prevFiltro)}>Mostrar filtros</Button> 
-                                    </Box>
-                                   
-                                    { filtro &&
-                                     <Box  sx={styles.container1}>
-                                     <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-                                         <Box sx={styles.containerfeaturesmainproduct}> 
-                                            <Box sx={styles.containermenu}>
-                                            <Box sx={styles.titlemenu}>
-                                                <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>Processador</span> 
-                                                </Text>
-                                                <img src={arrowabove} width={30} height={30}></img>
-                                            </Box>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                {
-                                                    pcs.length>0 &&(
-                                                        proce.map((pc, index) => (
-                                                            <Box sx = {styles.menuflex}> 
-                                                            <Checkbox sx={{padding:"0"}} />
-                                                            <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {proce[index]}
-                                                            </Text>
-                                                            </Box>
-                                                        ))
-                                                )}
-                                            </Box>     
-                                            </Box> 
-                                            <Box sx={styles.containermenu}>
-                                                <Box sx={styles.titlemenu}>
-                                                    <Text style={styles.textdefault2}>
-                                                        <span style={{color:"black"}}>Capacidade</span> 
-                                                    </Text>
-                                                    <img src={arrowabove} width={30} height={30}></img>
-                                                </Box>
-                                                <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                                <Box sx={styles.containerfeatures}>
-                                                    {
-                                                        pcs.length>0 &&(
-                                                            capa.map((pc, index) => (
-                                                                <Box sx = {styles.menuflex}> 
-                                                                <Checkbox sx={{padding:"0"}} />
-                                                                <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                    {capa[index]}
-                                                                </Text>
-                                                                </Box>
-                                                        ))
-                                                    )}
-                                                </Box>     
-                                            </Box> 
-                                            <Box sx={styles.containermenu}>
-                                                <Box sx={styles.titlemenu}>
-                                                    <Text style={styles.textdefault2}>
-                                                        <span style={{color:"black"}}>Memória RAM</span> 
-                                                    </Text>
-                                                    <img src={arrowabove} width={30} height={30}></img>
-                                                </Box>
-                                                <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                                <Box sx={styles.containerfeatures}>
-                                                    {
-                                                        pcs.length>0 &&(
-                                                            memo.map((pc, index) => (
-                                                            <Box sx = {styles.menuflex}> 
-                                                            <Checkbox sx={{padding:"0"}} />
-                                                            <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {memo[index]}
-                                                            </Text>
-                                                            </Box>
-                                                        ))
-                                                    )}
-                                                </Box>     
-                                            </Box>
-                                         </Box>        
-                                     </Box> 
-                                 </Box>}
-                                </>
-                            :      
-                            <Box  sx={styles.container1}>
-                                <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-                                    <Box sx={styles.containerfeaturesmainproduct}> 
-                                        <Box sx={styles.containermenu}>
-                                            <Box sx={styles.titlemenu}>
-                                                <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>Processador</span> 
-                                                </Text>
-                                                <img src={arrowabove} width={30} height={30}></img>
-                                            </Box>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                {
-                                                    pcs.length>0 &&(
-                                                        proce.map((pc, index) => (
-                                                            <Box sx = {styles.menuflex}> 
-                                                            <Checkbox sx={{padding:"0"}} />
-                                                            <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {proce[index]}
-                                                            </Text>
-                                                            </Box>
-                                                        ))
-                                                )}
-                                            </Box>     
-                                        </Box> 
-                                        <Box sx={styles.containermenu}>
-                                            <Box sx={styles.titlemenu}>
-                                                <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>Capacidade</span> 
-                                                </Text>
-                                                <img src={arrowabove} width={30} height={30}></img>
-                                            </Box>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                {
-                                                    pcs.length>0 &&(
-                                                        capa.map((pc, index) => (
-                                                            <Box sx = {styles.menuflex}> 
-                                                            <Checkbox sx={{padding:"0"}} />
-                                                            <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                                {capa[index]}
-                                                            </Text>
-                                                            </Box>
-                                                    ))
-                                                )}
-                                            </Box>     
-                                        </Box> 
-                                        <Box sx={styles.containermenu}>
-                                            <Box sx={styles.titlemenu}>
-                                                <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>Memória RAM</span> 
-                                                </Text>
-                                                <img src={arrowabove} width={30} height={30}></img>
-                                            </Box>
-                                            <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                                            <Box sx={styles.containerfeatures}>
-                                                {
-                                                    pcs.length>0 &&(
-                                                        memo.map((pc, index) => (
-                                                        <Box sx = {styles.menuflex}> 
-                                                        <Checkbox sx={{padding:"0"}} />
-                                                        <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                                            {memo[index]}
-                                                        </Text>
-                                                        </Box>
-                                                    ))
-                                                )}
-                                            </Box>     
-                                        </Box>   
-                                    </Box>        
-                                </Box> 
-                            </Box>     
-                        }     
+                                    </Box> 
+                                    {filtro ? commonContainer1 : null}
+                                </>  
+                            )}
+                             {!isSmallScreen && !isExtraSmallScreen && commonContainer1}        
                     </Box>       
                     <Box  sx={{...styles.container1,
                     ...(isExtraLargeScreen && styles.container1extralarge),
@@ -314,11 +490,24 @@ export default function Computadores() {
                                                     {pc[3]}   
                                                 </Text>
                                                 <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {pc[2]} </Text>  
-                                            
-                                                <Text>Processador: {specif[index][0]}</Text>
-                                                <Text>Capacidade: {specif[index][3]}</Text> 
-                                                <Text>RAM: {specif[index][2]}</Text> 
-                                               
+                                                {specifItemsToShow[index] && (
+                                                    <>
+                                                        <Text>Processador: {specifItemsToShow[index][0]}</Text>
+                                                        {
+                                                            specifItemsToShow[index][3] && specifItemsToShow[index][3].includes("SSD") ? (
+                                                                <>
+                                                                    <Text>Capacidade: {specifItemsToShow[index][3]}</Text> 
+                                                                    <Text>RAM: {specifItemsToShow[index][2]}</Text>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Text>Capacidade: {specifItemsToShow[index][2]}</Text> 
+                                                                    <Text>RAM: {specifItemsToShow[index][3]}</Text>
+                                                                </>
+                                                            )
+                                                        }       
+                                                    </>           
+                                                )}           
                                                 <Box sx={styles.disponivel}>
                                                     <img
                                                         src={disponivel}
@@ -340,27 +529,23 @@ export default function Computadores() {
                             )}
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>
-                                <Box>
-                                    <Link to="/computadores?page=1" id='aheader' >
-                                        1   &nbsp; 
-                                    </Link>
-                                    <Text>
-                                        | 
-                                    </Text>
-                                </Box>
-                                <Box>
-                                    <Link  to="/computadores?page=2" id='aheader' >
-                                        2  &nbsp; 
-                                    </Link>
-                                    <Text>
-                                        | 
-                                    </Text>
-                                </Box>
-                                <Box>
-                                    <Link  to="/computadores?page=3" id='aheader' >
-                                        3   &nbsp; 
-                                    </Link>            
-                                </Box>                                  
+                                {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
+                                    <Link  to={`/computadores?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                        <img src={arrowleft} height={10}></img>
+                                        <img src={arrowleft} height={10}></img>
+                                    
+                                    </Link> 
+                                )}
+                              
+                              {renderLinks()}
+                                {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
+                                    <Link  to={`/computadores?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                        
+                                        <img src={arrowright} height={10}></img>
+                                        <img src={arrowright} height={10}></img>
+                                       
+                                    </Link> 
+                                )}                           
                             </Box>
                         </Box>
                     </Box>                   
@@ -379,7 +564,7 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
     pages:{
-        width:"90px",
+        width:"auto",
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
         height:"20px"

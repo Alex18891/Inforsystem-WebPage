@@ -12,9 +12,14 @@ import Memorias from "./pages/Memorias";
 import Caixas from "./pages/Caixas";
 import Placasgraficas from "./pages/Placasgraficas";
 import Motherboards from "./pages/Motherboards";
-import Acessórios from "./pages/Acessorios";
-import Impressoras from "./pages/Impressoras";
-import Allinone from "./pages/Allinone";
+import Processadores from "./pages/Processadores";
+import Coolers from "./pages/Coolers";
+import Discos from "./pages/Discos";
+import Redes from "./pages/Redes";
+import Drives from "./pages/Drives";
+import TapetesRato from "./pages/TapetesRato";
+import Sistemaspos from "./pages/Sistemaspos";
+import Produtos from "./pages/Produtos";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -40,13 +45,18 @@ function App() {
           <Route path="/políticadecookies" element={<Politicadecookies/>} />
           <Route path="/sobrenós" element={<Sobrenos/>} />
           <Route path="/computadores" element={<Computadores/>} />
+          <Route path="/sistemaspos" element={<Sistemaspos/>} />
           <Route path="/memórias" element={<Memorias/>} />
           <Route path="/caixas" element={<Caixas/>} />
           <Route path="/placasgráficas" element={<Placasgraficas/>} />
           <Route path="/motherboards" element={<Motherboards/>} />
-          <Route path="/acessórios" element={<Acessórios/>} />
-          <Route path="/impressoras" element={<Impressoras/>} />
-          <Route path="/allinone" element={<Allinone/>} />
+          <Route path="/processadores" element={<Processadores/>} />
+          <Route path="/coolers" element={<Coolers/>} />
+          <Route path="/discos" element={<Discos/>} />
+          <Route path="/drives" element={<Drives/>} />
+          <Route path="/redes" element={<Redes/>} />
+          <Route path="/tapetesderato" element={<TapetesRato/>} />
+          <Route path="/produtos/Pesquisa" element={<Produtos/>} />
         </Routes>
       </ThemeProvider>
     </PopupContext.Provider>
