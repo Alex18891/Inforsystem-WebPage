@@ -19,7 +19,7 @@ import arrowright from "./../img/arrowright.png"
 import arrowleft from "./../img/arrowleft.png"
 import arrowabove from "./../img/arrowabove.png"
 
-export default function Memorias() {
+export default function Componentes() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -29,16 +29,16 @@ export default function Memorias() {
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
-    const [memorias, setmemorias] = useState([]);
-    const [memoriasfilter, setmemoriasfilter] = useState([]);
+    const [componentes, setcomponentes] = useState([]);
+    const [componentesfilter, setcomponentesfilter] = useState([]);
     const [maxpages, setmaxpages] = useState([]);
     const [maxpagesfilter, setmaxpagesfilter] = useState([]);
-    const [marcamemorias, setmarcamemorias] = useState([]);
-    const [familymemorias, setfamilymemorias] = useState([]);
-    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcamemorias.length).fill(false));
-    const [checkboxfamily,setcheckboxfamily] = useState(Array(familymemorias.length).fill(false));
+    const [marcacomponentes, setmarcacomponentes] = useState([]);
+    const [familycomponentes, setfamilycomponentes] = useState([]);
+    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcacomponentes.length).fill(false));
+    const [checkboxfamily,setcheckboxfamily] = useState(Array(familycomponentes.length).fill(false));
     const pageNumber = queryParams.get("page");
-    const itemsToShow = memorias.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
+    const itemsToShow = componentes.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [filtro, setfiltro] = useState(false);
 
     const renderLinks = () => {
@@ -47,7 +47,7 @@ export default function Memorias() {
           let currentNumber = 1 + i;
           if (currentNumber <= maxpages && currentNumber <= 7) {
             elements.push(
-              <Link to={`/memórias?page=${currentNumber}`} id='aheader' key={currentNumber}>
+              <Link to={`/componentes?page=${currentNumber}`} id='aheader' key={currentNumber}>
                 {currentNumber}
                 <Text>&nbsp; | </Text>
               </Link>
@@ -71,44 +71,36 @@ export default function Memorias() {
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
             if (jsonData && jsonData.length > 0) {
-                const PCs = jsonData.filter(row => row[1] === "Memorias_PCs");
-                const memoriasportateis = jsonData.filter(row => row[1] === "Memorias_Portateis");      
-                const memoriasusb = jsonData.filter(row => row[1] === "Memorias_USB");
-                const memoriascartoes = jsonData.filter(row => row[1] === "Memorias_Cartoes");
-                const memoriasespecificias = jsonData.filter(row => row[1] === "Memorias_Especificas");
+                const pgraficas = jsonData.filter(row => row[1] === "Placas_Graficas");
+                const motherboards = jsonData.filter(row => row[1] === "Motherboards_Pcs");    
+                const processadores = jsonData.filter(row => row[1] === "Processadores");
                 const combinedmarcaarray =Array.from(new Set(
                     [
-                        ...PCs.map(value => value[0]),
-                        ...memoriasportateis.map(value => value[0]),
-                        ...memoriasusb.map(value => value[0]),
-                        ...memoriascartoes.map(value => value[0]),
-                        ...memoriasespecificias.map(value => value[0]),
+                        ...pgraficas.map(value => value[0]),
+                        ...motherboards.map(value => value[0]),
+                        ...processadores.map(value => value[0]),
                     ]
                 )) 
-                setmarcamemorias(combinedmarcaarray)
+                setmarcacomponentes(combinedmarcaarray)
                 const combinedfamilyarray = Array.from(new Set(
                     [
-                        ...PCs.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriasportateis.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriasusb.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriascartoes.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriasespecificias.map(value => value[1].replace(/_/g, ' ')),
+                        ...pgraficas.map(value => value[1].replace(/_/g, ' ')),
+                        ...motherboards.map(value => value[1].replace(/_/g, ' ')),
+                        ...processadores.map(value => value[1].replace(/_/g, ' ')),
                     ]
                 ))
-                setfamilymemorias(combinedfamilyarray)
-                const combinedmemoriasarray = Array.from(new Set(
+                setfamilycomponentes(combinedfamilyarray)
+                const combinedcomponentesarray = Array.from(new Set(
                     [
-                        ...PCs,
-                        ...memoriasportateis,
-                        ...memoriasusb,
-                        ...memoriascartoes,
-                        ...memoriasespecificias,
+                        ...pgraficas,
+                        ...motherboards,
+                        ...processadores,
                     ]
                 ))
-                const maxPages = Math.ceil(combinedmemoriasarray.length / itemsPerPage);
+                const maxPages = Math.ceil(combinedcomponentesarray.length / itemsPerPage);
                 setmaxpages(maxPages)
-                setmemorias(combinedmemoriasarray)
-                setmemoriasfilter(combinedmemoriasarray)
+                setcomponentes(combinedcomponentesarray)
+                setcomponentesfilter(combinedcomponentesarray)
                 setmaxpagesfilter(maxPages)
             }
         };
@@ -125,11 +117,11 @@ export default function Memorias() {
 
     useEffect(()=>{       
         const filterBySelectedCheckboxes = () => {
-            return memoriasfilter.filter(item=>{      //Filter the pcs by family     
+            return componentesfilter.filter(item=>{      //Filter the pcs by family     
                 for(let i = 0; i<checkboxmarca.length;i++)//For that runs up to all the checkboxs
                 {
-                    console.log( marcamemorias[i])
-                    if(checkboxmarca[i] && item[0] ==  marcamemorias[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
+                    console.log( marcacomponentes[i])
+                    if(checkboxmarca[i] && item[0] ==  marcacomponentes[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
                     {    
                         return true;
                     }   
@@ -144,16 +136,16 @@ export default function Memorias() {
         {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
-            setmemorias(deduplicated);
+            setcomponentes(deduplicated);
             navigate('?page=1');
         }
         else{
-            setmemorias(memoriasfilter);
+            setcomponentes(componentesfilter);
             setmaxpages(maxpagesfilter);
             navigate('?page=1');
         }
       
-    },[checkboxmarca, marcamemorias, memoriasfilter])
+    },[checkboxmarca, marcacomponentes, componentesfilter])
 
     const marcafunction = (event,index) =>{
         const updatedCheckboxes = [...checkboxmarca];
@@ -163,11 +155,11 @@ export default function Memorias() {
 
     useEffect(()=>{       
         const filterBySelectedCheckboxes = () => {
-            return memoriasfilter.filter(item=>{      //Filter the pcs by family     
+            return componentesfilter.filter(item=>{      //Filter the pcs by family     
                 for(let i = 0; i<checkboxfamily.length;i++)//For that runs up to all the checkboxs
                 {
-                    console.log( familymemorias[i])
-                    if(checkboxfamily[i] && item[1].replace(/_/g, ' ') ==  familymemorias[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
+                    console.log( familycomponentes[i])
+                    if(checkboxfamily[i] && item[1].replace(/_/g, ' ') ==  familycomponentes[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
                     {    
                         return true;
                     }   
@@ -182,16 +174,16 @@ export default function Memorias() {
         {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
-            setmemorias(deduplicated);
+            setcomponentes(deduplicated);
             navigate('?page=1');
         }
         else{
-            setmemorias(memoriasfilter);
+            setcomponentes(componentesfilter);
             setmaxpages(maxpagesfilter);
             navigate('?page=1');
         }
       
-    },[checkboxfamily, familymemorias, memoriasfilter])
+    },[checkboxfamily, familycomponentes, componentesfilter])
 
     const familyfunction = (event,index) =>{
         const updatedCheckboxes = [...checkboxfamily];
@@ -213,12 +205,12 @@ export default function Memorias() {
                 <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                 <Box sx={styles.containerfeatures}>
                     {
-                        memorias.length>0  &&(
-                            marcamemorias.map((pc, index) => (
+                        componentes.length>0  &&(
+                            marcacomponentes.map((pc, index) => (
                                 <Box sx = {styles.menuflex}> 
                                 <Checkbox sx={{padding:"0"}} checked={checkboxmarca[index]} onChange={(e) => marcafunction(e, index)} />
                                 <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                    {marcamemorias[index]}
+                                    {marcacomponentes[index]}
                                 </Text>
                                 </Box>
                             ))                                                                                                       
@@ -235,18 +227,16 @@ export default function Memorias() {
                     <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                     <Box sx={styles.containerfeatures}>
                         {
-                            memorias.length>0  &&(
-                                familymemorias.map((pc, index) => (
+                            componentes.length>0  &&(
+                                familycomponentes.map((pc, index) => (
                                     <Box sx = {styles.menuflex}> 
                                      <Checkbox sx={{padding:"0"}} checked={checkboxfamily[index]} onChange={(e) => familyfunction(e, index)} />
                                     <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                        {familymemorias[index]}
+                                        {familycomponentes[index]}
                                     </Text>
                                     </Box>
                                 ))                                                                                                       
-                        )}
-                        
-                        
+                        )}     
                     </Box>     
                 </Box> 
             
@@ -272,7 +262,7 @@ export default function Memorias() {
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa'>   &nbsp;  \  &nbsp; Produtos  &nbsp;  \  &nbsp;   </Link>
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Memórias</Text>   
+                        <Text  style={{fontSize: "20px",zIndex:-1}}>Componentes</Text>   
                         </Box>
                     </Box>     
                     <Text style={{
@@ -280,7 +270,7 @@ export default function Memorias() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Memórias</span>
+                        <span style={{fontWeight:"bold"}}>Componentes</span>
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -288,7 +278,7 @@ export default function Memorias() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Veja as memórias disponíveis na loja
+                        Veja os componentes disponíveis na loja
                     </Text>
                 </Box>
                 <Box sx={{...styles.containermain, 
@@ -312,8 +302,8 @@ export default function Memorias() {
                     ...(isMediumScreen && styles.container1medium), 
                     ...(isSmallScreen && styles.container1small), 
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
-                        {memorias.length>0  &&(
-                                itemsToShow.map((mem, index) => (
+                        {componentes.length>0  &&(
+                                itemsToShow.map((comp, index) => (
                                         <Box sx={styles.viewcontainer}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
@@ -324,9 +314,9 @@ export default function Memorias() {
                                             </Box>
                                             <Box sx={styles.containerfeatures}>
                                                 <Text style={[styles.textdefault2]} key={index}>
-                                                    {mem[3]}   
+                                                    {comp[3]}   
                                                 </Text>
-                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {mem[2]} </Text>    
+                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {comp[2]} </Text>    
                                      
                                                 <Box sx={styles.disponivel}>
                                                     <img
@@ -340,7 +330,7 @@ export default function Memorias() {
                                                     </Text>
                                                 </Box>
                                                 <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>{mem[5]} €</span> 
+                                                    <span style={{color:"black"}}>{comp[5]} €</span> 
                                                 </Text>
                                             </Box>
                                         </Box>
@@ -350,7 +340,7 @@ export default function Memorias() {
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>
                                 {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
-                                    <Link  to={`/memórias?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                    <Link  to={`/componentes?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
                                     
@@ -358,7 +348,7 @@ export default function Memorias() {
                                 )}     
                                 {renderLinks()}
                                 {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
-                                    <Link  to={`/memórias?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
+                                    <Link  to={`/componentes?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
                                         <img src={arrowright} height={10}></img>
                                         <img src={arrowright} height={10}></img>      
                                     </Link> 

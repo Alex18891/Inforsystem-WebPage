@@ -77,9 +77,9 @@ export default function Login() {
                             ></img>
                         </Box>   
                 </Toolbar>
-                </Box >
+            </Box >
            </Box>        
-                <Box  sx={styles.container}>
+            <Box  sx={styles.container}>
                     <Box sx={{width:"65%"}}>    
                         <Box sx={[styles.containerfeaturesmain,{gap:"9px"}]}>  
                             <Text style={styles.textdefault} >
@@ -195,7 +195,7 @@ export default function Login() {
                                 <Button sx={styles.buttoncontainer} onClick={register}>Criar conta</Button>
                             </Box>
                         </Box>        
-                </Box>
+            </Box>
           
         </>
     );

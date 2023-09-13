@@ -12,33 +12,55 @@ import { Divider } from '@mui/material';
 import * as XLSX from 'xlsx';
 import '../index.css';
 
+import firstpc from "./../img/firstpc.png";
 import secondpc from "./../img/secondpc.png";
+import thirdpc from "./../img/thirdpc.png";
+import fourthpc from "./../img/fourthpc.png";
+import fifthpc from "./../img/fifthpc.png";
+import sixthpc from "./../img/sixthpc.png";
+import seventhpc from "./../img/seventhpc.png";
+import eighthpc from "./../img/eighthpc.png";
+import ninethpc from "./../img/ninethpc.png";
+import tenthpc from "./../img/tenthpc.png";
+import eleventhpc from "./../img/eleventhpc.png";
+import twelfthpc from "./../img/twelfthpc.png";
+
+import firstpcsecondpage from "./../img/firstpcsecondpage.png";
+import secondpcsecondpage  from "./../img/secondpcsecondpage.png";
+import thirdpcsecondpage  from "./../img/thirdpcsecondpage.png";
+import fourthpcsecondpage  from "./../img/fourthpcsecondpage.png";
+import fifthpcsecondpage  from "./../img/fifthpcsecondpage.png";
+import sixthpcsecondpage  from "./../img/sixthpcsecondpage.png";
+import seventhpcsecondpage  from "./../img/seventhpcsecondpage.png";
+import eighthpcsecondpage  from "./../img/eighthpcsecondpage.png";
+import ninethpcsecondpage  from "./../img/ninethpcsecondpage.png";
+import tenthpcsecondpage  from "./../img/tenthpcsecondpage.png";
+import eleventhpcsecondpage  from "./../img/eleventhpcsecondpage.png";
+import twelfthpcsecondpage  from "./../img/twelfthpcsecondpage.png";
 
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
 import arrowleft from "./../img/arrowleft.png"
 import arrowabove from "./../img/arrowabove.png"
 
-export default function Memorias() {
+export default function DiscosExternos() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
     const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     const itemsPerPage = 16;
-    const location = useLocation();
     const navigate = useNavigate();
+    const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const [memorias, setmemorias] = useState([]);
-    const [memoriasfilter, setmemoriasfilter] = useState([]);
+    const [discosexternos, setdiscosexternos] = useState([]);
+    const [discosexternosfilter, setdiscosexternosfilter] = useState([]);
     const [maxpages, setmaxpages] = useState([]);
     const [maxpagesfilter, setmaxpagesfilter] = useState([]);
-    const [marcamemorias, setmarcamemorias] = useState([]);
-    const [familymemorias, setfamilymemorias] = useState([]);
-    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcamemorias.length).fill(false));
-    const [checkboxfamily,setcheckboxfamily] = useState(Array(familymemorias.length).fill(false));
+    const [marcadiscosexternos, setmarcadiscosexternos] = useState([]);
+    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcadiscosexternos.length).fill(false));
     const pageNumber = queryParams.get("page");
-    const itemsToShow = memorias.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
+    const itemsToShow = discosexternos.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [filtro, setfiltro] = useState(false);
 
     const renderLinks = () => {
@@ -47,7 +69,7 @@ export default function Memorias() {
           let currentNumber = 1 + i;
           if (currentNumber <= maxpages && currentNumber <= 7) {
             elements.push(
-              <Link to={`/memórias?page=${currentNumber}`} id='aheader' key={currentNumber}>
+              <Link to={`/discosExternos?page=${currentNumber}`} id='aheader' key={currentNumber}>
                 {currentNumber}
                 <Text>&nbsp; | </Text>
               </Link>
@@ -71,44 +93,13 @@ export default function Memorias() {
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
             if (jsonData && jsonData.length > 0) {
-                const PCs = jsonData.filter(row => row[1] === "Memorias_PCs");
-                const memoriasportateis = jsonData.filter(row => row[1] === "Memorias_Portateis");      
-                const memoriasusb = jsonData.filter(row => row[1] === "Memorias_USB");
-                const memoriascartoes = jsonData.filter(row => row[1] === "Memorias_Cartoes");
-                const memoriasespecificias = jsonData.filter(row => row[1] === "Memorias_Especificas");
-                const combinedmarcaarray =Array.from(new Set(
-                    [
-                        ...PCs.map(value => value[0]),
-                        ...memoriasportateis.map(value => value[0]),
-                        ...memoriasusb.map(value => value[0]),
-                        ...memoriascartoes.map(value => value[0]),
-                        ...memoriasespecificias.map(value => value[0]),
-                    ]
-                )) 
-                setmarcamemorias(combinedmarcaarray)
-                const combinedfamilyarray = Array.from(new Set(
-                    [
-                        ...PCs.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriasportateis.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriasusb.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriascartoes.map(value => value[1].replace(/_/g, ' ')),
-                        ...memoriasespecificias.map(value => value[1].replace(/_/g, ' ')),
-                    ]
-                ))
-                setfamilymemorias(combinedfamilyarray)
-                const combinedmemoriasarray = Array.from(new Set(
-                    [
-                        ...PCs,
-                        ...memoriasportateis,
-                        ...memoriasusb,
-                        ...memoriascartoes,
-                        ...memoriasespecificias,
-                    ]
-                ))
-                const maxPages = Math.ceil(combinedmemoriasarray.length / itemsPerPage);
+                const discosexternos = jsonData.filter(row => row[1] === "Discos_Externos"); 
+                const combinedmarcaarray =Array.from(new Set(discosexternos.map(value => value[0]))) 
+                setmarcadiscosexternos(combinedmarcaarray)
+                const maxPages = Math.ceil(discosexternos.length / itemsPerPage);
                 setmaxpages(maxPages)
-                setmemorias(combinedmemoriasarray)
-                setmemoriasfilter(combinedmemoriasarray)
+                setdiscosexternos(discosexternos)
+                setdiscosexternosfilter(discosexternos)
                 setmaxpagesfilter(maxPages)
             }
         };
@@ -125,11 +116,11 @@ export default function Memorias() {
 
     useEffect(()=>{       
         const filterBySelectedCheckboxes = () => {
-            return memoriasfilter.filter(item=>{      //Filter the pcs by family     
+            return discosexternosfilter.filter(item=>{      //Filter the pcs by family     
                 for(let i = 0; i<checkboxmarca.length;i++)//For that runs up to all the checkboxs
                 {
-                    console.log( marcamemorias[i])
-                    if(checkboxmarca[i] && item[0] ==  marcamemorias[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
+                    console.log( marcadiscosexternos[i])
+                    if(checkboxmarca[i] && item[0] ==  marcadiscosexternos[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
                     {    
                         return true;
                     }   
@@ -144,16 +135,16 @@ export default function Memorias() {
         {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
-            setmemorias(deduplicated);
+            setdiscosexternos(deduplicated);
             navigate('?page=1');
         }
         else{
-            setmemorias(memoriasfilter);
+            setdiscosexternos(discosexternosfilter);
             setmaxpages(maxpagesfilter);
             navigate('?page=1');
         }
       
-    },[checkboxmarca, marcamemorias, memoriasfilter])
+    },[checkboxmarca, marcadiscosexternos, discosexternosfilter])
 
     const marcafunction = (event,index) =>{
         const updatedCheckboxes = [...checkboxmarca];
@@ -161,96 +152,33 @@ export default function Memorias() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
-    useEffect(()=>{       
-        const filterBySelectedCheckboxes = () => {
-            return memoriasfilter.filter(item=>{      //Filter the pcs by family     
-                for(let i = 0; i<checkboxfamily.length;i++)//For that runs up to all the checkboxs
-                {
-                    console.log( familymemorias[i])
-                    if(checkboxfamily[i] && item[1].replace(/_/g, ' ') ==  familymemorias[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
-                    {    
-                        return true;
-                    }   
-                }
-                return false;
-            })
-        };
-        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse); //JSON.stringify converts all array to string to removes all the repeated arrays
-        //after the JSON.parse put the array into the initial state.
-        console.log(deduplicated);
-        if(deduplicated.length>0)
-        {
-            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
-            setmaxpages(maxPages);
-            setmemorias(deduplicated);
-            navigate('?page=1');
-        }
-        else{
-            setmemorias(memoriasfilter);
-            setmaxpages(maxpagesfilter);
-            navigate('?page=1');
-        }
-      
-    },[checkboxfamily, familymemorias, memoriasfilter])
-
-    const familyfunction = (event,index) =>{
-        const updatedCheckboxes = [...checkboxfamily];
-        updatedCheckboxes[index] = event.target.checked;
-        setcheckboxfamily(updatedCheckboxes)    
-    }
-
     const commonContainer1 = (
         <Box  sx={styles.container1}>
             <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-                <Box sx={styles.containerfeaturesmainproduct}> 
-                <Box sx={styles.containermenu}>
-                <Box sx={styles.titlemenu}>
-                    <Text style={styles.textdefault2}>
-                        <span style={{color:"black"}}>Marca</span> 
-                    </Text>
-                    <img src={arrowabove} width={30} height={30}></img>
-                </Box>
-                <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                <Box sx={styles.containerfeatures}>
-                    {
-                        memorias.length>0  &&(
-                            marcamemorias.map((pc, index) => (
-                                <Box sx = {styles.menuflex}> 
-                                <Checkbox sx={{padding:"0"}} checked={checkboxmarca[index]} onChange={(e) => marcafunction(e, index)} />
-                                <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                    {marcamemorias[index]}
-                                </Text>
-                                </Box>
-                            ))                                                                                                       
-                    )}           
-                </Box>     
-                </Box> 
-                <Box sx={styles.containermenu}>
-                    <Box sx={styles.titlemenu}>
-                        <Text style={styles.textdefault2}>
-                            <span style={{color:"black"}}>Família</span> 
-                        </Text>
-                        <img src={arrowabove} width={30} height={30}></img>
-                    </Box>
-                    <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
-                    <Box sx={styles.containerfeatures}>
-                        {
-                            memorias.length>0  &&(
-                                familymemorias.map((pc, index) => (
-                                    <Box sx = {styles.menuflex}> 
-                                     <Checkbox sx={{padding:"0"}} checked={checkboxfamily[index]} onChange={(e) => familyfunction(e, index)} />
-                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                        {familymemorias[index]}
-                                    </Text>
-                                    </Box>
-                                ))                                                                                                       
-                        )}
-                        
-                        
-                    </Box>     
-                </Box> 
-            
-                </Box>        
+            <Box sx={styles.containerfeaturesmainproduct}> 
+               <Box sx={styles.containermenu}>
+               <Box sx={styles.titlemenu}>
+                   <Text style={styles.textdefault2}>
+                       <span style={{color:"black"}}>Marca</span> 
+                   </Text>
+                   <img src={arrowabove} width={30} height={30}></img>
+               </Box>
+               <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+               <Box sx={styles.containerfeatures}>
+                   {
+                       discosexternos.length>0  &&(
+                           marcadiscosexternos.map((pc, index) => (
+                               <Box sx = {styles.menuflex}> 
+                               <Checkbox sx={{padding:"0"}} checked={checkboxmarca[index]} onChange={(e) => marcafunction(e, index)} />
+                               <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                   {marcadiscosexternos[index]}
+                               </Text>
+                               </Box>
+                           ))                                                                                                       
+                   )}         
+               </Box>     
+               </Box> 
+            </Box>        
             </Box> 
         </Box>
     )
@@ -272,7 +200,7 @@ export default function Memorias() {
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa'>   &nbsp;  \  &nbsp; Produtos  &nbsp;  \  &nbsp;   </Link>
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Memórias</Text>   
+                        <Text  style={{fontSize: "20px",zIndex:-1}}>Discos Externos</Text>   
                         </Box>
                     </Box>     
                     <Text style={{
@@ -280,7 +208,7 @@ export default function Memorias() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Memórias</span>
+                        <span style={{fontWeight:"bold"}}>Discos Externos</span>
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -288,7 +216,7 @@ export default function Memorias() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Veja as memórias disponíveis na loja
+                        Veja os discos externos disponíveis na loja
                     </Text>
                 </Box>
                 <Box sx={{...styles.containermain, 
@@ -305,15 +233,15 @@ export default function Memorias() {
                                 </>  
                             )}
                              {!isSmallScreen && !isExtraSmallScreen && commonContainer1}        
-                    </Box>        
+                    </Box>           
                     <Box  sx={{...styles.container1,
                     ...(isExtraLargeScreen && styles.container1extralarge),
                     ...(isLargeScreen && styles.container1large), 
                     ...(isMediumScreen && styles.container1medium), 
                     ...(isSmallScreen && styles.container1small), 
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
-                        {memorias.length>0  &&(
-                                itemsToShow.map((mem, index) => (
+                        {discosexternos.length>0  &&(
+                                itemsToShow.map((discosexternos, index) => (
                                         <Box sx={styles.viewcontainer}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
@@ -324,10 +252,9 @@ export default function Memorias() {
                                             </Box>
                                             <Box sx={styles.containerfeatures}>
                                                 <Text style={[styles.textdefault2]} key={index}>
-                                                    {mem[3]}   
+                                                    {discosexternos[3]}   
                                                 </Text>
-                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {mem[2]} </Text>    
-                                     
+                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {discosexternos[2]} </Text>    
                                                 <Box sx={styles.disponivel}>
                                                     <img
                                                         src={disponivel}
@@ -340,7 +267,7 @@ export default function Memorias() {
                                                     </Text>
                                                 </Box>
                                                 <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>{mem[5]} €</span> 
+                                                    <span style={{color:"black"}}>{discosexternos[5]} €</span> 
                                                 </Text>
                                             </Box>
                                         </Box>
@@ -350,7 +277,7 @@ export default function Memorias() {
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>
                                 {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
-                                    <Link  to={`/memórias?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                    <Link  to={`/discosExternos?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
                                     
@@ -358,11 +285,11 @@ export default function Memorias() {
                                 )}     
                                 {renderLinks()}
                                 {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
-                                    <Link  to={`/memórias?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
+                                    <Link  to={`/discosExternos?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
                                         <img src={arrowright} height={10}></img>
                                         <img src={arrowright} height={10}></img>      
                                     </Link> 
-                                )}                            
+                                )}            
                             </Box>
                         </Box>
                     </Box>                   

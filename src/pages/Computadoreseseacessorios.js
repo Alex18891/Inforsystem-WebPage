@@ -46,7 +46,7 @@ import arrowleft from "./../img/arrowleft.png"
 let filterfamily = []
 
 
-export default function Computadores() {
+export default function Computadoreseseacessorios() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -59,10 +59,12 @@ export default function Computadores() {
     const [pcs, setpcs] = useState([]);
     const [pcsfilter, setpcsfilter] = useState([]);
     const [specif,setspecif] = useState([]);
-    const [speciffilter,setspeciffilter] = useState([]);;
+    const [speciffilter,setspeciffilter] = useState([]);
+    const [familypcs, setfamilypcs] = useState([]);
     const [proce,setprocessador] = useState([]);
     const [capa,setcapacidade] = useState([]);
     const [memo,setmemoria] = useState([]);
+    const [checkboxfamily,setcheckboxfamily] = useState(Array(familypcs.length).fill(false));
     const [checkboxproce,setcheckboxproc] = useState(Array(proce.length).fill(false));
     const [checkboxcapacity,setcheckboxcapacity] = useState(Array(capa.length).fill(false));
     const [checkboxmemo,setcheckboxmemo] = useState(Array(capa.length).fill(false));
@@ -79,7 +81,7 @@ export default function Computadores() {
           let currentNumber = 1 + i;
           if (currentNumber <= maxpages && currentNumber <= 7) {
             elements.push(
-              <Link to={`/computadores?page=${currentNumber}`} id='aheader' key={currentNumber}>
+              <Link to={`/computadoreseacessórios?page=${currentNumber}`} id='aheader' key={currentNumber}>
                 {currentNumber}
                 <Text>&nbsp; | </Text>
               </Link>
@@ -101,21 +103,49 @@ export default function Computadores() {
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        
             if (jsonData && jsonData.length > 0) {
                 const PCs = jsonData.filter(row => row[1] === "PCs");
-            
-             
-                const combinedspecarray = Array.from(new Set(
+                const PCacc = jsonData.filter(row => row[1] === "PCs_Acessórios");  
+
+                const shouldIncludeInAcc = (brand, product) => {
+                    switch (brand) {
+                        case "Cooler_Master":
+                            return product !== "V750 Gold i Multi A/EU cord" && product !== "V850 Gold i Multi A/EU cord";
+                        case "Asus":
+                            return product === "GX601 ROG Strix Helios HDD Cage Kit ";
+                        case "Nox":
+                            return product.includes("Adapter");
+                        case "Corsair":
+                            return !product.includes("Series") && product !== "Professional  AX1600i Digital ATX Power Supply, EU version ";
+                        case "UNYKAch":
+                            return product.includes("Adaptador");
+                        default:
+                            return false;
+                    }
+                };
+                let acc = PCacc.filter(value => shouldIncludeInAcc(value[0], value[3])); 
+                console.log(acc)
+                const combinedpcarray = Array.from(new Set(
                     [
                         ...PCs,
                     ]
-                )) 
+                ))
+                const combinedspecarray = Array.from(new Set(
+                    [
+                        ...PCs,
+                        ...acc,
+                    ]
+                ))
+                const combinedfamilyarray = Array.from(new Set(
+                    [
+                        ...PCs.map(value => value[1].replace(/_/g, ' ')),
+                        ...acc.map(value => value[1].replace(/_/g, ' ')),
+                    ]
+                ))
                 //console.log(PCs.map(value=>value[3]))
                 setpcs(combinedspecarray)
                 setpcsfilter(combinedspecarray)
-                const specificationseach = combinedspecarray.map(value=>value[3].split(','));
-
+                const specificationseach = combinedpcarray.map(value=>value[3].split(','));
                 const processador = Array.from(new Set(specificationseach.map(value=>value[0])));
                 let capacidade = []
                 let memoria = []
@@ -142,6 +172,7 @@ export default function Computadores() {
                 })
                
                 //const memoria = Array.from(new Set(specificationseach.map(value=>value[2])));
+                setfamilypcs(combinedfamilyarray);
                 setprocessador(processador);
                 setmemoria(memoria);
                 setcapacidade(capacidade);
@@ -163,6 +194,42 @@ export default function Computadores() {
         readFile();
     }, []);
 
+    useEffect(()=>{       
+        const filterBySelectedCheckboxes = () => {
+            return pcsfilter.filter(item=>{      //Filter the pcs by family     
+                for(let i = 0; i<checkboxfamily.length;i++)//For that runs up to all the checkboxs
+                {
+                    if(checkboxfamily[i] && item[1].replace(/_/g, ' ') == familypcs[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
+                    {    
+                        return true;
+                    }   
+                }
+                return false;
+            })
+        };
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse); //JSON.stringify converts all array to string to removes all the repeated arrays
+        //after the JSON.parse put the array into the initial state.
+        if(deduplicated.length>0)
+        {
+            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
+            setmaxpages(maxPages);
+            setpcs(deduplicated);
+            navigate('?page=1');
+        }
+        else{
+            setpcs(pcsfilter);
+            setmaxpages(maxpagesfilter);
+            navigate('?page=1');
+        }
+      
+    },[checkboxfamily,familypcs, pcsfilter])
+
+    const familyfunction = (event,index) =>{
+        const updatedCheckboxes = [...checkboxfamily];
+        updatedCheckboxes[index] = event.target.checked;
+        setcheckboxfamily(updatedCheckboxes)    
+    }
+
     useEffect(() => {
         const filterBySelectedCheckboxes = () => {
             return pcsfilter.filter(item => {
@@ -175,7 +242,6 @@ export default function Computadores() {
             });
         };
         const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
-        console.log(deduplicated);
         if (deduplicated.length > 0) {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
@@ -208,8 +274,6 @@ export default function Computadores() {
         };
         const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
         const specificationseach = deduplicated.map(value=>value[3].split(','));
-        console.log(deduplicated);
-        console.log(specificationseach);
         if (deduplicated.length > 0) {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
@@ -245,8 +309,6 @@ export default function Computadores() {
         };
         const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
         const specificationseach = deduplicated.map(value=>value[3].split(','));
-        console.log(deduplicated);
-        console.log(specificationseach);
         if (deduplicated.length > 0) {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
@@ -271,7 +333,29 @@ export default function Computadores() {
     const commonContainer1 = (
         <Box  sx={styles.container1}>
         <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-            <Box sx={styles.containerfeaturesmainproduct}>  
+            <Box sx={styles.containerfeaturesmainproduct}> 
+               <Box sx={styles.containermenu}>
+                   <Box sx={styles.titlemenu}>
+                       <Text style={styles.textdefault2}>
+                           <span style={{color:"black"}}>Família</span> 
+                       </Text>
+                       <img src={arrowabove} width={30} height={30}></img>
+                   </Box>
+                   <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+                   <Box sx={styles.containerfeatures}>
+                       {
+                           pcs.length>0 &&(
+                               familypcs.map((pc, index) => (
+                                   <Box sx = {styles.menuflex}> 
+                                    <Checkbox sx={{padding:"0"}} checked={checkboxfamily[index]} onChange={(e) => familyfunction(e, index)} />
+                                   <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                       {familypcs[index]}
+                                   </Text>
+                                   </Box>
+                               ))
+                       )}
+                   </Box>     
+               </Box> 
                <Box sx={styles.containermenu}>
                <Box sx={styles.titlemenu}>
                    <Text style={styles.textdefault2}>
@@ -455,7 +539,7 @@ export default function Computadores() {
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>
                                 {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
-                                    <Link  to={`/computadores?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                    <Link  to={`/computadoreseacessórios?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
                                     
@@ -463,7 +547,7 @@ export default function Computadores() {
                                 )}  
                                 {renderLinks()}
                                 {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
-                                    <Link  to={`/computadores?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                    <Link  to={`/computadoreseacessórios?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
                                         
                                         <img src={arrowright} height={10}></img>
                                         <img src={arrowright} height={10}></img>

@@ -199,7 +199,7 @@ export default function Placasgraficas() {
                             ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
-                        <Text style={{fontSize: "20px",zIndex:-1}}>    \  Produtos  \    </Text>  
+                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa'>   &nbsp;  \  &nbsp; Produtos  &nbsp;  \  &nbsp;   </Link> 
                         <Text  style={{fontSize: "20px",zIndex:-1}}>Placas Gráficas</Text>   
                         </Box>
                     </Box>     

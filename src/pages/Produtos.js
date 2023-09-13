@@ -213,13 +213,13 @@ export default function Produtos() {
                                         </Box>
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}} to="/computadoresacessórios?page=1">
                                                 Computadores Acessórios
                                             </Link>
                                         </Box>
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link id='aheader' to="/computadores?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link id='aheader' to="/computadoreseacessórios?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                Ver tudo
                                             </Link>
                                         </Box>
@@ -273,31 +273,31 @@ export default function Produtos() {
                                     <Box sx={styles.produtosmenucolumn}>
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"1rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader'  to="/posImpressoras?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 POS Impressoras
                                             </Link>
                                         </Box>  
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
-                                                POS Leitores codigos barra
+                                            <Link  id='aheader' to="/posLeitorescodigobarra?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                POS Leitores códigos barra
                                             </Link>
                                         </Box>   
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/possistemaspos?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 Sistemas de POS
                                             </Link>
                                         </Box>   
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/posmonitores?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 POS Monitores
                                             </Link>
                                         </Box>  
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/posacessórios?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 POS Acessórios
                                             </Link>
                                         </Box>    
@@ -346,6 +346,69 @@ export default function Produtos() {
                                                Processadores
                                             </Link>
                                         </Box>   
+                                        <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
+                                            <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
+                                            <Link  id='aheader' to="/componentes?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                Ver tudo 
+                                            </Link>
+                                        </Box>  
+                                    </Box>       
+                                </Box>     
+                            </Box>      
+                        </Box>            
+                    </Box> 
+                    <Box sx={styles.viewcontainer}> 
+                        <Box sx={{background: "#1A65A4",borderRadius:"3px 0px"}}>
+                            <Box sx={styles.containerfeaturesmainproduct}> 
+                            <Box style={ {textAlign:"center"}}>
+                                <Text style={[styles.textdefault,{fontSize:"20px",color:"white",zIndex:0,fontWeight:"bold"}]}>
+                                    Memórias 
+                                </Text>
+                            </Box>    
+                            </Box>  
+                        </Box>     
+                        <Box sx={styles.containerfeaturesmainproduct}> 
+                            <Box sx={styles.containerfeatures}>
+                                <Box sx={styles.produtosmenurow}>
+                                    <img src={componentesprodutos}>
+                                    </img>
+                                    <Box sx={styles.produtosmenucolumn}>
+                                        <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"1rem"}]}> 
+                                            <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
+                                            <Link  id='aheader' to='/memóriaspcs?page=1' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                Memórias PCs
+                                            </Link>
+                                        </Box>  
+                                        <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
+                                            <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
+                                            <Link  id='aheader' to="/memóriasportáteis?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                Memórias Portáteis
+                                            </Link>
+                                        </Box> 
+                                        <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
+                                            <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
+                                            <Link  id='aheader' to="/memóriasusb?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                Memórias USB
+                                            </Link>
+                                        </Box> 
+                                        <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
+                                            <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
+                                            <Link  id='aheader' to="/memóriascartões?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                Memórias Cartões
+                                            </Link>
+                                        </Box>  
+                                        <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
+                                            <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
+                                            <Link  id='aheader' to="/memóriasespecíficas?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                Memórias Específicas
+                                            </Link>
+                                        </Box>   
+                                        <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
+                                            <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
+                                            <Link  id='aheader' to="/memórias?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                                Ver tudo 
+                                            </Link>
+                                        </Box>  
                                     </Box>       
                                 </Box>     
                             </Box>      
@@ -387,7 +450,7 @@ export default function Produtos() {
                                         </Box>  
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/tapetesderato?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 Tapetes Ratos
                                             </Link>
                                         </Box>  
@@ -415,19 +478,19 @@ export default function Produtos() {
                                     <Box sx={styles.produtosmenucolumn}>
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"1rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/discosHDD?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 Discos HDD
                                             </Link>
                                         </Box>  
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/discosSSD?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 Discos SSD
                                             </Link>
                                         </Box> 
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/discosExternos?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 Discos Externos
                                             </Link>
                                         </Box>   

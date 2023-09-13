@@ -12,14 +12,41 @@ import { Divider } from '@mui/material';
 import * as XLSX from 'xlsx';
 import '../index.css';
 
+import firstpc from "./../img/firstpc.png";
 import secondpc from "./../img/secondpc.png";
+import thirdpc from "./../img/thirdpc.png";
+import fourthpc from "./../img/fourthpc.png";
+import fifthpc from "./../img/fifthpc.png";
+import sixthpc from "./../img/sixthpc.png";
+import seventhpc from "./../img/seventhpc.png";
+import eighthpc from "./../img/eighthpc.png";
+import ninethpc from "./../img/ninethpc.png";
+import tenthpc from "./../img/tenthpc.png";
+import eleventhpc from "./../img/eleventhpc.png";
+import twelfthpc from "./../img/twelfthpc.png";
+
+import firstpcsecondpage from "./../img/firstpcsecondpage.png";
+import secondpcsecondpage  from "./../img/secondpcsecondpage.png";
+import thirdpcsecondpage  from "./../img/thirdpcsecondpage.png";
+import fourthpcsecondpage  from "./../img/fourthpcsecondpage.png";
+import fifthpcsecondpage  from "./../img/fifthpcsecondpage.png";
+import sixthpcsecondpage  from "./../img/sixthpcsecondpage.png";
+import seventhpcsecondpage  from "./../img/seventhpcsecondpage.png";
+import eighthpcsecondpage  from "./../img/eighthpcsecondpage.png";
+import ninethpcsecondpage  from "./../img/ninethpcsecondpage.png";
+import tenthpcsecondpage  from "./../img/tenthpcsecondpage.png";
+import eleventhpcsecondpage  from "./../img/eleventhpcsecondpage.png";
+import twelfthpcsecondpage  from "./../img/twelfthpcsecondpage.png";
 
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
-import arrowleft from "./../img/arrowleft.png"
 import arrowabove from "./../img/arrowabove.png"
+import arrowleft from "./../img/arrowleft.png"
 
-export default function Discos() {
+let filterfamily = []
+
+
+export default function Computadoresacc() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -29,16 +56,21 @@ export default function Discos() {
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
-    const [discos, setdiscos] = useState([]);
-    const [discosfilter, setdiscosfilter] = useState([]);
+    const [pcs, setpcs] = useState([]);
+    const [pcsfilter, setpcsfilter] = useState([]);
+    const [specif,setspecif] = useState([]);
+    const [speciffilter,setspeciffilter] = useState([]);;
+    const [proce,setprocessador] = useState([]);
+    const [capa,setcapacidade] = useState([]);
+    const [memo,setmemoria] = useState([]);
+    const [checkboxproce,setcheckboxproc] = useState(Array(proce.length).fill(false));
+    const [checkboxcapacity,setcheckboxcapacity] = useState(Array(capa.length).fill(false));
+    const [checkboxmemo,setcheckboxmemo] = useState(Array(capa.length).fill(false));
     const [maxpages, setmaxpages] = useState([]);
     const [maxpagesfilter, setmaxpagesfilter] = useState([]);
-    const [marcadiscos, setmarcadiscos] = useState([]);
-    const [familydiscos, setfamilydiscos] = useState([]);
-    const [checkboxmarca,setcheckboxmarca] = useState(Array(marcadiscos.length).fill(false));
-    const [checkboxfamily,setcheckboxfamily] = useState(Array(familydiscos.length).fill(false));
     const pageNumber = queryParams.get("page");
-    const itemsToShow = discos.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
+    const itemsToShow = pcs.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
+    const specifItemsToShow = specif.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [filtro, setfiltro] = useState(false);
 
     const renderLinks = () => {
@@ -47,7 +79,7 @@ export default function Discos() {
           let currentNumber = 1 + i;
           if (currentNumber <= maxpages && currentNumber <= 7) {
             elements.push(
-              <Link to={`/discos?page=${currentNumber}`} id='aheader' key={currentNumber}>
+              <Link to={`/computadoresacessórios?page=${currentNumber}`} id='aheader' key={currentNumber}>
                 {currentNumber}
                 <Text>&nbsp; | </Text>
               </Link>
@@ -56,7 +88,7 @@ export default function Discos() {
         } 
         return elements;
       };
-
+    
     const readFile = async () => {
         try {
         const response = await fetch("/data/Comp_Filtros.xlsx");
@@ -71,36 +103,52 @@ export default function Discos() {
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
             if (jsonData && jsonData.length > 0) {
-                const discosexter = jsonData.filter(row => row[1] === "Discos_Externos");
-                const discosssd = jsonData.filter(row => row[1] === "Discos_SSD");      
-                const discoshdd = jsonData.filter(row => row[1] === "Discos_HDD");
-                const combinedmarcaarray =Array.from(new Set(
+                const PCs = jsonData.filter(row => row[1] === "PCs");
+            
+             
+                const combinedspecarray = Array.from(new Set(
                     [
-                        ...discosexter.map(value => value[0]),
-                        ...discosssd.map(value => value[0]),
-                        ...discoshdd.map(value => value[0])
+                        ...PCs,
                     ]
                 )) 
-                setmarcadiscos(combinedmarcaarray)
-                const combinedfamilyarray = Array.from(new Set(
-                    [
-                        ...discosexter.map(value => value[1].replace(/_/g, ' ')),
-                        ...discosssd.map(value => value[1].replace(/_/g, ' ')),
-                        ...discoshdd.map(value => value[1].replace(/_/g, ' ')),
-                    ]
-                ))
-                setfamilydiscos(combinedfamilyarray)
-                const combineddiscosarray = Array.from(new Set(
-                    [
-                        ...discosexter,
-                        ...discosssd,
-                        ...discoshdd,
-                    ]
-                ))
-                const maxPages = Math.ceil(combineddiscosarray.length / itemsPerPage);
+                //console.log(PCs.map(value=>value[3]))
+                setpcs(combinedspecarray)
+                setpcsfilter(combinedspecarray)
+                const specificationseach = combinedspecarray.map(value=>value[3].split(','));
+
+                const processador = Array.from(new Set(specificationseach.map(value=>value[0])));
+                let capacidade = []
+                let memoria = []
+                specificationseach.map((value)=>{
+                        if (value.some((element) => {
+                           // console.log(element);
+                            if(element.includes("SSD"))
+                            {
+                              //  console.log(element)
+                                if (!capacidade.includes(element)) {
+                                    capacidade.push(element);
+                                }
+                                
+                            }
+                            else if(element.includes("DDR") || element.includes("MHz")){
+                               
+                                if (!memoria.includes(element)) {
+                                    memoria.push(element);
+                                }
+                            }
+                        }))
+                         {           
+                    }
+                })
+               
+                //const memoria = Array.from(new Set(specificationseach.map(value=>value[2])));
+                setprocessador(processador);
+                setmemoria(memoria);
+                setcapacidade(capacidade);
+                setspecif(specificationseach);
+                setspeciffilter(specificationseach)
+                const maxPages = Math.ceil(combinedspecarray.length / itemsPerPage);
                 setmaxpages(maxPages)
-                setdiscos(combineddiscosarray)
-                setdiscosfilter(combineddiscosarray)
                 setmaxpagesfilter(maxPages)
             }
         };
@@ -115,138 +163,184 @@ export default function Discos() {
         readFile();
     }, []);
 
-    useEffect(()=>{       
+    useEffect(() => {
         const filterBySelectedCheckboxes = () => {
-            return discosfilter.filter(item=>{      //Filter the pcs by family     
-                for(let i = 0; i<checkboxmarca.length;i++)//For that runs up to all the checkboxs
-                {
-                    console.log( marcadiscos[i])
-                    if(checkboxmarca[i] && item[0] ==  marcadiscos[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
-                    {    
-                        return true;
-                    }   
+            return pcsfilter.filter(item => {
+                for (let i = 0; i < checkboxproce.length; i++) {
+                    if (checkboxproce[i] && item[3].split(',')[0] === proce[i]) {
+                        return true;  // Return true and all the elements contained in the condiction
+                    }
                 }
-                return false;
-            })
+                return false;  // No matching checkbox found for this item
+            });
         };
-        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse); //JSON.stringify converts all array to string to removes all the repeated arrays
-        //after the JSON.parse put the array into the initial state.
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
         console.log(deduplicated);
-        if(deduplicated.length>0)
-        {
+        if (deduplicated.length > 0) {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
-            setdiscos(deduplicated);
+            setpcs(deduplicated);
             navigate('?page=1');
-        }
-        else{
-            setdiscos(discosfilter);
+        } else {
+            setpcs(pcsfilter);
             setmaxpages(maxpagesfilter);
             navigate('?page=1');
         }
-      
-    },[checkboxmarca, marcadiscos, discosfilter])
-
-    const marcafunction = (event,index) =>{
-        const updatedCheckboxes = [...checkboxmarca];
+    
+    }, [checkboxproce, proce, pcsfilter]);
+    
+    const procefunction = (event,index) =>{ 
+        const updatedCheckboxes = [...checkboxproce];
         updatedCheckboxes[index] = event.target.checked;
-        setcheckboxmarca(updatedCheckboxes)    
+        setcheckboxproc(updatedCheckboxes)    
     }
 
-    useEffect(()=>{       
+    useEffect(() => {
         const filterBySelectedCheckboxes = () => {
-            return discosfilter.filter(item=>{      //Filter the pcs by family     
-                for(let i = 0; i<checkboxfamily.length;i++)//For that runs up to all the checkboxs
-                {
-                    console.log( familydiscos[i])
-                    if(checkboxfamily[i] && item[1].replace(/_/g, ' ') ==  familydiscos[i])//If the checkbox is selecte and element 1 of pcsfilter array(family) is equal to the familypcs array return true
-                    {    
-                        return true;
-                    }   
+            return pcsfilter.filter(item => {
+                for (let i = 0; i < checkboxcapacity.length; i++) {
+                    if (checkboxcapacity[i] && (item[3].split(',')[0] === capa[i] || item[3].split(',')[1] === capa[i] || item[3].split(',')[5] === capa[i] || item[3].split(',')[3] === capa[i] || item[3].split(',')[4] === capa[i] || item[3].split(',')[2] === capa[i] )) {
+                        return true;  // Return true and all the elements contained in the condiction
+                    }
                 }
-                return false;
-            })
+                return false;  // No matching checkbox found for this item
+            });
         };
-        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse); //JSON.stringify converts all array to string to removes all the repeated arrays
-        //after the JSON.parse put the array into the initial state.
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
+        const specificationseach = deduplicated.map(value=>value[3].split(','));
         console.log(deduplicated);
-        if(deduplicated.length>0)
-        {
+        console.log(specificationseach);
+        if (deduplicated.length > 0) {
             const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
             setmaxpages(maxPages);
-            setdiscos(deduplicated);
+            setspecif(specificationseach);
+            setpcs(deduplicated);
             navigate('?page=1');
-        }
-        else{
-            setdiscos(discosfilter);
+        } else {
+            setpcs(pcsfilter);
+            setspecif(speciffilter)
             setmaxpages(maxpagesfilter);
             navigate('?page=1');
         }
-      
-    },[checkboxfamily, familydiscos, discosfilter])
+    
+    }, [checkboxcapacity, capa, pcsfilter]);
 
-    const familyfunction = (event,index) =>{
-        const updatedCheckboxes = [...checkboxfamily];
+    const capacityfunction = (event,index) =>{ 
+        const updatedCheckboxes = [...checkboxcapacity];
         updatedCheckboxes[index] = event.target.checked;
-        setcheckboxfamily(updatedCheckboxes)    
+        setcheckboxcapacity(updatedCheckboxes)    
+    }
+
+    useEffect(() => {
+        const filterBySelectedCheckboxes = () => {
+            return pcsfilter.filter(item => {
+                for (let i = 0; i < checkboxmemo.length; i++) {
+                    if (checkboxmemo[i] && (item[3].split(',')[0] === memo[i] || item[3].split(',')[5] === memo[i] || item[3].split(',')[3] === memo[i] || item[3].split(',')[2] === memo[i] || item[3].split(',')[4] === memo[i])) {
+                        console.log(item)
+                        return true;  // Return true and all the elements contained in the condiction
+                    }
+                }
+                return false;  // No matching checkbox found for this item
+            });
+        };
+        const deduplicated = Array.from(new Set(filterBySelectedCheckboxes().map(JSON.stringify))).map(JSON.parse);
+        const specificationseach = deduplicated.map(value=>value[3].split(','));
+        console.log(deduplicated);
+        console.log(specificationseach);
+        if (deduplicated.length > 0) {
+            const maxPages = Math.ceil(deduplicated.length / itemsPerPage);
+            setmaxpages(maxPages);
+            setspecif(specificationseach);
+            setpcs(deduplicated);
+            navigate('?page=1');
+        } else {
+            setpcs(pcsfilter);
+            setspecif(speciffilter)
+            setmaxpages(maxpagesfilter);
+            navigate('?page=1');
+        }
+    
+    }, [checkboxmemo, memo, pcsfilter]);
+
+    const memofunction = (event,index) =>{ 
+        const updatedCheckboxes = [...checkboxmemo];
+        updatedCheckboxes[index] = event.target.checked;
+        setcheckboxmemo(updatedCheckboxes)    
     }
 
     const commonContainer1 = (
         <Box  sx={styles.container1}>
-            <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
-            <Box sx={styles.containerfeaturesmainproduct}> 
+        <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
+            <Box sx={styles.containerfeaturesmainproduct}>  
                <Box sx={styles.containermenu}>
                <Box sx={styles.titlemenu}>
                    <Text style={styles.textdefault2}>
-                       <span style={{color:"black"}}>Marca</span> 
+                       <span style={{color:"black"}}>Processador</span> 
                    </Text>
                    <img src={arrowabove} width={30} height={30}></img>
                </Box>
                <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                <Box sx={styles.containerfeatures}>
                    {
-                       discos.length>0  &&(
-                           marcadiscos.map((pc, index) => (
+                       pcs.length>0 &&(
+                           proce.map((pc, index) => (
                                <Box sx = {styles.menuflex}> 
-                               <Checkbox sx={{padding:"0"}} checked={checkboxmarca[index]} onChange={(e) => marcafunction(e, index)} />
+                               <Checkbox sx={{padding:"0"}} checked={checkboxproce[index]} onChange={(e) => procefunction(e, index)} />
                                <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                   {marcadiscos[index]}
+                                   {proce[index]}
                                </Text>
                                </Box>
-                           ))                                                                                                       
+                           ))
                    )}
-                   
-                      
                </Box>     
                </Box> 
                <Box sx={styles.containermenu}>
                    <Box sx={styles.titlemenu}>
                        <Text style={styles.textdefault2}>
-                           <span style={{color:"black"}}>Família</span> 
+                           <span style={{color:"black"}}>Capacidade</span> 
                        </Text>
                        <img src={arrowabove} width={30} height={30}></img>
                    </Box>
                    <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
                    <Box sx={styles.containerfeatures}>
                        {
-                           discos.length>0  &&(
-                               familydiscos.map((pc, index) => (
+                           pcs.length>0 &&(
+                               capa.map((pc, index) => (
                                    <Box sx = {styles.menuflex}> 
-                                   <Checkbox sx={{padding:"0"}} checked={checkboxfamily[index]} onChange={(e) => familyfunction(e, index)} />
+                                   <Checkbox sx={{padding:"0"}} checked={checkboxcapacity[index]} onChange={(e) => capacityfunction(e, index)} />
                                    <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
-                                       {familydiscos[index]}
+                                       {capa[index]}
                                    </Text>
-                                   </Box>
-                               ))                                                                                                       
+                                   </Box>    
+                           ))
                        )}
-                       
-                       
                    </Box>     
                </Box> 
-           
+               <Box sx={styles.containermenu}>
+                   <Box sx={styles.titlemenu}>
+                       <Text style={styles.textdefault2}>
+                           <span style={{color:"black"}}>Memória RAM</span> 
+                       </Text>
+                       <img src={arrowabove} width={30} height={30}></img>
+                   </Box>
+                   <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%",marginBottom:"0.5rem"}}/>
+                   <Box sx={styles.containerfeatures}>
+                       {
+                           pcs.length>0 &&(
+                               memo.map((pc, index) => (  
+                                <Box sx = {styles.menuflex}> 
+                                <Checkbox sx={{padding:"0"}} checked={checkboxmemo[index]} onChange={(e) => memofunction(e, index)} />
+                                <Text style={[styles.textdefault,{margin:"0",fontSize:"14px"}]}>
+                                    {memo[index]}
+                                </Text>
+                                </Box>       
+                           ))
+                       )}
+                   </Box>     
+               </Box>
             </Box>        
-            </Box> 
-        </Box>
+        </Box> 
+       </Box>
     )
 
     return (
@@ -265,8 +359,8 @@ export default function Discos() {
                             ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
-                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa'>   &nbsp;  \  &nbsp; Produtos  &nbsp;  \  &nbsp;   </Link>
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Discos</Text>   
+                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa'>   &nbsp;  \  &nbsp; Produtos  &nbsp;  \  &nbsp;   </Link> 
+                        <Text  style={{fontSize: "20px",zIndex:-1}}>Computadores</Text>   
                         </Box>
                     </Box>     
                     <Text style={{
@@ -274,7 +368,7 @@ export default function Discos() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Discos</span>
+                        <span style={{fontWeight:"bold"}}>Computadores</span>
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -282,7 +376,7 @@ export default function Discos() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Veja os discos disponíveis na loja
+                        Veja os computadores disponíveis na loja
                     </Text>
                 </Box>
                 <Box sx={{...styles.containermain, 
@@ -299,15 +393,15 @@ export default function Discos() {
                                 </>  
                             )}
                              {!isSmallScreen && !isExtraSmallScreen && commonContainer1}        
-                    </Box>             
+                    </Box>       
                     <Box  sx={{...styles.container1,
                     ...(isExtraLargeScreen && styles.container1extralarge),
                     ...(isLargeScreen && styles.container1large), 
                     ...(isMediumScreen && styles.container1medium), 
                     ...(isSmallScreen && styles.container1small), 
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
-                        {discos.length>0  &&(
-                                itemsToShow.map((disco, index) => (
+                        {pcs.length>0 &&(
+                                itemsToShow.map((pc, index) => (
                                         <Box sx={styles.viewcontainer}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
@@ -318,10 +412,27 @@ export default function Discos() {
                                             </Box>
                                             <Box sx={styles.containerfeatures}>
                                                 <Text style={[styles.textdefault2]} key={index}>
-                                                    {disco[3]}   
+                                                    {pc[3]}   
                                                 </Text>
-                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {disco[2]} </Text>    
-                                     
+                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {pc[2]} </Text>  
+                                                {specifItemsToShow[index] && (
+                                                    <>
+                                                        <Text>Processador: {specifItemsToShow[index][0]}</Text>
+                                                        {
+                                                            specifItemsToShow[index][3] && specifItemsToShow[index][3].includes("SSD") ? (
+                                                                <>
+                                                                    <Text>Capacidade: {specifItemsToShow[index][3]}</Text> 
+                                                                    <Text>RAM: {specifItemsToShow[index][2]}</Text>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Text>Capacidade: {specifItemsToShow[index][2]}</Text> 
+                                                                    <Text>RAM: {specifItemsToShow[index][3]}</Text>
+                                                                </>
+                                                            )
+                                                        }       
+                                                    </>           
+                                                )}           
                                                 <Box sx={styles.disponivel}>
                                                     <img
                                                         src={disponivel}
@@ -334,7 +445,7 @@ export default function Discos() {
                                                     </Text>
                                                 </Box>
                                                 <Text style={styles.textdefault2}>
-                                                    <span style={{color:"black"}}>{disco[5]} €</span> 
+                                                    <span style={{color:"black"}}>{pc[5]} €</span> 
                                                 </Text>
                                             </Box>
                                         </Box>
@@ -342,21 +453,23 @@ export default function Discos() {
                                 ))
                             )}
                         <Box sx={styles.pages}>
-                            <Box sx={styles.pagesflex}> 
+                            <Box sx={styles.pagesflex}>
                                 {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
-                                    <Link  to={`/discos?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                    <Link  to={`/computadoresacessórios?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
                                     
                                     </Link> 
-                                )}     
+                                )}  
                                 {renderLinks()}
                                 {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
-                                    <Link  to={`/discos?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >     
+                                    <Link  to={`/computadoresacessórios?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                        
                                         <img src={arrowright} height={10}></img>
-                                        <img src={arrowright} height={10}></img>      
+                                        <img src={arrowright} height={10}></img>
+                                       
                                     </Link> 
-                                )}                                       
+                                )}                           
                             </Box>
                         </Box>
                     </Box>                   

@@ -60,7 +60,7 @@ export default function Processadores() {
         const response = await fetch("/data/Comp_Filtros.xlsx");
         const blob = await response.blob();
         const reader = new FileReader();
-    
+        
         reader.onload = (e) => {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
@@ -175,7 +175,7 @@ export default function Processadores() {
                             ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
-                        <Text style={{fontSize: "20px",zIndex:-1}}>    \  Produtos  \    </Text>  
+                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa'>   &nbsp;  \  &nbsp; Produtos  &nbsp;  \  &nbsp;   </Link>
                         <Text  style={{fontSize: "20px",zIndex:-1}}>Processadores</Text>   
                         </Box>
                     </Box>     
