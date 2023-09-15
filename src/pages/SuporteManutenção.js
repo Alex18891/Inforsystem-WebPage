@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate,Link,useLocation} from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
 import {View, Text,StyleSheet} from 'react-native';
@@ -7,8 +7,12 @@ import Box from "@mui/material/Box";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import Checkbox from '@mui/material/Checkbox';
+import * as XLSX from 'xlsx';
 import '../index.css';
-
+import arrowright from "./../img/arrowright.png"
+import arrowleft from "./../img/arrowleft.png"
+import arrowabove from "./../img/arrowabove.png"
 import windows7 from "./../img/windows7.png";
 import windows10home from "./../img/windows10home.png";
 import windows10pro from "./../img/windows10pro.png";
@@ -29,15 +33,98 @@ export default function SuporteManutenção() {
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
     const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
+    const itemsPerPage = 16;
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const [pcs, setpcs] = useState([]);
+    const [maxpages, setmaxpages] = useState([]);
+    const pageNumber = queryParams.get("page");
+    const itemsToShow = pcs.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
     const [isHoveredrepaircomponents, setIsHoveredrepaircomponents] = useState(false);
+    const [isHoveredrepairremovalvirus, setIsHoveredrepairremovalvirus] = useState(false);
+    const [isHoveredrepairinstaso, setIsHoveredrepairinstaso] = useState(false);
     const navigate = useNavigate();
 
+    const onrepairsoinst = () => {
+        setIsHoveredrepairinstaso(true);
+        setIsHoveredrepairremovalvirus(false);
+        setIsHoveredrepaircomponents(false);
+    }
+    
+    const onrepairvirus= () =>{
+        setIsHoveredrepairremovalvirus(true);
+        setIsHoveredrepaircomponents(false);
+        setIsHoveredrepairinstaso(false);
+    }
     const onrepairenter= () => {
         setIsHoveredrepaircomponents(true);
+        setIsHoveredrepairremovalvirus(false);
+        setIsHoveredrepairinstaso(false);
     };
     const onrepairleave= () => {
         setIsHoveredrepaircomponents(false);
+        setIsHoveredrepairinstaso(false);
+        setIsHoveredrepairremovalvirus(false);
     };
+
+    const renderLinks = () => {
+        let elements = [];
+        for (let i = 0; i < maxpages; i++) {
+          let currentNumber = 1 + i;
+          if (currentNumber <= maxpages && currentNumber <= 7) {
+            elements.push(
+              <Link to={`/suportemanutenção?page=${currentNumber}`} id='aheader' key={currentNumber}>
+                {currentNumber}
+                <Text>&nbsp; | </Text>
+              </Link>
+            );
+          }     
+        } 
+        return elements;
+      };
+    
+    const readFile = async () => {
+        try {
+        const response = await fetch("/data/Comp_Filtros_1.xlsx");
+        const blob = await response.blob();
+        const reader = new FileReader();
+    
+        reader.onload = (e) => {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        
+            if (jsonData && jsonData.length > 0) {
+                const windowsserv = jsonData.filter(row => row[1] === "SW_Servidores"); 
+                const windowsso = jsonData.filter(row => row[1] === "SW_Sistemas_Operativos"); 
+                
+     
+
+                const combinedspecarray = Array.from(new Set(
+                    [
+                        ...windowsserv,
+                        ...windowsso
+                    ]
+                )) 
+                setpcs(combinedspecarray)        
+                const maxPages = Math.ceil(combinedspecarray.length / itemsPerPage);
+                setmaxpages(maxPages)
+            }
+        };
+        
+        reader.readAsArrayBuffer(blob);
+    
+        } catch (error) {
+        console.error("Error reading the file:", error);
+        }
+    };   
+    
+    useEffect(() => {
+        readFile();
+    }, []);
+
     return (
         <>
             <Header></Header>
@@ -101,54 +188,126 @@ export default function SuporteManutenção() {
                     ...(isSmallScreen && styles.container2small), 
                     ...(isExtraSmallScreen && styles.container2extrasmall)}}>
                         
-                        <Box sx={styles.tipossuportediv} onMouseEnter={onrepairenter}
+                        <Box sx={{...styles.tipossuportediv,transform: isHoveredrepaircomponents ? 'scale(1.07)' : 'scale(1)'}} onMouseEnter={onrepairenter}
                             onMouseLeave={onrepairleave}>
-                            <img
-                                src={componentsrepair}
-                                style={{maxWidth:"320px"}}
-                            ></img>
-                                <Text style={{
-                                ...styles.textdefault,
-                                fontSize:"24px",
-                                fontWeight:"bold",
-                                maxWidth: "1800px",
-                                ...(isSmallScreen ? styles.textdefaultsmall : {}),
-                                ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
-                            }}>
-                                Reparação de Componentes
-                            </Text>
+                                {isHoveredrepaircomponents ?(
+                                      <>
+                                       <Box sx={[styles.viewcontainer,{maxWidth: "550px",padding:"3rem"}]}>
+                                        <Text style={{
+                                            ...styles.textdefault,
+                                            
+                                            fontSize:"22px",
+                                        
+                                            ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                                            ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                                        }}>
+                                            A Inforsystem repara computadores/portáteis e dispositivos eletrónicos. 
+                                            <br></br>Além da substituição de peças danificadas a inforsystem permite a substituição de discos rígidos/motherboards e limpeza interna.
+                                        </Text>
+                                       </Box>               
+                                    </>     
+                                ):(
+                                    <>
+                                    <img
+                                        src={componentsrepair}
+                                        style={{maxWidth:"220px"}}></img>
+                                        <Text style={{
+                                        ...styles.textdefault,
+                                        fontSize:"24px",
+                                        fontWeight:"bold",
+                                        maxWidth: "1800px",
+                                        ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                                        ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                                        }}>
+                                        Reparação de Componentes
+                                        </Text>  
+                                  </>
+                                )}
+                            
                         </Box>
-                        <Box sx={styles.tipossuportediv}>
-                            <img
-                                src={virusremoval}
-                                style={{maxWidth:"320px"}}
-                            ></img>
-                                <Text style={{
-                                ...styles.textdefault,
-                                fontSize:"24px",
-                                fontWeight:"bold",
-                                maxWidth: "1800px",
-                                ...(isSmallScreen ? styles.textdefaultsmall : {}),
-                                ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
-                            }}>
-                                Remoção de vírus
-                            </Text>
+                        <Box sx={{...styles.tipossuportediv,transform: isHoveredrepairremovalvirus ? 'scale(1.07)' : 'scale(1)'}} onMouseEnter={onrepairvirus}
+                            onMouseLeave={onrepairleave}>
+                                {isHoveredrepairremovalvirus ?(
+                                      <>
+                                       <Box sx={[styles.viewcontainer,{maxWidth: "550px",padding:"3rem"}]}>
+                                        <Text style={{
+                                            ...styles.textdefault,
+                                            
+                                            fontSize:"22px",
+                                        
+                                            ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                                            ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                                        }}>
+                                           
+                                            A Inforsystem é especializada na deteção e eliminação de malwares, vírus e outras ameaças.
+                                            <br></br>Além de remover softwares maliciosos, a Inforsystem também oferece serviços de segurança, prevenindo futuras infecções.
+                                        </Text>
+                                       </Box>
+                                    
+                                    </>
+                                   
+                                ):(
+                                    <>     
+                                        <img
+                                        src={virusremoval}
+                                        style={{maxWidth:"220px"}}
+                                        ></img>
+                                        <Text style={{
+                                        ...styles.textdefault,
+                                        fontSize:"24px",
+                                        fontWeight:"bold",
+                                        maxWidth: "1800px",
+                                        ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                                        ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                                        }}>
+                                        Remoção de vírus
+                                        </Text>
+                                    
+                                    </>
+                                    )}
                         </Box>
-                        <Box sx={styles.tipossuportediv}>
-                            <img
-                                src={operationalsystem}
-                                style={{maxWidth:"320px"}}
-                            ></img>
-                                <Text style={{
-                                ...styles.textdefault,
-                                fontSize:"24px",
-                                fontWeight:"bold",
-                                maxWidth: "1800px",
-                                ...(isSmallScreen ? styles.textdefaultsmall : {}),
-                                ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
-                            }}>
-                                Instalação de Sistemas Operativos
-                            </Text>
+                        <Box sx={{...styles.tipossuportediv,transform: isHoveredrepairinstaso ? 'scale(1.07)' : 'scale(1)'}} onMouseEnter={onrepairsoinst}
+                            onMouseLeave={onrepairleave}>
+                                {isHoveredrepairinstaso ?(
+                                      <>
+                                       <Box sx={[styles.viewcontainer,{maxWidth: "550px",padding:"3rem"}]}>
+                                        <Text style={{
+                                            ...styles.textdefault,
+                                            
+                                            fontSize:"22px",
+                                        
+                                            ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                                            ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                                        }}>
+                                           
+                                           A Inforsystem é especializada na instalação e configuração de sistemas operativos, permitindo uma otimização para o seu dispositivo.
+                                            <br></br>Além da instalação, a Inforsystem oferece assistência sobre atualizações e compatibilidades.
+                                        </Text>
+                                       </Box>
+                                    
+                                    </>
+                                   
+                                ):( 
+                                    <>   
+                                        <img
+                                        src={operationalsystem}
+                                        style={{maxWidth:"220px"}}
+                                        ></img>
+                                        <Text style={{
+                                        ...styles.textdefault,
+                                        fontSize:"24px",
+                                        fontWeight:"bold",
+                                        maxWidth: "1800px",
+                                        ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                                        ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                                        }}>
+                                            Instalação de SO
+                                        </Text>
+                                    </>
+                                  
+                                )}
+                            
+                         
                         </Box>
                     </Box>
                 </Box>
@@ -158,7 +317,7 @@ export default function SuporteManutenção() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Conheça os serviços de suporte/manutenção disponíveis na loja
+                        Conheça os sistemas operativos disponíveis na loja
                     </Text>
                     <Box  sx={{...styles.container1,
                     ...(isExtraLargeScreen && styles.container1extralarge),
@@ -166,324 +325,61 @@ export default function SuporteManutenção() {
                     ...(isMediumScreen && styles.container1medium), 
                     ...(isSmallScreen && styles.container1small), 
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={windows7}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >WINDOWS 7</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Instalação do Sistema operativo
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Licença oficial da Microsoft
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Edições disponíveis: Starter, Home, Professional e Ultimate
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box> 
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={windows10home}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >WINDOWS 10 HOME</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Instalação do Sistema operativo
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Licença oficial da Microsoft
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Windows 10 Home suporta uma ampla gama de hardware, incluindo PCs, tablets e alguns dispositivos móveis.
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box> 
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={windows10pro}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >WINDOWS 10 PRO</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Instalação do Sistema operativo
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Licença oficial da Microsoft
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Windows 10 Pro é compatível com dispositivos 2-em-1, dispositivos móveis e outros hardwares empresariais.
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box> 
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={windows11home}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >WINDOWS 11 HOME</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Instalação do Sistema operativo
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Licença oficial da Microsoft
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Windows 11 Home é direcionado, principalmente, para usuários domésticos. 
-                                        Os widgets, que fornecem notícias, clima, calendário e outras informações, permitem fácil acesso a informações atualizadas.
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box> 
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={windows11pro}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >WINDOWS 11 PRO</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Instalação do Sistema operativo
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Licença oficial da Microsoft
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                    Windows 11 Pro é direcionado para usuários profissionais, freelancers e pequenas/médias empresas, 
-                                    oferecendo funcionalidades avançadas em relação à edição Home.
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box> 
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={removalvirus}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >REMOÇÃO DE VÍRUS</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Desempenho do computador lento ou falhas frequentes.
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Acesso à internet ou ao disco rígido sem razão aparente.
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Pop-ups e anúncios inesperados
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box> 
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={rapairprinter}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >REPARAÇÃO DE IMPRESSORAS</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Falha ao imprimir ou longas esperas antes da impressão.
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Mensagens de erro no dispositivo ou no computador.
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Barulhos estranhos durante a impressão ou ao liga
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box>   
-                        <Box sx={styles.viewcontainer}>      
-                            <Box sx={styles.containerfeaturesmainproduct}> 
-                                <Box sx={styles.containerfeatures}>
-                                    <Box sx={styles.containerfeaturesproduts}> 
-                                        <img
-                                            src={rapairpc}
-                                            style={{maxWidth:"180px"}}
-                                        ></img>
-                                    </Box>
-                                    <Text style={[styles.textdefault2,{marginTop:"0"}]}>
-                                        <span >REPARAÇÃO DE COMPUTADORES</span> 
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Falha ao iniciar ou tela azul
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Sobreaquecimento
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Falhas de software ou aplicativos que não abrem corretamente
-                                    </Text>
-                                    <Text style={[styles.textdefault,{fontSize:"15px"}]}>
-                                        Computador lento ou congelamentos frequentes
-                                    </Text>
-                                
-                                    <Box sx={styles.disponivel}>
-                                        <img
-                                            src={disponivel}
-                                            width={"25px"}
-                                            height={"25px"}
-                                            style={{marginLeft:"-0.2rem"}}
-                                        ></img>
-                                        <Text style={styles.disponiveltext}>
-                                            <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                        </Text>
-                                    </Box>
-                                    <Text style={styles.textdefault2}>
-                                        <span style={{color:"black"}}>50,5€</span> 
-                                    </Text>
-                                </Box>      
-                            </Box>        
-                        </Box>   
-                    </Box>
+                        {pcs.length>0 &&(
+                                itemsToShow.map((pc, index) => (
+                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.containerfeaturesmainproduct}> 
+                                            <Box sx={styles.containerfeaturesproduts}> 
+                                                <img
+                                                    src={pc[9]}
+                                                    style={{maxWidth:"180px"}}
+                                                ></img>
+                                            </Box>
+                                            <Box sx={styles.containerfeatures}>
+                                                <Text style={[styles.textdefault2]} key={index}>
+                                                    {pc[3]}   
+                                                </Text>
+                                                <Text style={[styles.textdefault,{fontSize:"13px"}]}>Ref: {pc[2]} </Text>   
+                                                <Box sx={styles.disponivel}>
+                                                    <img
+                                                        src={disponivel}
+                                                        width={"25px"}
+                                                        height={"25px"}
+                                                        style={{marginLeft:"-0.2rem"}}
+                                                    ></img>
+                                                    <Text style={styles.disponiveltext}>
+                                                        <span style={{fontWeight:"bold"}}>Disponível</span> 
+                                                    </Text>
+                                                </Box>
+                                                <Text style={styles.textdefault2}>
+                                                    <span style={{color:"black"}}>{pc[5]} €</span> 
+                                                </Text>
+                                            </Box>
+                                        </Box>
+                                        </Box> 
+                                ))
+                            )}
+                            <Box sx={styles.pages}>
+                                <Box sx={styles.pagesflex}>
+                                    {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
+                                        <Link  to={`/suportemanutenção?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                            <img src={arrowleft} height={10}></img>
+                                            <img src={arrowleft} height={10}></img>
+                                        
+                                        </Link> 
+                                    )}  
+                                    {renderLinks()}
+                                    {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
+                                        <Link  to={`/suportemanutenção?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                            
+                                            <img src={arrowright} height={10}></img>
+                                            <img src={arrowright} height={10}></img>
+                                        
+                                        </Link> 
+                                    )}                           
+                                </Box>
+                            </Box>
+                    </Box> 
             </Box> 
             <Footer></Footer>
         </>
@@ -491,6 +387,18 @@ export default function SuporteManutenção() {
 }
 
 const styles = StyleSheet.create({
+    pages:{
+        width:"auto",
+        boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
+        padding:"0.5rem",
+        height:"20px"
+    },
+    pagesflex:{
+        display:"flex",
+        flexDirection:"row",
+        gap:"10px",
+        alignItems:" baseline "
+    },
     container:{
         display:'flex',
         flexDirection:'column',
@@ -518,6 +426,7 @@ const styles = StyleSheet.create({
     },
     containerfeaturesproduts:{       
         padding:"2rem",
+        textAlign:"center"
     },
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
@@ -636,7 +545,8 @@ const styles = StyleSheet.create({
     tipossuportediv:{
         display:"flex",
         flexDirection:"column",
-        alignItems:"center",
+        transition: 'transform 0.3s ease',
+        transform: 'translateY(0)', // default opacity
         gap:"20px"
     }
 });

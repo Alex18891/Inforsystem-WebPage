@@ -9,7 +9,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus, faCheck } from '@fortawesome/free-solid-svg-icons'
 import '../index.css';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 import portateisprodutos from "./../img/portateisprodutos.png";
 import pcprodutos from "./../img/pcprodutos.png";
@@ -548,7 +547,7 @@ export default function Produtos() {
                                         </Box>  
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
-                                            <Link  id='aheader' style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
+                                            <Link  id='aheader' to="/fontesdealimentação?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
                                                 Fontes de Alimentação
                                             </Link>
                                         </Box>    

@@ -54,6 +54,16 @@ export default function SoftwareFaturação() {
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
                         <span style={{fontWeight:"bold"}}>Serviços</span> de Faturação
+                    </Text> 
+                    <Text style={{
+                        ...styles.textdefault,
+                        maxWidth: "1800px",
+                        fontSize:"22px",
+                        ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                        ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                    }}>
+                        A Inforsystem oferece um padrão superior em atendimento ao cliente para serviços de faturação, desde a emissão de faturas, gestão de pagamentos.
+                        <br></br>Garantimos que todos os detalhes relacionados à faturação sejam  monitorados e processados dentro dos prazos estabelecidos com o cliente. Escolher nossos serviços de faturação assegura um gerenciamento financeiro mais eficiente e exato para sua empresa.
                     </Text>
                     <Text style={{
                         ...styles.textdefault,

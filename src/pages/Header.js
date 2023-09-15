@@ -83,8 +83,6 @@ export default function PrimarySearchAppBar() {
   const [isHovered, setIsHovered] = useState(false);
   const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword  } = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
-  const [isHoveredcomp, setIsHoveredcomp] = useState(false);
-  const [isHoveredarm, setIsHoveredarm] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -101,34 +99,11 @@ export default function PrimarySearchAppBar() {
     setIsHoveredsoft(false);
 };
 
-const handleMouseEntercomp = () => {
-  setIsHoveredprodu(false);
-  setIsHoveredcomp(prevState => !prevState);
-  setIsHovered(false);
-  setIsHoveredarm(false);
-  setIsHoveredsoft(false);
-};
-
-const handlemenuprincipal = () =>{
-  setIsHoveredprodu(true);
-  setIsHoveredcomp(false);
-  setIsHoveredarm(false);
-}
-
-const handleMouseEnterarm = () => {
-  setIsHoveredprodu(false);
-  setIsHoveredcomp(false);
-  setIsHoveredarm(prevState => !prevState);
-  setIsHovered(false);
-  setIsHoveredsoft(false);
-};
 
 const handleMouseEntersoft = () => {
     setIsHovered(false);
     setIsHoveredsoft(true);
     setIsHoveredprodu(false);
-    setIsHoveredcomp(false);
-    setIsHoveredarm(false);
 };
 
 
@@ -144,58 +119,21 @@ const handleMouseEntersoft = () => {
 
   const menutoolbar = (
     <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
-       <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
-        <img src={menu} width={30}  style={{cursor:"pointer"}} onClick={() => window.location.href = "/"} ></img>
-       </View>
-      <View  onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnterprod}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >   
-        <View  sx={styles.produtosmenu} >
-            Produtos       
+      <Box sx={{display:"flex",alignItems: "center", gap: "15px"}}>
+        <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
+          <img src={menu} width={30}  style={{cursor:"pointer"}} onClick={() => window.location.href = "/"} ></img>
         </View>
-        <View  style={[styles.container_cont,isHoveredcomp && styles.containerHovered,{minWidth:"180px"}]}>     
-            <Box style={styles.acontainer} id='aheader' onClick={handlemenuprincipal}>
-              <i className="fa fa-caret-left" style={{marginTop:"0.2rem"}}></i>
-              <span style={{fontWeight:"bold",fontSize:"15px",color:""}}>Menu Principal</span>
-            </Box>
-            <Text style={[styles.acontainer,{fontWeight:"bold",fontSize:"15px",cursor:"auto",color:"#344054"}]}>Componentes</Text>
-            <Link style={styles.acontainer} id='aheader' to="/placasgráficas?page=1">Placas Gráficas</Link>
-            <Link style={styles.acontainer} id='aheader' to="/memórias?page=1">Memórias</Link>
-            <Link style={styles.acontainer} id='aheader' to="/motherboards?page=1">Motherboards</Link>
-            <Link style={styles.acontainer} id='aheader' to="/processadores?page=1">Processadores</Link>
-            <Link style={styles.acontainer} id='aheader' to="/discos?page=1">Discos</Link>
-            
-        </View>
-        <View  style={[styles.container_cont,isHoveredarm && styles.containerHovered,{minWidth:"180px"}]}> 
-            <Box style={styles.acontainer} id='aheader' onClick={handlemenuprincipal}>
-              <i className="fa fa-caret-left" style={{marginTop:"0.2rem"}}></i>
-              <span style={{fontWeight:"bold",fontSize:"15px"}}>Menu Principal</span>
-            </Box>
-            <Text style={[styles.acontainer,{fontWeight:"bold",fontSize:"15px",cursor:"auto",color:"#344054"}]}>Acessórios</Text>
-            <Link style={styles.acontainer} id='aheader' to="/coolers?page=1">Coolers</Link>
-            <Link style={styles.acontainer} id='aheader' to="/redes?page=1">Redes</Link>
-            <Link style={styles.acontainer} id='aheader' to="/caixas?page=1">Caixas</Link>        
-            <Link style={styles.acontainer} id='aheader' to="/drives?page=1">Drives</Link>
-            <Link style={styles.acontainer} id='aheader' to="/">Fontes de Alimentação</Link>
-            <Link style={styles.acontainer} id='aheader' to="/">Teclados</Link>
-            <Link style={styles.acontainer} id='aheader' to="/">Teclados e Ratos</Link>
-            <Link style={styles.acontainer} id='aheader' to="/">Ratos</Link>
-            <Link style={styles.acontainer} id='aheader' to="/tapetesderato">Tapetes de Rato</Link>
-        </View>
-        <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered]}>
-                <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Pesquisa</Link>
-                <Link  style={styles.acontainer} id='aheader'to="/computadores?page=1">Computadores</Link>
-                <Link style={styles.acontainer} id='aheader' to="/sistemaspos?page=1">Sistemas Pos</Link>
-                <View  style={styles.container} >
-                  <Box style={styles.acontainer} id='aheader' onClick={handleMouseEntercomp} >Componentes
-                    <i className="fa fa-caret-right" style={{marginTop:"0.3rem"}}  ></i>
-                  </Box>    
-                </View>
-                <View  style={styles.container}>
-                  <Box style={styles.acontainer} id='aheader'  onClick={handleMouseEnterarm} >Acessórios
-                    <i className="fa fa-caret-right" style={{marginTop:"0.3rem"}}></i>
-                  </Box>  
-                </View>                       
-        </View>
-      </View>      
+        <View  onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnterprod}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >   
+          <View  sx={styles.produtosmenu} >
+              Produtos       
+          </View>
+          <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered]}>
+                <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Pesquisa</Link>  
+                <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Catálogo</Link>  
+          </View>
+        </View>  
+      </Box>
+         
       <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,minWidth: "380px",}]} onMouseEnter={handleMouseEntersoft}
             onMouseLeave={handleMouseLeave}>
             <Box  style={{ color: "black",textDecorationLine:"none"}} >
@@ -203,7 +141,7 @@ const handleMouseEntersoft = () => {
                 <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
             </Box>
         <View  style={[styles.container_cont,isHoveredsoft && styles.containerHovered]}>
-            <Link style={styles.acontainer} id='aheader' to="/suportemanutenção">Serviços de Suporte/Manutenção</Link>
+            <Link style={styles.acontainer} id='aheader' to="/suportemanutenção?page=1">Serviços de Suporte/Manutenção</Link>
             <Link style={styles.acontainer} id='aheader' to="/softwarefaturação">Serviços de Faturação</Link>
         </View>
       </View>
@@ -218,10 +156,10 @@ const handleMouseEntersoft = () => {
                     ...(isSmallScreen && styles.firstitemfirsttoolbarsmall),
                     ...(isExtraSmallScreen && styles.firstitemfirsttoolbarextrasmall) }}>
                
-                {( isSmallScreen) && (
+                {( isSmallScreen  ) && (
                   <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
-                  <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
-                    <Box  sx={styles.produtosmenu}  >
+                  <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
+                    <Box  sx={[styles.produtosmenu]}  >
                       <img src={menuwhite} width={40} style={{cursor:"pointer",color:"white"}} onClick={handleMouseEnterprod} ></img>          
                     </Box>  
                   </View>      
@@ -229,38 +167,17 @@ const handleMouseEntersoft = () => {
                 )
                 }
                 {
-                isExtraSmallScreen ? (
+                  (
                   <>
-                  <Box sx={{ display: "flex", alignItems: "center",gap: "10px"}}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
-                    <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
-                      <Box  sx={styles.produtosmenu}  >
-                        <img src={menuwhite} width={40} style={{cursor:"pointer",color:"white"}} onClick={handleMouseEnterprod} ></img>          
-                      </Box>  
-                    </View>      
-                    </Box> 
                     <img
-                      src={logo}
-                      width={210}
-                      height={42}
-                      alt="profile picture"
-                      onClick={() => window.location.href = "/"}
-                      style={{cursor:"pointer"}}
-                    />
-                  </Box>      
-                  </>
-                ):(
-                  <>
-                  
-                  <img
-                      src={logo}
-                      width={210}
-                      height={42}
-                      alt="profile picture"
-                      onClick={() => window.location.href = "/"}
-                      style={{cursor:"pointer"}}
-                    />
-                  </>   
+                        src={logo}
+                        width={210}
+                        height={42}
+                        alt="profile picture"
+                        onClick={() => window.location.href = "/"}
+                        style={{cursor:"pointer"}}
+                      />
+                    </>   
                 )
               }   
                 <Search>
@@ -273,6 +190,14 @@ const handleMouseEntersoft = () => {
                     onChange={handleSearchChange}
                   />     
                 </Search>  
+                {( isExtraSmallScreen  ) && (
+                <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
+                   <Box  style={{ color: "white",textDecorationLine:"none", cursor:"pointer"}} onClick={handleMouseEnterprod}>
+                      Mostrar menu
+                      <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
+                    </Box>  
+                  </View> 
+                )}
               </Box>
               <Box sx={{...styles.seconditemfirsttoolbar,
                     ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
@@ -363,6 +288,17 @@ const handleMouseEntersoft = () => {
             </ReactModal>
             </Toolbar>       
         </Box >
+        {(isExtraSmallScreen|| isSmallScreen) && isHoveredprodu &&  (
+         
+          <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered,isExtraSmallScreen ? { width: "100%" } : {}]}>
+                <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Pesquisa de Produtos</Link>  
+                <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Catálogo de Produtos</Link>  
+                <Link style={styles.acontainer} id='aheader' to="/suportemanutenção?page=1">Serviços de Suporte/Manutenção</Link>
+              <Link style={styles.acontainer} id='aheader' to="/softwarefaturação">Serviços de Faturação</Link>
+          </View>
+      
+
+        )}
         <Box  sx={{ background: "white" ,boxShadow: '0 0 30px rgba(0, 0, 0, 0.2)'}}>
           <Toolbar  sx={{...styles.secondtoolbar,
                       ...(isSmallScreen && styles.secondtoolbarsmall),
@@ -469,7 +405,8 @@ const styles = StyleSheet.create({
     },
     firstitemfirsttoolbarsmall:{
       gap:"20px",
-      margin:"auto"
+      margin:0,
+      
     },
     firstitemfirsttoolbarextrasmall:{
       gap:"10px",
@@ -488,7 +425,7 @@ const styles = StyleSheet.create({
       justifyContent:"space-between",
       maxWidth:"1800px", 
     },
-    
+
     secondtoolbarsmall:{
       display:"none",
     },
@@ -497,7 +434,7 @@ const styles = StyleSheet.create({
         display: "none",
         position: "absolute",
         backgroundColor: "white",
-        minWidth: "160px",
+        minWidth: "115px",
         shadowColor: '#000',
         shadowOffset: {
         width: 0,

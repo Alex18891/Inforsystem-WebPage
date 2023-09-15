@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate,useLocation,Link } from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
-import {Text,StyleSheet} from 'react-native';
+import {View, Text,StyleSheet} from 'react-native';
 import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -19,7 +19,7 @@ import arrowright from "./../img/arrowright.png"
 import arrowabove from "./../img/arrowabove.png"
 import arrowleft from "./../img/arrowleft.png"
 
-export default function Computadoresacc() {
+export default function Fontesaliment() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -45,7 +45,7 @@ export default function Computadoresacc() {
           let currentNumber = 1 + i;
           if (currentNumber <= maxpages && currentNumber <= 7) {
             elements.push(
-              <Link to={`/computadoresacessórios?page=${currentNumber}`} id='aheader' key={currentNumber}>
+              <Link to={`/fontesdealimentação?page=${currentNumber}`} id='aheader' key={currentNumber}>
                 {currentNumber}
                 <Text>&nbsp; | </Text>
               </Link>
@@ -74,15 +74,15 @@ export default function Computadoresacc() {
                 const shouldIncludeInAcc = (brand, product) => {
                     switch (brand) {
                         case "Cooler_Master":
-                            return product !== "V750 Gold i Multi A/EU cord" && product !== "V850 Gold i Multi A/EU cord";
+                            return product === "V750 Gold i Multi A/EU cord" && product === "V850 Gold i Multi A/EU cord";
                         case "Asus":
-                            return product === "GX601 ROG Strix Helios HDD Cage Kit ";
+                            return product !== "GX601 ROG Strix Helios HDD Cage Kit ";
                         case "Nox":
-                            return product.includes("Adapter");
+                            return !product.includes("Adapter");
                         case "Corsair":
-                            return !product.includes("Series") && product !== "Professional  AX1600i Digital ATX Power Supply, EU version ";
+                            return product.includes("Series") && product === "Professional  AX1600i Digital ATX Power Supply, EU version ";
                         case "UNYKAch":
-                            return product.includes("Adaptador");
+                            return !product.includes("Adaptador");
                         default:
                             return false;
                     }
@@ -204,7 +204,7 @@ export default function Computadoresacc() {
                         }}>
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
                         <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa'>   &nbsp;  \  &nbsp; Produtos  &nbsp;  \  &nbsp;   </Link> 
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Computadores Acessórios</Text>   
+                        <Text  style={{fontSize: "20px",zIndex:-1}}>Fontes de Alimentação</Text>   
                         </Box>
                     </Box>     
                     <Text style={{
@@ -212,7 +212,7 @@ export default function Computadoresacc() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Computadores Acessórios</span>
+                        <span style={{fontWeight:"bold"}}>Fontes de Alimentação</span>
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -220,7 +220,7 @@ export default function Computadoresacc() {
                         ...(isSmallScreen ? styles.textdefaultsmall : {}),
                         ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
                     }}>
-                        Veja os computadores acessórios disponíveis na loja
+                        Veja as fontes de alimentação disponíveis na loja
                     </Text>
                 </Box>
                 <Box sx={{...styles.containermain, 
@@ -281,7 +281,7 @@ export default function Computadoresacc() {
                         <Box sx={styles.pages}>
                             <Box sx={styles.pagesflex}>
                                 {parseInt(pageNumber, 10) <= maxpages && parseInt(pageNumber, 10) > 1 && (
-                                    <Link  to={`/computadoresacessórios?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
+                                    <Link  to={`/fontesdealimentação?page=${parseInt(pageNumber, 10) - 1}`} id='aheader' >
                                         <img src={arrowleft} height={10}></img>
                                         <img src={arrowleft} height={10}></img>
                                     
@@ -289,7 +289,7 @@ export default function Computadoresacc() {
                                 )}  
                                 {renderLinks()}
                                 {parseInt(pageNumber, 10) < maxpages && maxpages>7 && (
-                                    <Link  to={`/computadoresacessórios?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
+                                    <Link  to={`/fontesdealimentação?page=${parseInt(pageNumber, 10) + 1}`} id='aheader' >
                                         
                                         <img src={arrowright} height={10}></img>
                                         <img src={arrowright} height={10}></img>

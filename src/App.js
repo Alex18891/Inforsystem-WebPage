@@ -17,6 +17,7 @@ import Memoriasusb from "./pages/Memoriasusb.js";
 import Memoriascartoes from "./pages/Memoriascartoes.js";
 import Memoriasespecif from "./pages/Memoriasespecif.js";
 import Caixas from "./pages/Caixas";
+import Fontesaliment from "./pages/Fontesaliment";
 import Componentes from "./pages/Componentes";
 import Placasgraficas from "./pages/Placasgraficas";
 import Motherboards from "./pages/Motherboards";
@@ -76,6 +77,7 @@ function App() {
           <Route path="/memóriascartões" element={<Memoriascartoes/>} />
           <Route path="/memóriasespecíficas" element={<Memoriasespecif/>} />
           <Route path="/caixas" element={<Caixas/>} />
+          <Route path="/fontesdealimentação" element={<Fontesaliment/>} />
           <Route path="/componentes" element={<Componentes/>} />
           <Route path="/placasgráficas" element={<Placasgraficas/>} />
           <Route path="/motherboards" element={<Motherboards/>} />
