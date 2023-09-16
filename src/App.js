@@ -37,6 +37,7 @@ import Posacessorios from "./pages/posacessorios";
 import PosLeitorescodigobarra from "./pages/posLeitorescodigobarra";
 import Sistemaspos from "./pages/Sistemaspos";
 import Produtos from "./pages/Produtos";
+import PesquisaProdutos from "./pages/PesquisaProdutos";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -91,6 +92,7 @@ function App() {
           <Route path="/redes" element={<Redes/>} />
           <Route path="/tapetesderato" element={<TapetesRato/>} />
           <Route path="/produtos/Pesquisa" element={<Produtos/>} />
+          <Route path="/produtos/Pesquisa/produtosencontrados" element={<PesquisaProdutos/>} />
         </Routes>
       </ThemeProvider>
     </PopupContext.Provider>

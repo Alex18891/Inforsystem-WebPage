@@ -100,8 +100,6 @@ export default function SuporteManutenção() {
                 const windowsserv = jsonData.filter(row => row[1] === "SW_Servidores"); 
                 const windowsso = jsonData.filter(row => row[1] === "SW_Sistemas_Operativos"); 
                 
-     
-
                 const combinedspecarray = Array.from(new Set(
                     [
                         ...windowsserv,
@@ -305,9 +303,7 @@ export default function SuporteManutenção() {
                                         </Text>
                                     </>
                                   
-                                )}
-                            
-                         
+                                )}                   
                         </Box>
                     </Box>
                 </Box>

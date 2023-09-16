@@ -20,7 +20,6 @@ export default function Register() {
     const [password,setpassword] = useState('');
     const [confirmpassword,setconfirmpassword] = useState('');
     const [checkbox,setcheckbox] = useState(false);
-    
     const [errMsg, setErrMsg] = useState([]);
     const {setIsOpenLogin, setIsOpenRegister} = useContext(PopupContext);
     

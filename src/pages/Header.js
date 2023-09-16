@@ -25,7 +25,7 @@ const Search = styled("div")(({ theme }) => ({
   borderRadius: theme.shape.borderRadius + 10 ,
   marginLeft: 0,
 
-  [theme.breakpoints.up("sm")]: {
+  [theme.breakpoints.up("md")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
   },
@@ -193,7 +193,7 @@ const handleMouseEntersoft = () => {
                 {( isExtraSmallScreen  ) && (
                 <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
                    <Box  style={{ color: "white",textDecorationLine:"none", cursor:"pointer"}} onClick={handleMouseEnterprod}>
-                      Mostrar menu
+                      Menu
                       <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
                     </Box>  
                   </View> 
@@ -208,7 +208,6 @@ const handleMouseEntersoft = () => {
                     width="40px"
                     height="40px"
                     style={{
-        
                     marginTop:"0.5rem"
                     }}
                 ></img>
@@ -290,7 +289,7 @@ const handleMouseEntersoft = () => {
         </Box >
         {(isExtraSmallScreen|| isSmallScreen) && isHoveredprodu &&  (
          
-          <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered,isExtraSmallScreen ? { width: "100%" } : {}]}>
+          <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered, { width: "100%",borderRadius:"2px" } ]}>
                 <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Pesquisa de Produtos</Link>  
                 <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Catálogo de Produtos</Link>  
                 <Link style={styles.acontainer} id='aheader' to="/suportemanutenção?page=1">Serviços de Suporte/Manutenção</Link>
@@ -443,7 +442,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 16,
         paddingRight:"20px",
-        borderRadius:"10px",  
+        borderRadius:"5px",  
     },
     container_small:{
       display: "none",

@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useState, useEffect,useRef } from "react";
+import { useNavigate,Link,useLocation} from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
-import {View, Text,StyleSheet} from 'react-native';
+import { Text,StyleSheet} from 'react-native';
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
+import { Divider } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinus, faCheck } from '@fortawesome/free-solid-svg-icons'
+import {faExclamation} from '@fortawesome/free-solid-svg-icons'
+import { faMinus} from '@fortawesome/free-solid-svg-icons'
 import '../index.css';
-
+import * as XLSX from 'xlsx';
 import portateisprodutos from "./../img/portateisprodutos.png";
 import pcprodutos from "./../img/pcprodutos.png";
 import monitoresprodutos from "./../img/monitoresprodutos.png";
@@ -25,7 +27,115 @@ export default function Produtos() {
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
     const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
+    const itemsPerPage = 16;
+    const errRef = useRef();
+    const [all, setall] = useState([]);
+    const [marcasearch, setmarcasearch] = useState([]);
+    const [marca, setmarca] = useState([]);
+    const [familiasearch, setfamiliasearch] = useState([]);
+    const [familia, setfamilia] = useState([]);
+    const [refersearch, setrefersearch] = useState([]);
+    const [refer, setrefer] = useState([]);
+    const [descsearch, setdescsearch] = useState([]);
+    const [maxpages, setmaxpages] = useState([]);
+    const [desc, setdesc] = useState([]);
+    const [error, seterror] = useState([]);
     const navigate = useNavigate();
+    
+    const readFile = async () => {
+        try {
+        const response = await fetch("/data/Comp_Filtros_1.xlsx");
+        const blob = await response.blob();
+        const reader = new FileReader();
+    
+        reader.onload = (e) => {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        
+            if (jsonData && jsonData.length > 0) {
+                const marca = jsonData.filter(row => row[1]).map(value => value[0]).slice(); 
+                marca.shift();
+                const arraymarca =  Array.from(new Set(marca));
+                setmarcasearch(arraymarca);
+                const familia = jsonData.filter(row => row[1]).map(value => value[1]).slice(); 
+                familia.shift();
+                const arrayfamilia =  Array.from(new Set(familia));
+                setfamiliasearch(arrayfamilia)
+                const refer = jsonData.filter(row => row[1]).map(value => value[2]).slice(); 
+                refer.shift();
+                setrefersearch(refer)
+                const desc = jsonData.filter(row => row[1]).map(value => value[3]).slice(); 
+                desc.shift();
+                setdescsearch(desc)
+                const all = jsonData.filter(row => row[1]).slice(); 
+                all.shift();
+                setall(all)  
+            }
+        };
+        
+        reader.readAsArrayBuffer(blob);
+    
+        } catch (error) {
+        console.error("Error reading the file:", error);
+        }
+    };  
+
+    useEffect(() => {
+        readFile();
+    }, []);
+
+    const filter = (input,dataset)=>{
+        if (input && input.length > 0) {
+            return dataset.filter(item => item.includes(input));
+        }
+        return [];
+    }
+
+    const res = (all,i,name)=>{
+        if (i && i.length > 0) {
+            return all.filter(item => {
+                if (name === "marca") {
+                    return i.includes(item[0]);
+                } else if (name === "família") {
+                    return i.includes(item[1]);
+                } else if (name === "referência") {
+                    return i.includes(item[2]);
+                } else if (name === "descrição") {
+                    return i.includes(item[3]);
+                }
+                return false;  // default to false if no conditions are met
+            });
+        }
+        return [];
+    }
+
+    const search = () =>{
+        const mar = filter(marca, marcasearch) || [];
+        const fam = filter(familia, familiasearch) || [];
+        const ref = filter(refer, refersearch) || [];
+        const de = filter(desc, descsearch) || [];
+        const filtersearch = Array.from(new Set(
+            [
+                ...res(all,mar,"marca"),
+                ...res(all,fam,"família"),
+                ...res(all,ref,"referência"), 
+                ...res(all,de,"descrição") 
+            ]     
+        ))
+        if(filtersearch.length>0){
+            seterror("")
+            const maxPages = Math.ceil(filtersearch.length / itemsPerPage);
+            localStorage.setItem('filtersearch', JSON.stringify(filtersearch));
+            localStorage.setItem('maxPages', maxPages);
+            navigate('/produtos/Pesquisa/produtosencontrados?page=1')
+        }
+        else{
+            seterror("Não foram encontrados resultados")
+        }
+    }
     return (
         <>
             <Header></Header>
@@ -35,19 +145,17 @@ export default function Produtos() {
                 ...(isExtraSmallScreen && styles.containerextrasmall),
                 }} >    
                     <Box>
-                        <Box style={{
-                            ...styles.textdefault,
-                            maxWidth: "1800px",  
-                            ...(isSmallScreen ? styles.textdefaultsmall : {}),
-                            ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
-                        }}>
-                        <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
-                        <Text style={{fontSize: "20px",zIndex:-1}}>    \  Produtos  \    </Text>  
-                        <Text  style={{fontSize: "20px",zIndex:-1}}>Pesquisa    </Text>   
-                        </Box>
+                            <Box style={{
+                                ...styles.textdefault,
+                                maxWidth: "1800px",  
+                                ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                                ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                            }}>
+                            <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>    
+                            <Text style={{fontSize: "20px",zIndex:-1}}>    \  Produtos  \    </Text>  
+                            <Text  style={{fontSize: "20px",zIndex:-1}}>Pesquisa    </Text>   
+                            </Box>
                     </Box>
-
-                   
                     <Text style={{
                         ...styles.textdefault3,
                         ...(isSmallScreen ? styles.textdefault3small : {}),
@@ -64,12 +172,11 @@ export default function Produtos() {
                         Conheça os produtos disponíveis na loja
                     </Text>
                 </Box>
-             
                 <Box sx={styles.viewcontainer}>      
                     <Box sx={styles.containerfeaturesmainproduct}> 
                         <Box sx={[styles.containerfeatures,{marginRight:"150px",marginLeft:"150px"}]}>   
                             <Text style={[
-                               styles.textdefault,
+                            styles.textdefault,
                                 {maxWidth: "1800px",
                                 textAlign:"center",
                                 marginTop:"0.5rem",
@@ -78,9 +185,9 @@ export default function Produtos() {
                                 Pesquisa de Produtos
                             </Text>    
                             <Box  sx={{...styles.pesquisamain,
-                              ...(isMediumScreen && styles.pesquisamainmedium), 
-                              ...(isSmallScreen && styles.pesquisamainsmall), 
-                              ...(isExtraSmallScreen && styles.pesquisamainextrasmall),
+                            ...(isMediumScreen && styles.pesquisamainmedium), 
+                            ...(isSmallScreen && styles.pesquisamainsmall), 
+                            ...(isExtraSmallScreen && styles.pesquisamainextrasmall),
                             }}>  
                                 <Box sx={styles.pesquisacolumn}>   
                                     <Box sx={styles.pesquisarow}>
@@ -88,8 +195,10 @@ export default function Produtos() {
                                                 Descrição
                                         </Text>
                                         <input
-                                                type="email"
+                                                type="text"
                                                 style={styles.inputtext}
+                                                value={desc}
+                                                onChange={e=>setdesc(e.target.value)}
                                                 />
                                     </Box>
                                     <Box sx={styles.pesquisarow}>
@@ -97,8 +206,10 @@ export default function Produtos() {
                                                 Referência
                                         </Text>
                                         <input
-                                                type="email"
+                                                type="text"
                                                 style={styles.inputtext}
+                                                value={refer}
+                                                onChange={e=>setrefer(e.target.value)}
                                                 />
                                     </Box>
                                 </Box>
@@ -108,8 +219,10 @@ export default function Produtos() {
                                                 Marca
                                         </Text>
                                         <input
-                                                type="email"
+                                                type="text"
                                                 style={styles.inputtext}
+                                                value={marca}
+                                                onChange={e=>setmarca(e.target.value)}
                                                 />
                                     </Box>
                                     <Box sx={styles.pesquisarow}>
@@ -117,19 +230,29 @@ export default function Produtos() {
                                                 Família
                                         </Text>
                                         <input
-                                                type="email"
+                                                type="text"
                                                 style={styles.inputtext}
+                                                value={familia}
+                                                onChange={e=>setfamilia(e.target.value)}
                                                 />
                                     </Box>
                                 </Box>
                             </Box>
                             <Box sx = {[styles.boxcontainer]}> 
-                                <Button sx={[styles.buttoncontainer,{}]}>PESQUISAR</Button>
+                                <Button sx={[styles.buttoncontainer,{}]} onClick={search}>PESQUISAR</Button>
                             </Box>
+                            {error.length>0 && (
+                            <Box sx = {[styles.boxcontainer,{borderRadius:"4px"}]}> 
+                                <Text    ref={errRef}
+                                    style={error ? styles.errmsg : styles.offscreen}
+                                    aria-live="assertive" >{`${error}.`}
+                                </Text>     
+                          
+                            </Box>       
+                            )} 
                         </Box>      
                     </Box>        
                 </Box> 
-                
                 <Box  sx={{...styles.container1,
                 ...(isExtraLargeScreen && styles.container1extralarge),
                 ...(isLargeScreen && styles.container1large), 
@@ -186,7 +309,7 @@ export default function Produtos() {
                                 </Box>     
                             </Box>      
                         </Box>   
-                             
+                            
                     </Box> 
                     <Box sx={styles.viewcontainer}> 
                         <Box sx={{background: "#1A65A4",borderRadius:"3px 0px"}}>
@@ -219,7 +342,7 @@ export default function Produtos() {
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
                                             <Link id='aheader' to="/computadoreseacessórios?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
-                                               Ver tudo
+                                            Ver tudo
                                             </Link>
                                         </Box>
                                     </Box>       
@@ -303,7 +426,7 @@ export default function Produtos() {
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
                                             <Link id='aheader' to="/sistemaspos?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
-                                               Ver tudo
+                                            Ver tudo
                                             </Link>
                                         </Box>
                                     </Box>       
@@ -342,7 +465,7 @@ export default function Produtos() {
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
                                             <FontAwesomeIcon icon={faMinus} style={{color: "#someColor"}} />
                                             <Link  id='aheader' to="/processadores?page=1" style={{fontSize:"15px", fontFamily: 'Montserrat'}}>
-                                               Processadores
+                                            Processadores
                                             </Link>
                                         </Box>   
                                         <Box sx = {[styles.boxcontainer,{flexDirection: "row",margin:0,marginTop:"0.2rem"}]}> 
@@ -457,7 +580,7 @@ export default function Produtos() {
                                 </Box>     
                             </Box>      
                         </Box>      
-                              
+                            
                     </Box> 
                     <Box sx={styles.viewcontainer}> 
                         <Box sx={{background: "#1A65A4",borderRadius:"3px 0px"}}>
@@ -503,7 +626,7 @@ export default function Produtos() {
                                 </Box>     
                             </Box>      
                         </Box>      
-                              
+                            
                     </Box> 
                     <Box sx={styles.viewcontainer}> 
                         <Box sx={{background: "#1A65A4",borderRadius:"3px 0px"}}>
@@ -555,16 +678,29 @@ export default function Produtos() {
                                 </Box>     
                             </Box>      
                         </Box>      
-                              
+                            
                     </Box> 
                 </Box>
-            </Box> 
+            </Box>  
             <Footer></Footer>
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    offscreen: {
+        display: 'none',
+      },
+      
+    errmsg: {
+        marginBottom: 0,
+        paddingBottom:0,
+        fontFamily: 'Montserrat',
+        fontWeight: "bold",
+        fontSize:"13px",
+        color:"black",
+        textAlign:"left"
+    },
     container:{
         display:'flex',
         flexDirection:'column',
