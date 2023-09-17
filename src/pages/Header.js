@@ -10,7 +10,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import ReactModal from 'react-modal';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Divider } from '@mui/material';
+import * as XLSX from 'xlsx';
 import pfp from "./../img/user.png";
 import logo from "./../img/logo.png";
 import menu from "./../img/menu.png";
@@ -22,9 +23,9 @@ import ForgotPassword from "./ForgotPassword";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius + 10 ,
+  borderRadius: theme.shape.borderRadius  ,
+  border:"1px solid black",
   marginLeft: 0,
-
   [theme.breakpoints.up("md")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
@@ -50,8 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1rem + ${theme.spacing(4)})`,
     paddingRight: `calc(1rem + ${theme.spacing(3)})`,
     transition: theme.transitions.create("width"),
-    border:"1px solid black",
-    borderRadius:"12px",
+    borderRadius:"4px",
     [theme.breakpoints.up("md")]: {
       width: "24ch",
       height:"2.8ch"
@@ -80,13 +80,63 @@ export default function PrimarySearchAppBar() {
   const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
   const [searchValue, setSearchValue] = React.useState("");
   const navigate = useNavigate();
+  const itemsPerPage = 16;
+  const [all, setall] = useState([]);
+  const [search, setsearch] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
   const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword  } = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
+
+  const readFile = async () => {
+    try {
+    const response = await fetch("/data/Comp_Filtros_1.xlsx");
+    const blob = await response.blob();
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    
+        if (jsonData && jsonData.length > 0) {
+            const all = jsonData.filter(row => row[1]).slice(); 
+            all.shift();
+            console.log(all)
+            setall(all)  
+        }
+    };
+    
+    reader.readAsArrayBuffer(blob);
+
+    } catch (error) {
+    console.error("Error reading the file:", error);
+    }
+};  
+
+const filter = (input, dataset) => {
+  if (input && input.length > 0) {
+    return dataset.filter(item => 
+      item.some(subItem => String(subItem).includes(input))
+    );
+  }
+  return [];
+}
+
+  useEffect(() => {
+      readFile();
+  }, []);
+
+  useEffect(()=>{
+      setsearch(filter(searchValue,all))
+  },[searchValue])
+
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
   };
+
   const handleMouseEnter = () => {
     setIsHovered(true);
     setIsHoveredprodu(false)
@@ -97,14 +147,14 @@ export default function PrimarySearchAppBar() {
     setIsHoveredprodu(prevState => !prevState);
     setIsHovered(false);
     setIsHoveredsoft(false);
-};
+  };
 
 
-const handleMouseEntersoft = () => {
+  const handleMouseEntersoft = () => {
     setIsHovered(false);
     setIsHoveredsoft(true);
     setIsHoveredprodu(false);
-};
+  };
 
 
   const handleMouseLeave = () => {
@@ -148,6 +198,13 @@ const handleMouseEntersoft = () => {
     </Box>
   )
 
+  const vermais = () => {
+    const maxPages = Math.ceil(search.length / itemsPerPage);
+    localStorage.setItem('filtersearch', JSON.stringify(search));
+    localStorage.setItem('maxPages', maxPages);
+    navigate('/produtos/Pesquisa/produtosencontrados?page=1')
+  }
+
   return (
     <Box sx={{ flexGrow: 1}}>
         <Box position="static"  sx={{background: "#1A65A4"}}>
@@ -155,7 +212,6 @@ const handleMouseEntersoft = () => {
               <Box sx={{...styles.firstitemfirsttoolbar,
                     ...(isSmallScreen && styles.firstitemfirsttoolbarsmall),
                     ...(isExtraSmallScreen && styles.firstitemfirsttoolbarextrasmall) }}>
-               
                 {( isSmallScreen  ) && (
                   <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
                   <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
@@ -179,17 +235,48 @@ const handleMouseEntersoft = () => {
                       />
                     </>   
                 )
-              }   
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon style={{ color: "#344054"}} />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    placeholder="Pesquisa os nossos produtos"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={handleSearchChange}
-                  />     
-                </Search>  
+              } 
+                <Box sx={styles.mainsearch}>
+                  <Search>
+                    <SearchIconWrapper>
+                      <SearchIcon style={{ color: "#344054"}} />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      placeholder="Pesquisa os nossos produtos"
+                      inputProps={{ "aria-label": "search" }}
+                      onChange={handleSearchChange}
+                      value={searchValue}
+                    />    
+                  </Search>  
+                  {search.length > 0  ?(
+                    <Box sx={{
+                      ...styles.searchbar,
+                      ...isSmallScreen && styles.searchbarsmall,
+                      ...isExtraSmallScreen && styles.searchbarsmall,
+                      zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 2,
+                    }}>
+                      {search.slice(0, 3).map((item, index) => (
+                        <>
+                          <Box sx={{display:"flex",flexDirection:"column",gap:"10px"}}>
+                            <Link  style={{...styles.acontainer,gap:"5px",padding:"0px"}} id='aheader'>
+                              Produto: {item[3]}
+                            </Link>
+                          </Box>
+                        </>
+                       
+                      ))}
+                      {
+                        search.length > 3 && (
+                          <Box onClick={vermais}  style={{...styles.acontainer,gap:"5px",padding:"0px"}} id='aheader'>
+                            Ver mais
+                          </Box>
+                        )
+                      }
+                     
+                    </Box>
+                  ):null
+                  } 
+                </Box>  
                 {( isExtraSmallScreen  ) && (
                 <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
                    <Box  style={{ color: "white",textDecorationLine:"none", cursor:"pointer"}} onClick={handleMouseEnterprod}>
@@ -214,8 +301,7 @@ const handleMouseEntersoft = () => {
                 <Text style={styles.textdefault} >
                     Minha conta
                 </Text> 
-              </Box>
-              
+              </Box>  
               <ReactModal
                 isOpen={isOpenLogin}
                 onRequestClose={() => setIsOpenLogin(false)}
@@ -288,16 +374,14 @@ const handleMouseEntersoft = () => {
             </Toolbar>       
         </Box >
         {(isExtraSmallScreen|| isSmallScreen) && isHoveredprodu &&  (
-         
           <View  style={[styles.container_cont,isHoveredprodu && styles.containerHovered, { width: "100%",borderRadius:"2px" } ]}>
                 <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Pesquisa de Produtos</Link>  
                 <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Catálogo de Produtos</Link>  
                 <Link style={styles.acontainer} id='aheader' to="/suportemanutenção?page=1">Serviços de Suporte/Manutenção</Link>
               <Link style={styles.acontainer} id='aheader' to="/softwarefaturação">Serviços de Faturação</Link>
           </View>
-      
-
         )}
+        
         <Box  sx={{ background: "white" ,boxShadow: '0 0 30px rgba(0, 0, 0, 0.2)'}}>
           <Toolbar  sx={{...styles.secondtoolbar,
                       ...(isSmallScreen && styles.secondtoolbarsmall),
@@ -339,7 +423,6 @@ const handleMouseEntersoft = () => {
 }
 
 const styles = StyleSheet.create({
-
   hamburger:{
     content:" ",
     display:"block",
@@ -349,30 +432,49 @@ const styles = StyleSheet.create({
   produtosmenu:{
     color: "black",textDecorationLine:"none",display:"flex",alignItems:"center",gap:"15px"
   },
-    container:{
-        position: "relative",
-        display: "inline-block",
+  container:{
+      position: "relative",
+      display: "inline-block",
+  },
+  popup:{
+    overlay: {
+      backgroundColor: 'rgba(0,0,0,0.5)', 
+      backdropFilter: 'blur(10px)', // This line adds the blur effect
     },
-    popup:{
-      overlay: {
-        backgroundColor: 'rgba(0,0,0,0.5)', 
-        backdropFilter: 'blur(10px)', // This line adds the blur effect
-      },
-      content : {
+    content : {
+    position: 'relative',
+    top: '50%',
+    left: '50%',
+    right : 'auto',
+    bottom : 'auto',
+    width:"1000px",
+    transform : 'translate(-50%, -50%)',
+    backgroundColor : '#fff', 
+    borderRadius:'6px',
+    paddingBottom:'5rem',
+    padding:'0',
+    border: 0,
+    zIndex:2
+    }
+  },
+  searchbar:{
+    position: 'absolute',   
+    marginLeft: `1.48rem`,
+    top: '94%', 
+    border:"1px solid black",
+    left: 0, 
+    right: 0,
+    width: "35ch", 
+    backgroundColor: "#EBEBEB", 
+    boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+  },
+  searchbarsmall:{
+    marginLeft: `0rem`,
+  },
+    mainsearch:{
       position: 'relative',
-      top: '50%',
-      left: '50%',
-      right : 'auto',
-      bottom : 'auto',
-      width:"1000px",
-      transform : 'translate(-50%, -50%)',
-      backgroundColor : '#fff', 
-      borderRadius:'6px',
-      paddingBottom:'5rem',
-      padding:'0',
-      border: 0,
-      zIndex:2
-      }
+      display:"flex",
+      flexDirection:"column" ,
     },
     container_cont2:{
       display: "none",
@@ -404,8 +506,7 @@ const styles = StyleSheet.create({
     },
     firstitemfirsttoolbarsmall:{
       gap:"20px",
-      margin:0,
-      
+      margin:0,    
     },
     firstitemfirsttoolbarextrasmall:{
       gap:"10px",
@@ -462,6 +563,7 @@ const styles = StyleSheet.create({
         marginBottom:"0.5rem",
         cursor:"pointer"
       },
+      
   
       containerHovered: {
         display: "block",

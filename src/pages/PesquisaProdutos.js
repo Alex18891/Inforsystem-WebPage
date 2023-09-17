@@ -5,26 +5,10 @@ import Footer from "./Footer.js";
 import {View, Text,StyleSheet} from 'react-native';
 import Box from "@mui/material/Box";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import Checkbox from '@mui/material/Checkbox';
-import * as XLSX from 'xlsx';
 import '../index.css';
 import arrowright from "./../img/arrowright.png"
 import arrowleft from "./../img/arrowleft.png"
-import arrowabove from "./../img/arrowabove.png"
-import windows7 from "./../img/windows7.png";
-import windows10home from "./../img/windows10home.png";
-import windows10pro from "./../img/windows10pro.png";
-import windows11home from "./../img/windows11home.png";
-import windows11pro from "./../img/windows11pro.png";
-import rapairpc from "./../img/rapairpc.png"
-import rapairprinter from "./../img/rapairprinter.png"
-import removalvirus from "./../img/removalvirus.png"
-import disponivel from "./../img/disponivel.png";
-import operationalsystem from "./../img/operationalsystem.png"
-import componentsrepair from "./../img/componentsrepair.png"
-import virusremoval from "./../img/virusremoval.png";
+
 
 
 export default function PesquisaProdutos() {
@@ -74,6 +58,25 @@ export default function PesquisaProdutos() {
                          ...(isSmallScreen && styles.containersmall),
                          ...(isExtraSmallScreen && styles.containerextrasmall),
                      }}>
+                    <Box>
+                        <Box style={{
+                            ...styles.textdefault,
+                            maxWidth: "1800px",  
+                            ...(isSmallScreen ? styles.textdefaultsmall : {}),
+                            ...(isExtraSmallScreen ? styles.textdefaultextrasmall : {})
+                        }}>
+                            <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/'>Página Inicial</Link>  
+                            <Link id='aheader' style={{fontSize: "20px",zIndex:-1}} to='/produtos/Pesquisa/'> &nbsp;  \  &nbsp; Pesquisa  &nbsp;  \  &nbsp;   </Link>     
+                            <Text style={{fontSize: "20px",zIndex:-1}}>Produtos encontrados</Text>   
+                        </Box>
+                    </Box>
+                    <Text style={{
+                        ...styles.textdefault3,
+                        ...(isSmallScreen ? styles.textdefault3small : {}),
+                        ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
+                    }}>
+                        <span style={{fontWeight:"bold"}}>Produtos</span> encontrados
+                    </Text>
                         {allsearch.length>1 ?(
                             <Text style={[styles.textdefault, { fontSize:"14px"}]}>
                             Foram encontrados <span style={{fontWeight:"bold"}}>{allsearch.length}</span> resultados
