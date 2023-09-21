@@ -80,10 +80,10 @@ export default function PrimarySearchAppBar() {
   const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
   const [searchValue, setSearchValue] = React.useState("");
   const navigate = useNavigate();
-  const itemsPerPage = 16;
   const [all, setall] = useState([]);
   const [search, setsearch] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
+  const [isselected, setselected] = useState(false);
   const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword  } = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
@@ -102,10 +102,97 @@ export default function PrimarySearchAppBar() {
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     
         if (jsonData && jsonData.length > 0) {
-            const all = jsonData.filter(row => row[1]).slice(); 
-            all.shift();
-            console.log(all)
-            setall(all)  
+            const caixas = jsonData.filter(row => row[1] === "Caixas");
+            const pgraficas = jsonData.filter(row => row[1] === "Placas_Graficas");
+            const motherboards = jsonData.filter(row => row[1] === "Motherboards_Pcs");    
+            const processadores = jsonData.filter(row => row[1] === "Processadores");
+            const PCs = jsonData.filter(row => row[1] === "PCs");
+            const PCacc = jsonData.filter(row => row[1] === "PCs_Acessórios"); 
+            const coolers = jsonData.filter(row => row[1] === "Soluções_de_Arrefecimento");
+            const discosexter = jsonData.filter(row => row[1] === "Discos_Externos");
+            const discosssd = jsonData.filter(row => row[1] === "Discos_SSD");      
+            const discoshdd = jsonData.filter(row => row[1] === "Discos_HDD");
+            const drives = jsonData.filter(row => row[1] === "Drives_Ópticas");
+            const memoriaPCs = jsonData.filter(row => row[1] === "Memorias_PCs");
+            const memoriasportateis = jsonData.filter(row => row[1] === "Memorias_Portateis");      
+            const memoriasusb = jsonData.filter(row => row[1] === "Memorias_USB");
+            const memoriascartoes = jsonData.filter(row => row[1] === "Memorias_Cartoes");
+            const memoriasespecificias = jsonData.filter(row => row[1] === "Memorias_Especificas");
+            const redes = jsonData.filter(row => row[1] === "Redes_Switch");
+            const conectividade = jsonData.filter(row => row[1] === "Conectividade");
+            const Posimpre = jsonData.filter(row => row[1] === "POS_Impressoras");
+            const  Posleit = jsonData.filter(row => row[1] === "POS_Leitores_codigos_barra");      
+            const sistemaspos = jsonData.filter(row => row[1] === "Sistemas_de_POS");
+            const Posmonito = jsonData.filter(row => row[1] === "POS_Monitores");
+            const posacc = jsonData.filter(row => row[1] === "POS_Acessorios");
+            const ratos = jsonData.filter(row => row[1] === "Ratos_Acessórios");
+            const shouldIncludeInAcc = (brand, product) => {
+              switch (brand) {
+                  case "Cooler_Master":
+                      return product !== "V750 Gold i Multi A/EU cord" && product !== "V850 Gold i Multi A/EU cord";
+                  case "Asus":
+                      return product === "GX601 ROG Strix Helios HDD Cage Kit ";
+                  case "Nox":
+                      return product.includes("Adapter");
+                  case "Corsair":
+                      return !product.includes("Series") && product !== "Professional  AX1600i Digital ATX Power Supply, EU version ";
+                  case "UNYKAch":
+                      return product.includes("Adaptador");
+                  default:
+                      return false;
+              }
+            };
+            const shouldIncludeInfont = (brand, product) => {
+              switch (brand) {
+                  case "Cooler_Master":
+                      return product === "V750 Gold i Multi A/EU cord" && product === "V850 Gold i Multi A/EU cord";
+                  case "Asus":
+                      return product !== "GX601 ROG Strix Helios HDD Cage Kit ";
+                  case "Nox":
+                      return !product.includes("Adapter");
+                  case "Corsair":
+                      return product.includes("Series") && product === "Professional  AX1600i Digital ATX Power Supply, EU version ";
+                  case "UNYKAch":
+                      return !product.includes("Adaptador");
+                  default:
+                      return false;
+              }
+            };
+            let acc = PCacc.filter(value => shouldIncludeInAcc(value[0], value[3])); 
+            let font = PCacc.filter(value => shouldIncludeInfont(value[0], value[3])); 
+            const combinedsarray = Array.from(new Set(
+              [
+                  ...caixas,
+                  ...pgraficas,
+                  ...motherboards,
+                  ...processadores,
+                  ...PCs,
+                  ...coolers,
+                  ...discosexter,
+                  ...discosssd,
+                  ...discoshdd,
+                  ...drives,
+                  ...memoriaPCs,
+                  ...memoriasportateis,
+                  ...memoriasusb,
+                  ...memoriascartoes,
+                  ...memoriasespecificias,
+                  ...memoriasespecificias,
+                  ...redes,
+                  ...conectividade,
+                  ...Posimpre,
+                  ...Posleit,
+                  ...sistemaspos,
+                  ...Posmonito,
+                  ...posacc,
+                  ...ratos,
+                  ...acc,
+                  ...font,
+              ]
+            )) 
+           // const all = jsonData.filter(row => row[1]).slice(); 
+           // all.shift();
+            setall(combinedsarray)  
         }
     };
     
@@ -197,12 +284,17 @@ const filter = (input, dataset) => {
       </View>
     </Box>
   )
+  
+  const handleselectsearch = () => {
+    setselected(true)  
+  }
 
-  const vermais = () => {
-    const maxPages = Math.ceil(search.length / itemsPerPage);
-    localStorage.setItem('filtersearch', JSON.stringify(search));
-    localStorage.setItem('maxPages', maxPages);
-    navigate('/produtos/Pesquisa/produtosencontrados?page=1')
+  const handleleavesearch = () => {
+    setselected(false)
+  }
+
+  const handleproduct = (item) => {
+    navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`);
   }
 
   return (
@@ -236,7 +328,8 @@ const filter = (input, dataset) => {
                     </>   
                 )
               } 
-                <Box sx={styles.mainsearch}>
+                <Box sx={styles.mainsearch} onMouseEnter={handleselectsearch}
+                      onMouseLeave={handleleavesearch}>
                   <Search>
                     <SearchIconWrapper>
                       <SearchIcon style={{ color: "#344054"}} />
@@ -244,35 +337,24 @@ const filter = (input, dataset) => {
                     <StyledInputBase
                       placeholder="Pesquisa os nossos produtos"
                       inputProps={{ "aria-label": "search" }}
-                      onChange={handleSearchChange}
+                      onChange={handleSearchChange}    
                       value={searchValue}
                     />    
                   </Search>  
-                  {search.length > 0  ?(
+                  {(search.length > 0 && isselected) ?(
                     <Box sx={{
                       ...styles.searchbar,
                       ...isSmallScreen && styles.searchbarsmall,
                       ...isExtraSmallScreen && styles.searchbarsmall,
                       zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 2,
                     }}>
-                      {search.slice(0, 3).map((item, index) => (
-                        <>
-                          <Box sx={{display:"flex",flexDirection:"column",gap:"10px"}}>
-                            <Link  style={{...styles.acontainer,gap:"5px",padding:"0px"}} id='aheader'>
-                              Produto: {item[3]}
-                            </Link>
-                          </Box>
-                        </>
-                       
-                      ))}
-                      {
-                        search.length > 3 && (
-                          <Box onClick={vermais}  style={{...styles.acontainer,gap:"5px",padding:"0px"}} id='aheader'>
-                            Ver mais
-                          </Box>
-                        )
-                      }
-                     
+                      {search.slice(0, 4).map((item, index) => (
+                        <Box sx={{display:"flex",flexDirection:"column",gap:"10px"}} onClick = {(e) =>handleproduct(item)}>
+                          <Text  style={{...styles.acontainer,gap:"5px",padding:"0px",marginRight:"0.5rem",marginLeft:"0.5rem"}} id='aheader'>
+                            Produto: {item[3]}
+                          </Text>
+                        </Box>   
+                      ))}    
                     </Box>
                   ):null
                   } 

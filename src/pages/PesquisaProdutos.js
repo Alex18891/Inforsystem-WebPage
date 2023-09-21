@@ -21,13 +21,9 @@ export default function PesquisaProdutos() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const allsearch = JSON.parse(localStorage.getItem('filtersearch'));
-    console.log(allsearch)
     const maxpages = localStorage.getItem('maxPages');
     const pageNumber = queryParams.get("page");
     const itemsToShow = allsearch.slice(((parseInt(pageNumber, 10) ) - 1) * itemsPerPage, (parseInt(pageNumber, 10) ) * itemsPerPage);
-    const [isHoveredrepaircomponents, setIsHoveredrepaircomponents] = useState(false);
-    const [isHoveredrepairremovalvirus, setIsHoveredrepairremovalvirus] = useState(false);
-    const [isHoveredrepairinstaso, setIsHoveredrepairinstaso] = useState(false);
     const navigate = useNavigate();
 
     const renderLinks = () => {
@@ -46,7 +42,9 @@ export default function PesquisaProdutos() {
         return elements;
       };
     
- 
+      const handleproduto = (item) => {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+      }
 
     return (
         <>
@@ -99,14 +97,14 @@ export default function PesquisaProdutos() {
                                      ...(isSmallScreen && styles.container1small), 
                                      ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                                  {itemsToShow.map(item => (
-                                     <Box sx={[styles.viewcontainer, {margin:0}]}>
+                                     <Box sx={[styles.viewcontainer, {margin:0,cursor:"pointer"}]} onClick={(e)=>handleproduto(item)}>
                                          <Box sx={styles.containerfeaturesmainproduct}>
                                              <Box sx={[styles.containerfeatures, {marginRight:"50px", marginLeft:"50px"}]}>
                                                  <Text style={[styles.textdefault, {margin:"0", fontSize:"14px"}]}>
                                                      Marca: {item[0]}
                                                  </Text>
                                                  <Text style={[styles.textdefault, {margin:"0", fontSize:"14px"}]}>
-                                                     Família: {item[1]}
+                                                     Família: {item[1].replace(/_/g, ' ')}
                                                  </Text>
                                                  <Text style={[styles.textdefault, {margin:"0", fontSize:"14px"}]}>
                                                      Referência: {item[2]}

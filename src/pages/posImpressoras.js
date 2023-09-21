@@ -208,7 +208,7 @@ export default function PosImpressoras() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Pos Impressoras</span>
+                        <span style={{fontWeight:"bold"}}>Pos </span>Impressoras
                     </Text>
                     <Text style={{
                         ...styles.textdefault,

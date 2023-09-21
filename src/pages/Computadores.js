@@ -12,39 +12,12 @@ import { Divider } from '@mui/material';
 import * as XLSX from 'xlsx';
 import '../index.css';
 
-import firstpc from "./../img/firstpc.png";
 import secondpc from "./../img/secondpc.png";
-import thirdpc from "./../img/thirdpc.png";
-import fourthpc from "./../img/fourthpc.png";
-import fifthpc from "./../img/fifthpc.png";
-import sixthpc from "./../img/sixthpc.png";
-import seventhpc from "./../img/seventhpc.png";
-import eighthpc from "./../img/eighthpc.png";
-import ninethpc from "./../img/ninethpc.png";
-import tenthpc from "./../img/tenthpc.png";
-import eleventhpc from "./../img/eleventhpc.png";
-import twelfthpc from "./../img/twelfthpc.png";
-
-import firstpcsecondpage from "./../img/firstpcsecondpage.png";
-import secondpcsecondpage  from "./../img/secondpcsecondpage.png";
-import thirdpcsecondpage  from "./../img/thirdpcsecondpage.png";
-import fourthpcsecondpage  from "./../img/fourthpcsecondpage.png";
-import fifthpcsecondpage  from "./../img/fifthpcsecondpage.png";
-import sixthpcsecondpage  from "./../img/sixthpcsecondpage.png";
-import seventhpcsecondpage  from "./../img/seventhpcsecondpage.png";
-import eighthpcsecondpage  from "./../img/eighthpcsecondpage.png";
-import ninethpcsecondpage  from "./../img/ninethpcsecondpage.png";
-import tenthpcsecondpage  from "./../img/tenthpcsecondpage.png";
-import eleventhpcsecondpage  from "./../img/eleventhpcsecondpage.png";
-import twelfthpcsecondpage  from "./../img/twelfthpcsecondpage.png";
 
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
 import arrowabove from "./../img/arrowabove.png"
 import arrowleft from "./../img/arrowleft.png"
-
-let filterfamily = []
-
 
 export default function Computadores() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -104,8 +77,6 @@ export default function Computadores() {
         
             if (jsonData && jsonData.length > 0) {
                 const PCs = jsonData.filter(row => row[1] === "PCs");
-            
-             
                 const combinedspecarray = Array.from(new Set(
                     [
                         ...PCs,
@@ -121,14 +92,11 @@ export default function Computadores() {
                 let memoria = []
                 specificationseach.map((value)=>{
                         if (value.some((element) => {
-                           // console.log(element);
                             if(element.includes("SSD"))
                             {
-                              //  console.log(element)
                                 if (!capacidade.includes(element)) {
                                     capacidade.push(element);
-                                }
-                                
+                                }       
                             }
                             else if(element.includes("DDR") || element.includes("MHz")){
                                
@@ -590,7 +558,6 @@ const styles = StyleSheet.create({
         display:"flex",
         flexDirection:"column",
     },
- 
 
     textdefault:{
     fontSize:"22px",
