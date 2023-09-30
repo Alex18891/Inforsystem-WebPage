@@ -39,6 +39,8 @@ import Sistemaspos from "./pages/Sistemaspos";
 import Produtos from "./pages/Produtos";
 import Produtoindividual from "./pages/Produtoindividual";
 import PesquisaProdutos from "./pages/PesquisaProdutos";
+import Orçamento from "./pages/Orcamento";
+import OrçamentoProduto from "./pages/OrçamentoProduto";
 import { PopupContext } from './pages/popupcontext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -51,14 +53,19 @@ function App() {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   const [isOpenRegister, setIsOpenRegister] = useState(false);
   const [isOpenForgotpassword, setIsOpenForgotpassword] = useState(false);
+  const [isOpenEndereco, setIsOpenEndereco] = useState(false);
+  const [isOpenEnderecoadd, setIsOpenEnderecoadd] = useState(false);
+
   
   return (
-    <PopupContext.Provider value={{ isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword, setIsOpenForgotpassword }}>
+    <PopupContext.Provider value={{ isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword, setIsOpenForgotpassword,isOpenEndereco,setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd}}>
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="/" element={<Homepage/>} />
           <Route path="/softwarefaturação" element={<SoftwareFaturação/>} />
           <Route path="/suportemanutenção" element={<SuporteManutenção/>} />
+          <Route path="/perdirorçamento" element={<Orçamento/>} />
+          <Route path="/perdirorçamentoproduto" element={<OrçamentoProduto/>} />
           <Route path="/termoseserviços" element={<Termoseserviços/>} />
           <Route path="/políticadeprivacidade" element={<Politicadeprivacidade/>} />
           <Route path="/políticadecookies" element={<Politicadecookies/>} />

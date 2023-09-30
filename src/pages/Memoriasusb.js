@@ -128,6 +128,11 @@ export default function Memoriasusb() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
+
     const commonContainer1 = (
         <Box  sx={styles.container1}>
             <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
@@ -218,7 +223,7 @@ export default function Memoriasusb() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {memoriasusb.length>0  &&(
                                 itemsToShow.map((memoriasusb, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer} onClick = {(e) =>handleproduct(memoriasusb)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -349,6 +354,7 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {

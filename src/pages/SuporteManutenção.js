@@ -123,6 +123,11 @@ export default function SuporteManutenção() {
         readFile();
     }, []);
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
+
     return (
         <>
             <Header></Header>
@@ -323,7 +328,7 @@ export default function SuporteManutenção() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {pcs.length>0 &&(
                                 itemsToShow.map((pc, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer} onClick = {(e) =>handleproduct(pc)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -428,6 +433,7 @@ const styles = StyleSheet.create({
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         marginBottom:"2rem",
         paddingLeft:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {

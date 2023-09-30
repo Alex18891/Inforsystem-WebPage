@@ -26,6 +26,7 @@ export default function SoftwareFaturação() {
     const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     const navigate = useNavigate();
+    
     return (
         <>
             <Header></Header>

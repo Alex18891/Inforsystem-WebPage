@@ -22,7 +22,89 @@ export default function Slider () {
     const { item: itemString } = useParams();
     const search = JSON.parse(itemString);
     const navigate = useNavigate();  
-    
+
+  ///FONTE E PCS ACESSORIOS DIFERENCIAR FAZER
+
+  const shouldIncludeInAcc = (brand, product) => {
+    switch (brand) {
+        case "Cooler_Master":
+            return product !== "V750 Gold i Multi A/EU cord" && product !== "V850 Gold i Multi A/EU cord";
+        case "Asus":
+            return product === "GX601 ROG Strix Helios HDD Cage Kit ";
+        case "Nox":
+            return product.includes("Adapter");
+        case "Corsair":
+            return !product.includes("Series") && product !== "Professional  AX1600i Digital ATX Power Supply, EU version ";
+        case "UNYKAch":
+            return product.includes("Adaptador");
+        default:
+            return false;
+    }
+};
+
+    const shouldIncludeInFont = (brand, product) => {
+        switch (brand) {
+            case "Cooler_Master":
+                return product === "V750 Gold i Multi A/EU cord" && product === "V850 Gold i Multi A/EU cord";
+            case "Asus":
+                return product !== "GX601 ROG Strix Helios HDD Cage Kit ";
+            case "Nox":
+                return !product.includes("Adapter");
+            case "Corsair":
+                return product.includes("Series") && product === "Professional  AX1600i Digital ATX Power Supply, EU version ";
+            case "UNYKAch":
+                return !product.includes("Adaptador");
+            default:
+                return false;
+        }
+    };
+
+    const verifyfontoracc = (brand,product)=>{
+        switch (brand) {
+            case "Cooler_Master":
+                if(product === "V750 Gold i Multi A/EU cord" && product === "V850 Gold i Multi A/EU cord")
+                {
+                    return true;
+                }
+                else{
+                    return false
+                }
+              
+            case "Asus":
+                if(product !== "GX601 ROG Strix Helios HDD Cage Kit ") 
+                {
+                    return true
+                }
+                else{
+                    return false
+                }
+            case "Nox":
+                if (!product.includes("Adapter")){
+                    return true
+                }
+                else{
+                    return false
+                }
+            case "Corsair":
+                if (product.includes("Series") && product === "Professional  AX1600i Digital ATX Power Supply, EU version ")
+                {
+                    return true
+                }
+                else{
+                    return false
+                }       
+            case "UNYKAch":
+                if (!product.includes("Adaptador")){
+                    return true ;
+                } 
+                else {
+                    return false
+                }
+            default:
+                return false;
+        }
+    }
+
     const readFile = async () => {
         try {
         const response = await fetch("/data/Comp_Filtros_1.xlsx");
@@ -46,23 +128,38 @@ export default function Slider () {
                 row[1] === "Memorias_Cartoes" ||  row[1] === "Memorias_Especificas" || row[1] === "Redes_Switch" ||
                 row[1] === "Conectividade" || row[1] === "POS_Impressoras" || row[1] === "POS_Leitores_codigos_barra" ||
                 row[1] === "Sistemas_de_POS" ||  row[1] === "POS_Monitores" || row[1] === "POS_Acessorios" ||  row[1] === "Ratos_Acessórios"
-                || row[1] === "PCs_Acessórios"
+                || row[1] === "PCs_Acessórios" || row[1] === "SW_Servidores" || row[1] === "SW_Sistemas_Operativos"
                 );
 
+                const PCacc = jsonData.filter(row => row[1] === "PCs_Acessórios"); 
+                
                 const combinedsarray = Array.from(new Set(
                     [
                         ...data,  
                     ]
                 )) 
                 let datafilter = []
+                
                 combinedsarray.filter(value => {
-                    if(value[1] === search[1] && value[3] !== search[3])
+                    if(value[1] === 'PCs_Acessórios' && value[1] === search[1] )
+                    {   
+                        const fontoracc = verifyfontoracc(search[0],search[3])
+                        if(fontoracc === true)
+                        {
+                            let font = PCacc.filter(value => value[3] !== search[3] && shouldIncludeInFont(value[0], value[3]) );
+                            datafilter = font
+                        }
+                        else{
+                            let acc = PCacc.filter(value => value[3] !== search[3] && shouldIncludeInAcc(value[0], value[3]) );
+                            datafilter = acc
+                        }   
+                    }
+                    else if(value[1] === search[1] && value[3] !== search[3])
                     {
                        
                         datafilter.push(value)
                     }
                 })  
-                console.log(datafilter)
                 setProducts(datafilter);    
                 if(isExtraLargeScreen )
                 {
@@ -200,9 +297,9 @@ export default function Slider () {
                         </Box>  
                     </Box>
                 ))} 
-                { currentIndex < products.length && (
+                {(products.length>itemsubtract && currentIndex < products.length) && (
                      <>
-                     {!( (currentIndex  == products.length - 1)) && (
+                     {!((currentIndex  == products.length - 1)) && !((currentIndex  == products.length - 2))  && (
                         <Box style={{ cursor:"pointer"}} onClick={loadNextProducts}>
                             <Button> <i className="fas fa-arrow-right fa-4x" ></i></Button>
                         </Box>

@@ -44,7 +44,7 @@ app.post('/login',async(req,res)=>{
                     process.env.JWT_SECRET,
                     { expiresIn: '1h' }
                 );
-                return res.status(200).json({ message: "Sucesso", token: token });
+                return res.status(200).json({ message: "Sucesso", token: token, userid: user._id,name:user.nome,email:user.email});
             }
             else{
                 return res.status(203).json({message:"Password errada"})
@@ -83,6 +83,166 @@ app.post('/register',async(req,res)=>{
       }
 
     }catch(error){
+        return res.status(500).json(error); 
+    }
+})
+
+app.post('/criarendereco',async(req,res)=>{
+    const {userid,name,telefone,morada, country,cdpt, state,ncontribuinte} = req.body
+    try{
+        const user = await User.findOne({ _id: userid });
+        if(!user)
+        {
+            return res.status(203).json({message:"Utilizador não encontrado"})
+        }
+        user.addresses.push({
+            userid,
+            name,
+            telefone,
+            morada,
+            country,
+            cdpt,
+            state,
+            ncontribuinte
+        });
+        await user.save();
+        return res.status(201).json({message:"Endereço criado"});
+    }catch(error){
+        return res.status(500).json(error); 
+    }
+})
+
+app.put('/alterarendereco',async(req,res)=>{
+    const {userid,name,telefone,morada, country,cdpt, state,ncontribuinte} = req.body
+    const {idadress} = req.query;//Envio do idadress que quero atualizar
+    try{
+        const user = await User.findOne({ _id: userid });
+        if(!user)
+        {
+            return res.status(203).json({message:"Utilizador não encontrado"})
+        }
+        const existingAddress = user.addresses.id(idadress); //Verifica se endereço existe
+        if(!existingAddress) {
+            return res.status(404).json({message: "Endereço não encontrado no utilizador"});
+        }
+        //Atualiza os parametros desse endereço
+        existingAddress.userid = userid; 
+        existingAddress.name = name;
+        existingAddress.telefone = telefone;
+        existingAddress.morada = morada;
+        existingAddress.country = country;
+        existingAddress.cdpt = cdpt;
+        existingAddress.state = state;
+        existingAddress.ncontribuinte = ncontribuinte;
+        await user.save();
+        return res.status(201).json({message:"Endereço atualizado"});
+    }catch(error){
+        return res.status(500).json(error); 
+    }
+})
+
+app.get('/endereco',async(req,res)=>{
+    const {userid} = req.query;
+    console.log(userid)
+    try{
+        const user = await User.findOne({_id:userid})
+        console.log(user)
+        if(!user)
+        {
+            return res.status(203).json({message:"Utilizador não encontrado"})
+        }
+        return res.status(200).json({message:"Utilizador encontrado",user:user.addresses})
+    }catch(error){
+        return res.status(500).json(error)
+    }
+    
+})
+
+const sendorçamento = async(title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte)=>{
+    try{
+        const transporter = nodemailer.createTransport({
+            service:'gmail',
+            auth:{
+                user:'noreplyloginapp18881@gmail.com',
+                pass: 'kppunrkqttoonjjh'
+            }
+        });
+        const mailOptions = {
+            from: 'noreplyloginapp18881@gmail.com',
+            to:email,
+            subject:{title},
+            html: `
+            <html>
+            <head>
+            <style type="text/css">
+                body, p, div, span, a {
+                    font-family: 'Cera Round Pro',' Proxima Nova Soft',' Proxima Nova',' Helvetica Neue',Helvetica,Arial,sans-serif;  /* Using a web-safe font as default */
+                    color: #344054; 
+                    text-decoration: none;
+                }
+            </style>
+            </head>
+            <body>
+                <div>
+                    <div style="background: #1A65A4; text-align: center; padding: 4rem 0;">
+                        <img src="https://tagdetect.s3.eu-west-2.amazonaws.com/logo.png" alt="Profile picture">
+                    </div>    
+                    <div style="background: #F0F1F3; padding: 3rem 0;">
+                        <div style="border-radius: 6px; margin: auto; background: white; width: 60%; max-width: 370px; padding: 2rem;">
+                            <h1 style="font-size: 20px; margin-bottom: 1rem;text-align: center;">
+                                ${title}
+                            </h1>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">
+                                Olá <b>${nome}</b>, obrigado por solicitar a ${checkedService} da nossa loja.
+                                <br></br> Seu produto/serviço será realizado num prazo de <b>duas semanas</b>
+                                <br></br> Por favor confirme os seus dados:
+                            </p>
+                            <p style="font-size: 15px; text-align: left; margin-bottom: 0.5rem;">
+                                <b>Informações pessoais</b>
+                            </p>       
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">País: ${country}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">Localidade: ${state}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Morada: ${morada}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Código Postal: ${cdpt}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Número de telemóvel: ${telefone}</p>    
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Número de contribuinte: ${ncontribuinte}</p>     
+                            <p >
+                            <hr style="border:1;width:100%;"/>
+                            <p style="font-size: 13px;">
+                                Precisas de ajuda? <span><a style="font-size: 13px; color: #1B64A7; font-weight: 700;" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>
+                            </p>
+                            <p style="font-size: 13px;">
+                                Para mais informações por favor lê os <span><a style="font-size: 13px; color: #1B64A7;font-weight: 700;" href="#"> termos e serviços</a></span> e a<span><a style="font-size: 13px; color: #1B64A7;font-weight: 700;" href="#"> política de privacidade</a></span> 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>`            
+        }        
+        transporter.sendMail(mailOptions,function(error,information){
+            if(error)
+            {
+                console.log(error);
+            }
+            else
+            {
+                console.log("Email foi enviado ",information.response);
+            }
+        });
+    }catch(error){
+        return res.status(500).json(error); 
+    }
+}
+
+app.post('/pedirorcamento',async(req,res)=>{
+    const {title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte}= req.body;
+    try{  
+        sendorçamento(title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte);
+        return res.status(201).json({message:"Email enviado"});
+      }
+
+    catch(error){
         return res.status(500).json(error); 
     }
 })
@@ -181,7 +341,7 @@ const sendVerificationlink = async(nome,email,link)=>{
                             </h1>
                             
                             <p style="font-size: 13px; text-align: left; margin-bottom: 1rem;">
-                                Olá ${nome}, para ser possível aceder aos produtos disponíveis na loja, por favor, confirma o teu email para completar o processo de verificação da tua conta.
+                                Olá <b>${nome}</b>, para ser possível aceder aos produtos disponíveis na loja, por favor, confirma o teu email para completar o processo de verificação da tua conta.
                             </p>
                             
                             <div style="margin-bottom: 1.5rem;text-align: center;">
@@ -251,7 +411,7 @@ const sendResetPasswordMail = async(nome,email,link)=>{
                             </h1>
                             
                             <p style="font-size: 13px; text-align: left; margin-bottom: 1rem;">
-                                Olá ${nome}, para ser possível recuperar a palavra passe, por favor, clica no link e digite uma nova palavra passe.
+                                Olá <b>${nome}</b>, para ser possível recuperar a palavra passe, por favor, clica no link e digite uma nova palavra passe.
                             </p>
                             
                             <div style="margin-bottom: 1.5rem;text-align: center;">

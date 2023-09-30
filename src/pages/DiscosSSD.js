@@ -152,6 +152,11 @@ export default function DiscosSSD() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
+
     const commonContainer1 = (
         <Box  sx={styles.container1}>
             <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
@@ -242,7 +247,7 @@ export default function DiscosSSD() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {discosssd.length>0  &&(
                                 itemsToShow.map((discosssd, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer} onClick = {(e) =>handleproduct(discosssd)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -373,6 +378,7 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {
@@ -410,8 +416,6 @@ const styles = StyleSheet.create({
         display:"flex",
         flexDirection:"column",
     },
- 
-
     textdefault:{
     fontSize:"22px",
     fontFamily: 'Montserrat',

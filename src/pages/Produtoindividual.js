@@ -23,7 +23,7 @@ export default function Produtoindividual() {
     const errRef = useRef();
     const { item: itemString } = useParams();
     const search = JSON.parse(itemString);
-    //const search = JSON.parse(localStorage.getItem('search'));
+    console.log(search)
     const [familia,setfamilia] = useState([]);
     const [specif,setspecif] = useState([]);
     const navigate = useNavigate();  
@@ -88,13 +88,11 @@ export default function Produtoindividual() {
             let font = shouldIncludeInfont(search[0], search[3])
             if( font == true)
             {
-                console.log("Acessórios")
-                setfamilia("Acessórios")
+                setfamilia("Acessórios - Fontes de Alimentação")
             }
             else 
             {
-                console.log("Computadores")
-                setfamilia("Computadores")
+                setfamilia("Computadores - PCs Acessórios")
             }
            
         }
@@ -124,6 +122,10 @@ export default function Produtoindividual() {
         || search[1] === "Caixas" || search[1] === "Drives_Ópticas" )
         {
             setfamilia("Acessórios")
+        }
+        else if(search[1] === "SW_Servidores" || search[1] === "SW_Sistemas_Operativos" )
+        {
+            setfamilia("Serviços Suporte/Manutenção")
         }
         
     },[search])
@@ -161,7 +163,8 @@ export default function Produtoindividual() {
                             <Box sx={styles.containerfeaturesmainproduct}> 
                             <Box style={ {textAlign:"center"}}>
                                 <Text style={[styles.textdefault,{fontSize:"36px",color:"white",zIndex:0,fontWeight:"bold"}]}>
-                                    {familia}
+                                    {familia} 
+                                    {search[1] !== "PCs_Acessórios" && ` - ${search[1].replace(/_/g, ' ')}`}
                                 </Text>
                             </Box>    
                             </Box>  
@@ -350,7 +353,6 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         marginBottom:"2rem",
-
     },
     containerfeaturesmainproduct:
     {

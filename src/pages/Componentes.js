@@ -115,6 +115,11 @@ export default function Componentes() {
         readFile();
     }, []);
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
+
     useEffect(()=>{       
         const filterBySelectedCheckboxes = () => {
             return componentesfilter.filter(item=>{      //Filter the pcs by family     
@@ -304,7 +309,7 @@ export default function Componentes() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {componentes.length>0  &&(
                                 itemsToShow.map((comp, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer}  onClick = {(e) =>handleproduct(comp)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -436,6 +441,7 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {

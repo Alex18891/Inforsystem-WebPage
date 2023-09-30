@@ -48,10 +48,18 @@ export default function Login() {
             axios.post('http://localhost:8080/login',{email,password})
             .then(res =>{
                 console.log(res)
+           
                 if(res.status === 200){
+                    console.log(res.data)
                     setErrMsg([]);
                     const token = res.data.token;
                     document.cookie = `token=${token}`;
+                    const userid = res.data.userid;
+                    document.cookie = `userid=${userid}`;
+                    const name = res.data.name;
+                    document.cookie = `name=${name}`;
+                    const email = res.data.email;
+                    document.cookie = `email=${email}`;
                     setIsOpenLogin(false);
                 }
                 else{

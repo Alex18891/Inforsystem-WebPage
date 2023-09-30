@@ -23,7 +23,6 @@ export default function Register() {
     const [errMsg, setErrMsg] = useState([]);
     const {setIsOpenLogin, setIsOpenRegister} = useContext(PopupContext);
     
-
     const validatePassword = (password) => 
     {  
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
