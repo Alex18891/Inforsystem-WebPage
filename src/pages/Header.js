@@ -20,6 +20,8 @@ import Login from './Login';
 import Register from "./Register";
 import { PopupContext } from './popupcontext';
 import ForgotPassword from "./ForgotPassword";
+import { useUser } from '../UserProvider';
+import { set } from "mongoose";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -86,7 +88,11 @@ export default function PrimarySearchAppBar() {
   const [isselected, setselected] = useState(false);
   const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword , isOpenEndereco,isOpenEnderecoadd } = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
+  const [isHoveredlogout, setIsHoveredlogout] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
+  const [hoveredboxconta, sethoveredboxconta] = useState(false);
+  const { setUserId,name,userid,setEmail,setname } = useUser();
+  console.log(userid,name)
 
   const readFile = async () => {
     try {
@@ -207,7 +213,6 @@ const filter = (input, dataset) => {
     setIsHoveredprodu(false);
   };
 
-
   const handleMouseLeave = () => {
     setIsHovered(false);
     setIsHoveredsoft(false);
@@ -215,7 +220,10 @@ const filter = (input, dataset) => {
   };
 
   const loginaccount = () =>{
-    setIsOpenLogin(true);
+    if(!userid)
+    {
+      setIsOpenLogin(true);
+    }
   }
 
   const menutoolbar = (
@@ -249,6 +257,71 @@ const filter = (input, dataset) => {
     </Box>
   )
   
+  const handlelogout = () =>{
+    setIsHoveredlogout(prevvalue=>!prevvalue)
+  }
+  const logoutaccount = () =>{
+    document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.removeItem('userinfo');
+      setUserId(null)
+      setEmail(null)
+      setname(null)
+  }
+
+  const logoutboxaccount = () =>{
+    sethoveredboxconta(true)
+  }
+
+  const leavelogoutboxaccount = () =>{
+    sethoveredboxconta(false)
+  }
+
+  const logout = (
+    <Box onMouseEnter={logoutboxaccount} onMouseLeave={leavelogoutboxaccount}>
+      {userid ? (
+          <View  onClick={handlelogout}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >   
+             <Box sx={{...styles.seconditemfirsttoolbar,
+            ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
+            ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} >
+              <img
+                src={pfp}
+                alt="profile picture"
+                width="40px"
+                height="40px"
+                style={{
+                marginTop:"0.5rem"
+                }}></img>
+              <View style={styles.textdefault} >
+                  {name}       
+              </View>
+             </Box> 
+            <View  style={[styles.container_cont,isHoveredlogout && hoveredboxconta && styles.containerHovered,{position:"absolute",top:"37px",minWidth: "140px"}]}>
+                 <View  id='aheader' onClick={logoutaccount} style={{...styles.acontainer,alignItems:"flex-start"}}>Sair da Conta</View>     
+            </View>
+          </View>  
+      ):(
+        <Box sx={{...styles.seconditemfirsttoolbar,
+          ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
+          ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} onClick={loginaccount}>
+              <img
+                  src={pfp}
+                  alt="profile picture"
+                  width="40px"
+                  height="40px"
+                  style={{
+                  marginTop:"0.5rem"
+                  }}
+                ></img>
+              <Text style={styles.textdefault} >
+                Minha conta
+              </Text> 
+        </Box>   
+      )}
+     </Box>
+  )
+
   const handleselectsearch = () => {
     setselected(true)  
   }
@@ -332,23 +405,8 @@ const filter = (input, dataset) => {
                   </View> 
                 )}
               </Box>
-              <Box sx={{...styles.seconditemfirsttoolbar,
-                    ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
-                    ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} onClick={loginaccount}>
-                <img
-                    src={pfp}
-                    alt="profile picture"
-                    width="40px"
-                    height="40px"
-                    style={{
-                    marginTop:"0.5rem"
-                    }}
-                ></img>
-                <Text style={styles.textdefault} >
-                    Minha conta
-                </Text> 
-              </Box>  
-              <ReactModal
+              {logout}
+            <ReactModal
                 isOpen={isOpenLogin}
                 onRequestClose={() => setIsOpenLogin(false)}
                 contentLabel="Login Modal"
@@ -596,16 +654,15 @@ const styles = StyleSheet.create({
       margin:"auto"
 
   },
-
      acontainer: {
         display: "flex",
-        gap:"10px",
+        gap:"7px",
         fontSize:"16px",
         marginLeft:"1rem",
         alignItems:"center",
         textDecorationLine:"none",
         marginTop:"0.5rem",
-        padding: "6px",
+        padding: "3px",
         marginBottom:"0.5rem",
         cursor:"pointer"
       },

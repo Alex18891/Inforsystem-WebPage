@@ -12,6 +12,7 @@ import {faExclamation} from '@fortawesome/free-solid-svg-icons'
 import { PopupContext } from './popupcontext';
 import logo from "./../img/logo.png";
 import axios from "axios";
+import { useUser } from '../UserProvider';
 
 export default function Enderecomain() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -21,17 +22,11 @@ export default function Enderecomain() {
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     const {isOpenEndereco, setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd } = useContext(PopupContext);
     const [userinfo,setuserinfo] = useState([]);
+    const {userid} = useUser();
 
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-    const userid = getCookie('userid');
     useEffect(()=>{
         axios.get(`http://localhost:8080/endereco?userid=${userid}`)
         .then((res)=>{
-            console.log(res.data)
             if(res.status === 200)
             {
                 setuserinfo(res.data.user)
@@ -48,11 +43,13 @@ export default function Enderecomain() {
 
     const handlediv = (user)=>{
         setIsOpenEnderecoadd(false)
+        console.log(user)
         localStorage.setItem('userinfo',JSON.stringify(user));
         localStorage.removeItem('userinfoselect'); //Remove os dados do endereço selecionado no botão de mudar anteriormente ao selecionar um endereço para orçamento
     }
 
     const handlechange = (user) =>{
+        console.log(user)
         setIsOpenEnderecoadd(false)
         setIsOpenEndereco(true)
         localStorage.setItem('userinfoselect',JSON.stringify(user));//Envia os dados do endereço selecionado no botão de mudar

@@ -27,6 +27,7 @@ import { PopupContext } from './popupcontext';
 import Endereco from "./Endereco.js";
 import Enderecomain from "./Enderecomain.js";
 import secondpc from "./../img/secondpc.png";
+import { useUser } from '../UserProvider';
 
 export default function OrcamentoProduto() {
 
@@ -49,33 +50,24 @@ export default function OrcamentoProduto() {
     const [telefone,settelefone] = useState('');
     const [phoneabrebiation,setphoneabrebiation] = useState('351');
     const navigate = useNavigate();
+    const [userInfo,setuserInfo] = useState('');
+    const {userid,email } = useUser();
     const {isOpenEndereco, setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd } = useContext(PopupContext);
     const key = Object.keys(calling)
     const value = Object.values(calling)
 
-    const [userInfo,setuserinfo] = useState([])
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-    const userid = getCookie('userid');
-    const email = getCookie('email');
-    console.log(userid)
-    console.log(email)
-    console.log(userInfo)
-    
+
     useEffect(()=>{
-        axios.get(`http://localhost:8080/endereco?userid=${userid}`)
-        .then((res)=>{
-            console.log(res.data)
-            if(res.status === 200)
-            {
-                setuserinfo(res.data.user)
-            }
-        }  
-        ).catch(err=>console.log(err))
-    },[])
+        if(userid)
+        {
+            const userInfo = JSON.parse(localStorage.getItem('userinfo'));
+            setuserInfo(userInfo)
+        }
+        else{
+            setuserInfo('')
+        }
+    },[userid])
+    
 
     const  orcamento =  (event) =>{
         event.preventDefault();
@@ -449,7 +441,7 @@ export default function OrcamentoProduto() {
                                                             ...(isSmallScreen && styles.contactosflexrowsmall),
                                                             ...(isExtraSmallScreen && styles.contactosflexrowsmall)
                                                             }}> 
-                                                                <Text style={{...styles.textdefault4, maxWidth:"270px"}} >
+                                                                <Text style={{...styles.textdefault4,maxWidth:"470px"}} >
                                                                 {userInfo.state}, {userInfo.country}, {userInfo.cdpt} 
                                                                 </Text>
                                                             </Box> 
@@ -587,7 +579,7 @@ export default function OrcamentoProduto() {
                                             <Box sx = {{...styles.boxcontainer,
                                                         marginTop:"1rem",
                                                         marginBottom:"1rem"}}>
-                                                    <Button type="submit"  startIcon={<img src={buy} alt="description"/>} disabled={!checkboxterm}  sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
+                                                    <Button type="submit"  startIcon={<img src={buy} alt="description"/>} disabled={!checkboxterm || !userInfo}  sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
                                             </Box>        
                                             <p style={styles.textlowdescription}>Ao clicar pedir orçamento está a aceitar os nossos termos e condições e a nossa politíca de privacidade</p>         
                                         </Box>     

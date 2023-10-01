@@ -27,6 +27,7 @@ import { PopupContext } from './popupcontext';
 import Endereco from "./Endereco.js";
 import Enderecomain from "./Enderecomain.js";
 import secondpc from "./../img/secondpc.png";
+import { useUser } from '../UserProvider';
 
 export default function Orcamento() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -36,22 +37,15 @@ export default function Orcamento() {
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     const [title,settitle] = useState('');
     const [carta,setcarta] = useState('');
+    const userInfo = JSON.parse(localStorage.getItem('userinfo'));
     const [checkedService, setCheckedService] = useState(null);
     const [checkboxterm, setcheckboxterm] = useState(null);
     const navigate = useNavigate();
-    const {isOpenEndereco, setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd } = useContext(PopupContext);
-    const userInfo = JSON.parse(localStorage.getItem('userinfo'));
-    console.log(userInfo)
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-    const email = getCookie('email');
-
+    const {userid,email } = useUser();
+    const {isOpenEndereco, setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd,setIsOpenLogin } = useContext(PopupContext);
+    
     const  orcamento =  (event) =>{
         event.preventDefault();
-        console.log("top")
         const country = userInfo.country
         const state = userInfo.state
         const morada = userInfo.morada
@@ -67,7 +61,13 @@ export default function Orcamento() {
     }
     
     const endereco = () =>{
-        setIsOpenEnderecoadd(true)
+        if(!userid)
+        {
+            setIsOpenLogin(true)
+        }
+        else{
+            setIsOpenEnderecoadd(true)
+        }
     }
 
     const services = [
@@ -313,7 +313,7 @@ export default function Orcamento() {
                                                 <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Endereço</p>
                                             </Text>
                                         </Box>
-                                            {userInfo && (
+                                            {(userInfo && userid)  ?(
                                                 <Box style={styles.contentflex}>
                                                     <Box sx={{...styles.pesquisarow,
                                                         ...(isSmallScreen && styles.pesquisarowsmall),
@@ -364,53 +364,7 @@ export default function Orcamento() {
                                                                 <Text  onClick= {endereco} style={{...styles.textdefaultblue, maxWidth:"270px"}} >
                                                                     Mudar
                                                                 </Text>
-                                                                <ReactModal
-                                                                    
-                                                                    isOpen={isOpenEndereco}
-                                                                    onRequestClose={() =>setIsOpenEndereco(false)}
-                                                                    contentLabel="Endereco Modal"
-                                                                    style={styles.popup}
-                                                                    >
-                                                                    <button 
-                                                                        onClick={() => setIsOpenEndereco(false)} 
-                                                                        style={{
-                                                                        cursor:'pointer',
-                                                                        position: 'absolute', // Position the button absolutely
-                                                                        top: '10px', // Position from the top
-                                                                        right: '10px', // Position from the right
-                                                                        background: 'transparent',
-                                                                        color:'#344054', // Optionally make the button background transparent
-                                                                        border: 'none',
-                                                                        zIndex:2 // Optionally remove the button border
-                                                                        }}
-                                                                    >
-                                                                    <FontAwesomeIcon size="2x" icon={faTimes} />
-                                                                    </button>
-                                                                    <Endereco onRequestClose={() => setIsOpenEndereco(false)} />
-                                                                </ReactModal>
-                                                                <ReactModal
-                                                                    isOpen={isOpenEnderecoadd}
-                                                                    onRequestClose={() =>setIsOpenEnderecoadd(false)}
-                                                                    contentLabel="Endereco Modal"
-                                                                    style={styles.popup}
-                                                                    >
-                                                                    <button 
-                                                                        onClick={() => setIsOpenEnderecoadd(false)} 
-                                                                        style={{
-                                                                        cursor:'pointer',
-                                                                        position: 'absolute', // Position the button absolutely
-                                                                        top: '10px', // Position from the top
-                                                                        right: '10px', // Position from the right
-                                                                        background: 'transparent',
-                                                                        color:'#344054', // Optionally make the button background transparent
-                                                                        border: 'none',
-                                                                        zIndex:2 // Optionally remove the button border
-                                                                        }}
-                                                                    >
-                                                                    <FontAwesomeIcon size="2x" icon={faTimes} />
-                                                                    </button>
-                                                                    <Enderecomain onRequestClose={() => setIsOpenEnderecoadd(false)} />
-                                                                </ReactModal>
+                                                        
                                                             </Box>
                                                         </Box>   
                                                         <Box sx = {{...styles.contactosflexrow,
@@ -418,16 +372,74 @@ export default function Orcamento() {
                                                         ...(isSmallScreen && styles.contactosflexrowsmall),
                                                         ...(isExtraSmallScreen && styles.contactosflexrowsmall)
                                                         }}> 
-                                                            <Text style={{...styles.textdefault4, maxWidth:"270px"}} >
-                                                            {userInfo.state}, {userInfo.cdpt} 
+                                                            <Text style={{...styles.textdefault4, maxWidth:"470px"}} >
+                                                            {userInfo.state}, {userInfo.country}, {userInfo.cdpt} 
                                                             </Text>
                                                         </Box> 
                                                     </Box>     
                                                 </Box> 
-                                            )}    
+                                            ):(
+                                                <Box style={styles.contentflex}>
+                                                    <Box sx={{...styles.pesquisarow,
+                                                        ...(isSmallScreen && styles.pesquisarowsmall),
+                                                        ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                                                    }}>
+                                                         <Box >
+                                                                <Text  onClick= {endereco} style={{...styles.textdefaultblue, color:"black", maxWidth:"270px"}} >
+                                                                    Adicionar Endereço
+                                                                </Text>     
+                                                            </Box>         
+                                                    </Box>
+                                                </Box>
+                                            )}   
+                                            <ReactModal                 
+                                                isOpen={isOpenEndereco}
+                                                onRequestClose={() =>setIsOpenEndereco(false)}
+                                                contentLabel="Endereco Modal"
+                                                style={styles.popup}
+                                                >
+                                                <button 
+                                                    onClick={() => setIsOpenEndereco(false)} 
+                                                    style={{
+                                                    cursor:'pointer',
+                                                    position: 'absolute', // Position the button absolutely
+                                                    top: '10px', // Position from the top
+                                                    right: '10px', // Position from the right
+                                                    background: 'transparent',
+                                                    color:'#344054', // Optionally make the button background transparent
+                                                    border: 'none',
+                                                    zIndex:2 // Optionally remove the button border
+                                                    }}
+                                                >
+                                                <FontAwesomeIcon size="2x" icon={faTimes} />
+                                                </button>
+                                                <Endereco onRequestClose={() => setIsOpenEndereco(false)} />
+                                            </ReactModal>
+                                            <ReactModal
+                                                isOpen={isOpenEnderecoadd}
+                                                onRequestClose={() =>setIsOpenEnderecoadd(false)}
+                                                contentLabel="Endereco Modal"
+                                                style={styles.popup}
+                                                >
+                                                <button 
+                                                    onClick={() => setIsOpenEnderecoadd(false)} 
+                                                    style={{
+                                                    cursor:'pointer',
+                                                    position: 'absolute', // Position the button absolutely
+                                                    top: '10px', // Position from the top
+                                                    right: '10px', // Position from the right
+                                                    background: 'transparent',
+                                                    color:'#344054', // Optionally make the button background transparent
+                                                    border: 'none',
+                                                    zIndex:2 // Optionally remove the button border
+                                                    }}
+                                                >
+                                                <FontAwesomeIcon size="2x" icon={faTimes} />
+                                                </button>
+                                                <Enderecomain onRequestClose={() => setIsOpenEnderecoadd(false)} />
+                                            </ReactModal> 
                                     </Box>                      
-                                </Box>
-                              
+                                </Box>  
                             </Box>    
                         </Box>
                         <Box>
@@ -485,7 +497,7 @@ export default function Orcamento() {
                                     <Box style={styles.contentflex}>
                                         <Box sx = {{...styles.boxcontainer,
                                                     marginBottom:"1rem"}}>
-                                            <Button type="submit"  startIcon={<img src={buy} alt="description"/>} disabled={!checkboxterm}  sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
+                                            <Button type="submit"  startIcon={<img src={buy} alt="description"/>} disabled={!checkboxterm || !userInfo}  sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
                                         </Box>   
                                     </Box>            
                             </Box>     

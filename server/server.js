@@ -135,7 +135,7 @@ app.put('/alterarendereco',async(req,res)=>{
         existingAddress.state = state;
         existingAddress.ncontribuinte = ncontribuinte;
         await user.save();
-        return res.status(201).json({message:"Endereço atualizado"});
+        return res.status(201).json({message:"Endereço atualizado",user:existingAddress});
     }catch(error){
         return res.status(500).json(error); 
     }

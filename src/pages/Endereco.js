@@ -14,6 +14,7 @@ import { PopupContext } from './popupcontext';
 import { allCountries as countryRegionData } from 'country-region-data'
 import {calling} from './callingcodes'
 import logo from "./../img/logo.png";
+import { useUser } from '../UserProvider';
 
 export default function Endereco() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -33,16 +34,10 @@ export default function Endereco() {
     const [state,setstate] = useState(userInfo ? userInfo.state :'');
     const [cdpt, setcdpt] = useState(userInfo ? userInfo.cdpt : '');
     const [error,seterror] = useState([]);
+    const {userid,email,name } = useUser();
     const key = Object.keys(calling)
     const value = Object.values(calling)
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-    const userid = getCookie('userid');
-    const name = getCookie('name');
-    const email = getCookie('email');
+   
     const verifyinputs = ()=> {
         seterror([])
         if(!state)
@@ -96,6 +91,8 @@ export default function Endereco() {
                     console.log(res)
                     if(res.status === 201){  
                         console.log(res.data.message)
+                        localStorage.setItem('userinfo',JSON.stringify(res.data.user));
+                        console.log(res.data.user)
                         setIsOpenEnderecoadd(true)
                         setIsOpenEndereco(false);
                     }
