@@ -10,6 +10,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import Box from "@mui/material/Box";
 import axios from 'axios'
 import { PopupContext } from './popupcontext';
+import { useUser } from '../UserProvider';
 
 import logo from "./../img/logo.png";
 
@@ -18,6 +19,7 @@ export default function Login() {
     const [password,setpassword] = useState('');
     const [errMsg, setErrMsg] = useState([]);
     const errRef = useRef();
+    const { setUserId,setname,setEmail } = useUser();
     const { setIsOpenLogin, setIsOpenRegister,setIsOpenForgotpassword} = useContext(PopupContext);
 
     function register(){
@@ -48,10 +50,19 @@ export default function Login() {
             axios.post('http://localhost:8080/login',{email,password})
             .then(res =>{
                 console.log(res)
+           
                 if(res.status === 200){
+                    console.log(res.data)
                     setErrMsg([]);
                     const token = res.data.token;
                     document.cookie = `token=${token}`;
+                    document.cookie = `token=${token}`;
+                    document.cookie = `name=${res.data.name}`;
+                    document.cookie = `email=${res.data.email}`;
+                    document.cookie = `userid=${res.data.userid}`;
+                    setname(res.data.name);
+                    setEmail(res.data.email);
+                    setUserId(res.data.userid);
                     setIsOpenLogin(false);
                 }
                 else{

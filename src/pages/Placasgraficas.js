@@ -12,31 +12,7 @@ import { Divider } from '@mui/material';
 import * as XLSX from 'xlsx';
 import '../index.css';
 
-import firstpc from "./../img/firstpc.png";
 import secondpc from "./../img/secondpc.png";
-import thirdpc from "./../img/thirdpc.png";
-import fourthpc from "./../img/fourthpc.png";
-import fifthpc from "./../img/fifthpc.png";
-import sixthpc from "./../img/sixthpc.png";
-import seventhpc from "./../img/seventhpc.png";
-import eighthpc from "./../img/eighthpc.png";
-import ninethpc from "./../img/ninethpc.png";
-import tenthpc from "./../img/tenthpc.png";
-import eleventhpc from "./../img/eleventhpc.png";
-import twelfthpc from "./../img/twelfthpc.png";
-
-import firstpcsecondpage from "./../img/firstpcsecondpage.png";
-import secondpcsecondpage  from "./../img/secondpcsecondpage.png";
-import thirdpcsecondpage  from "./../img/thirdpcsecondpage.png";
-import fourthpcsecondpage  from "./../img/fourthpcsecondpage.png";
-import fifthpcsecondpage  from "./../img/fifthpcsecondpage.png";
-import sixthpcsecondpage  from "./../img/sixthpcsecondpage.png";
-import seventhpcsecondpage  from "./../img/seventhpcsecondpage.png";
-import eighthpcsecondpage  from "./../img/eighthpcsecondpage.png";
-import ninethpcsecondpage  from "./../img/ninethpcsecondpage.png";
-import tenthpcsecondpage  from "./../img/tenthpcsecondpage.png";
-import eleventhpcsecondpage  from "./../img/eleventhpcsecondpage.png";
-import twelfthpcsecondpage  from "./../img/twelfthpcsecondpage.png";
 
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
@@ -152,6 +128,11 @@ export default function Placasgraficas() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
+
     const commonContainer1 = (
         <Box  sx={styles.container1}>
             <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
@@ -242,7 +223,7 @@ export default function Placasgraficas() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {pgraficas.length>0  &&(
                                 itemsToShow.map((pgraficas, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer} onClick = {(e) =>handleproduct(pgraficas)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -373,6 +354,7 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {

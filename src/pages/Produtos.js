@@ -37,7 +37,6 @@ export default function Produtos() {
     const [refersearch, setrefersearch] = useState([]);
     const [refer, setrefer] = useState([]);
     const [descsearch, setdescsearch] = useState([]);
-    const [maxpages, setmaxpages] = useState([]);
     const [desc, setdesc] = useState([]);
     const [error, seterror] = useState([]);
     const navigate = useNavigate();
@@ -56,23 +55,34 @@ export default function Produtos() {
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
             if (jsonData && jsonData.length > 0) {
-                const marca = jsonData.filter(row => row[1]).map(value => value[0]).slice(); 
-                marca.shift();
-                const arraymarca =  Array.from(new Set(marca));
-                setmarcasearch(arraymarca);
-                const familia = jsonData.filter(row => row[1]).map(value => value[1]).slice(); 
-                familia.shift();
-                const arrayfamilia =  Array.from(new Set(familia));
-                setfamiliasearch(arrayfamilia)
-                const refer = jsonData.filter(row => row[1]).map(value => value[2]).slice(); 
-                refer.shift();
+                const data = jsonData.filter(row => row[1] === "Caixas" ||
+                row[1] === "Placas_Graficas" || row[1] === "Motherboards_Pcs" || 
+                row[1] === "Processadores" || row[1] === "PCs" 
+                || row[1] === "Soluções_de_Arrefecimento" || row[1] === "Discos_Externos" ||
+                row[1] === "Discos_SSD" || row[1] === "Discos_HDD" || row[1] === "Drives_Ópticas" ||
+                row[1] === "Memorias_PCs" || row[1] === "Memorias_Portateis" || row[1] === "Memorias_USB" ||
+                row[1] === "Memorias_Cartoes" ||  row[1] === "Memorias_Especificas" || row[1] === "Redes_Switch" ||
+                row[1] === "Conectividade" || row[1] === "POS_Impressoras" || row[1] === "POS_Leitores_codigos_barra" ||
+                row[1] === "Sistemas_de_POS" ||  row[1] === "POS_Monitores" || row[1] === "POS_Acessorios" ||  row[1] === "Ratos_Acessórios"
+                || row[1] === "PCs_Acessórios"
+                );
+                
+           
+                const combinedsarray = Array.from(new Set(
+                    [
+                        ...data,  
+                    ]
+                )) 
+                
+                const marca = combinedsarray.map(value => value[0]); 
+                setmarcasearch(marca);
+                const familia = combinedsarray.map(value => value[1]); 
+                setfamiliasearch(familia)
+                const refer = combinedsarray.map(value => value[2]); 
                 setrefersearch(refer)
-                const desc = jsonData.filter(row => row[1]).map(value => value[3]).slice(); 
-                desc.shift();
+                const desc = combinedsarray.map(value => value[3]); 
                 setdescsearch(desc)
-                const all = jsonData.filter(row => row[1]).slice(); 
-                all.shift();
-                setall(all)  
+                setall(combinedsarray)  
             }
         };
         
@@ -708,8 +718,7 @@ const styles = StyleSheet.create({
         marginBottom:"2rem",
     },  
     produtosmenucolumn:{
-        display:"flex",flexDirection:"column",
-        
+        display:"flex",flexDirection:"column",  
     },
     produtosmenurow:{
         display:"flex",flexDirection:"row",gap:"20px"
@@ -784,7 +793,7 @@ const styles = StyleSheet.create({
         background: "white",
         alignItems:"center",
         justifyContent:"center",
-        paddingLeft:"0.5rem",
+        padding:"0.5rem",
     },
     container1:{
         display:"grid",

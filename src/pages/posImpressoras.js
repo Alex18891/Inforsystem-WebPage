@@ -152,6 +152,11 @@ export default function PosImpressoras() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
+
     const commonContainer1 = (
         <Box  sx={styles.container1}>
             <Box sx={[styles.viewcontainer,{paddingLeft:"0"}]}>      
@@ -208,7 +213,7 @@ export default function PosImpressoras() {
                         ...(isSmallScreen ? styles.textdefault3small : {}),
                         ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                     }}>
-                        <span style={{fontWeight:"bold"}}>Pos Impressoras</span>
+                        <span style={{fontWeight:"bold"}}>Pos </span>Impressoras
                     </Text>
                     <Text style={{
                         ...styles.textdefault,
@@ -242,7 +247,7 @@ export default function PosImpressoras() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {posimpressoras.length>0  &&(
                                 itemsToShow.map((posimpressoras, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer} onClick = {(e) =>handleproduct(posimpressoras)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -373,6 +378,7 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {

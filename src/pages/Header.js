@@ -20,6 +20,8 @@ import Login from './Login';
 import Register from "./Register";
 import { PopupContext } from './popupcontext';
 import ForgotPassword from "./ForgotPassword";
+import { useUser } from '../UserProvider';
+import { set } from "mongoose";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -80,13 +82,17 @@ export default function PrimarySearchAppBar() {
   const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
   const [searchValue, setSearchValue] = React.useState("");
   const navigate = useNavigate();
-  const itemsPerPage = 16;
   const [all, setall] = useState([]);
   const [search, setsearch] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
-  const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword  } = useContext(PopupContext);
+  const [isselected, setselected] = useState(false);
+  const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword , isOpenEndereco,isOpenEnderecoadd } = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
+  const [isHoveredlogout, setIsHoveredlogout] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
+  const [hoveredboxconta, sethoveredboxconta] = useState(false);
+  const { setUserId,name,userid,setEmail,setname } = useUser();
+  console.log(userid,name)
 
   const readFile = async () => {
     try {
@@ -102,10 +108,61 @@ export default function PrimarySearchAppBar() {
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     
         if (jsonData && jsonData.length > 0) {
-            const all = jsonData.filter(row => row[1]).slice(); 
-            all.shift();
-            console.log(all)
-            setall(all)  
+          const data = jsonData.filter(row => row[1] === "Caixas" ||
+            row[1] === "Placas_Graficas" || row[1] === "Motherboards_Pcs" || 
+            row[1] === "Processadores" || row[1] === "PCs" 
+            || row[1] === "Soluções_de_Arrefecimento" || row[1] === "Discos_Externos" ||
+            row[1] === "Discos_SSD" || row[1] === "Discos_HDD" || row[1] === "Drives_Ópticas" ||
+            row[1] === "Memorias_PCs" || row[1] === "Memorias_Portateis" || row[1] === "Memorias_USB" ||
+            row[1] === "Memorias_Cartoes" ||  row[1] === "Memorias_Especificas" || row[1] === "Redes_Switch" ||
+            row[1] === "Conectividade" || row[1] === "POS_Impressoras" || row[1] === "POS_Leitores_codigos_barra" ||
+            row[1] === "Sistemas_de_POS" ||  row[1] === "POS_Monitores" || row[1] === "POS_Acessorios" ||  row[1] === "Ratos_Acessórios"
+            || row[1] === "SW_Servidores" || row[1] === "SW_Sistemas_Operativos"
+            );
+
+            const PCacc = jsonData.filter(row => row[1] === "PCs_Acessórios"); 
+            const shouldIncludeInAcc = (brand, product) => {
+              switch (brand) {
+                  case "Cooler_Master":
+                      return product !== "V750 Gold i Multi A/EU cord" && product !== "V850 Gold i Multi A/EU cord";
+                  case "Asus":
+                      return product === "GX601 ROG Strix Helios HDD Cage Kit ";
+                  case "Nox":
+                      return product.includes("Adapter");
+                  case "Corsair":
+                      return !product.includes("Series") && product !== "Professional  AX1600i Digital ATX Power Supply, EU version ";
+                  case "UNYKAch":
+                      return product.includes("Adaptador");
+                  default:
+                      return false;
+              }
+            };
+            const shouldIncludeInfont = (brand, product) => {
+              switch (brand) {
+                  case "Cooler_Master":
+                      return product === "V750 Gold i Multi A/EU cord" && product === "V850 Gold i Multi A/EU cord";
+                  case "Asus":
+                      return product !== "GX601 ROG Strix Helios HDD Cage Kit ";
+                  case "Nox":
+                      return !product.includes("Adapter");
+                  case "Corsair":
+                      return product.includes("Series") && product === "Professional  AX1600i Digital ATX Power Supply, EU version ";
+                  case "UNYKAch":
+                      return !product.includes("Adaptador");
+                  default:
+                      return false;
+              }
+            };
+            let acc = PCacc.filter(value => shouldIncludeInAcc(value[0], value[3])); 
+            let font = PCacc.filter(value => shouldIncludeInfont(value[0], value[3])); 
+            const combinedsarray = Array.from(new Set(
+              [
+                  ...data,
+                  ...acc,
+                  ...font,
+              ]
+            )) 
+            setall(combinedsarray)  
         }
     };
     
@@ -156,7 +213,6 @@ const filter = (input, dataset) => {
     setIsHoveredprodu(false);
   };
 
-
   const handleMouseLeave = () => {
     setIsHovered(false);
     setIsHoveredsoft(false);
@@ -164,16 +220,19 @@ const filter = (input, dataset) => {
   };
 
   const loginaccount = () =>{
-    setIsOpenLogin(true);
+    if(!userid)
+    {
+      setIsOpenLogin(true);
+    }
   }
 
   const menutoolbar = (
     <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
       <Box sx={{display:"flex",alignItems: "center", gap: "15px"}}>
-        <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
+        <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >
           <img src={menu} width={30}  style={{cursor:"pointer"}} onClick={() => window.location.href = "/"} ></img>
         </View>
-        <View  onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnterprod}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >   
+        <View  onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnterprod}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >   
           <View  sx={styles.produtosmenu} >
               Produtos       
           </View>
@@ -184,7 +243,7 @@ const filter = (input, dataset) => {
         </View>  
       </Box>
          
-      <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,minWidth: "380px",}]} onMouseEnter={handleMouseEntersoft}
+      <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,minWidth: "380px",}]} onMouseEnter={handleMouseEntersoft}
             onMouseLeave={handleMouseLeave}>
             <Box  style={{ color: "black",textDecorationLine:"none"}} >
                 Software
@@ -197,12 +256,82 @@ const filter = (input, dataset) => {
       </View>
     </Box>
   )
+  
+  const handlelogout = () =>{
+    setIsHoveredlogout(prevvalue=>!prevvalue)
+  }
+  const logoutaccount = () =>{
+    document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.removeItem('userinfo');
+      setUserId(null)
+      setEmail(null)
+      setname(null)
+  }
 
-  const vermais = () => {
-    const maxPages = Math.ceil(search.length / itemsPerPage);
-    localStorage.setItem('filtersearch', JSON.stringify(search));
-    localStorage.setItem('maxPages', maxPages);
-    navigate('/produtos/Pesquisa/produtosencontrados?page=1')
+  const logoutboxaccount = () =>{
+    sethoveredboxconta(true)
+  }
+
+  const leavelogoutboxaccount = () =>{
+    sethoveredboxconta(false)
+  }
+
+  const logout = (
+    <Box onMouseEnter={logoutboxaccount} onMouseLeave={leavelogoutboxaccount}>
+      {userid ? (
+          <View  onClick={handlelogout}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >   
+             <Box sx={{...styles.seconditemfirsttoolbar,
+            ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
+            ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} >
+              <img
+                src={pfp}
+                alt="profile picture"
+                width="40px"
+                height="40px"
+                style={{
+                marginTop:"0.5rem"
+                }}></img>
+              <View style={styles.textdefault} >
+                  {name}       
+              </View>
+             </Box> 
+            <View  style={[styles.container_cont,isHoveredlogout && hoveredboxconta && styles.containerHovered,{position:"absolute",top:"37px",minWidth: "140px"}]}>
+                 <View  id='aheader' onClick={logoutaccount} style={{...styles.acontainer,alignItems:"flex-start"}}>Sair da Conta</View>     
+            </View>
+          </View>  
+      ):(
+        <Box sx={{...styles.seconditemfirsttoolbar,
+          ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
+          ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} onClick={loginaccount}>
+              <img
+                  src={pfp}
+                  alt="profile picture"
+                  width="40px"
+                  height="40px"
+                  style={{
+                  marginTop:"0.5rem"
+                  }}
+                ></img>
+              <Text style={styles.textdefault} >
+                Minha conta
+              </Text> 
+        </Box>   
+      )}
+     </Box>
+  )
+
+  const handleselectsearch = () => {
+    setselected(true)  
+  }
+
+  const handleleavesearch = () => {
+    setselected(false)
+  }
+
+  const handleproduct = (item) => {
+    navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`);
   }
 
   return (
@@ -214,7 +343,7 @@ const filter = (input, dataset) => {
                     ...(isExtraSmallScreen && styles.firstitemfirsttoolbarextrasmall) }}>
                 {( isSmallScreen  ) && (
                   <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
-                  <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
+                  <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >
                     <Box  sx={[styles.produtosmenu]}  >
                       <img src={menuwhite} width={40} style={{cursor:"pointer",color:"white"}} onClick={handleMouseEnterprod} ></img>          
                     </Box>  
@@ -236,7 +365,8 @@ const filter = (input, dataset) => {
                     </>   
                 )
               } 
-                <Box sx={styles.mainsearch}>
+                <Box sx={styles.mainsearch} onMouseEnter={handleselectsearch}
+                      onMouseLeave={handleleavesearch}>
                   <Search>
                     <SearchIconWrapper>
                       <SearchIcon style={{ color: "#344054"}} />
@@ -244,41 +374,30 @@ const filter = (input, dataset) => {
                     <StyledInputBase
                       placeholder="Pesquisa os nossos produtos"
                       inputProps={{ "aria-label": "search" }}
-                      onChange={handleSearchChange}
+                      onChange={handleSearchChange}    
                       value={searchValue}
                     />    
                   </Search>  
-                  {search.length > 0  ?(
+                  {(search.length > 0 || isselected) ?(
                     <Box sx={{
                       ...styles.searchbar,
                       ...isSmallScreen && styles.searchbarsmall,
                       ...isExtraSmallScreen && styles.searchbarsmall,
-                      zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 2,
+                      zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 2,
                     }}>
-                      {search.slice(0, 3).map((item, index) => (
-                        <>
-                          <Box sx={{display:"flex",flexDirection:"column",gap:"10px"}}>
-                            <Link  style={{...styles.acontainer,gap:"5px",padding:"0px"}} id='aheader'>
-                              Produto: {item[3]}
-                            </Link>
-                          </Box>
-                        </>
-                       
-                      ))}
-                      {
-                        search.length > 3 && (
-                          <Box onClick={vermais}  style={{...styles.acontainer,gap:"5px",padding:"0px"}} id='aheader'>
-                            Ver mais
-                          </Box>
-                        )
-                      }
-                     
+                      {search.slice(0, 4).map((item, index) => (
+                        <Box sx={{display:"flex",flexDirection:"column",gap:"10px"}} onClick = {(e) =>handleproduct(item)}>
+                          <Text  style={{...styles.acontainer,gap:"5px",padding:"0px",marginRight:"0.5rem",marginLeft:"0.5rem"}} id='aheader'>
+                            Produto: {item[3]}
+                          </Text>
+                        </Box>   
+                      ))}    
                     </Box>
                   ):null
                   } 
                 </Box>  
                 {( isExtraSmallScreen  ) && (
-                <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} >
+                <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >
                    <Box  style={{ color: "white",textDecorationLine:"none", cursor:"pointer"}} onClick={handleMouseEnterprod}>
                       Menu
                       <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
@@ -286,23 +405,8 @@ const filter = (input, dataset) => {
                   </View> 
                 )}
               </Box>
-              <Box sx={{...styles.seconditemfirsttoolbar,
-                    ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
-                    ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} onClick={loginaccount}>
-                <img
-                    src={pfp}
-                    alt="profile picture"
-                    width="40px"
-                    height="40px"
-                    style={{
-                    marginTop:"0.5rem"
-                    }}
-                ></img>
-                <Text style={styles.textdefault} >
-                    Minha conta
-                </Text> 
-              </Box>  
-              <ReactModal
+              {logout}
+            <ReactModal
                 isOpen={isOpenLogin}
                 onRequestClose={() => setIsOpenLogin(false)}
                 contentLabel="Login Modal"
@@ -389,7 +493,7 @@ const filter = (input, dataset) => {
             {menutoolbar}
             <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ display: "flex", alignItems: "center",gap: "50px" ,zIndex:0}}>
-              <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
+              <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}>
                   <Link style={{ color: "black",textDecorationLine:"none"}} >
                       Contactos
@@ -411,7 +515,7 @@ const filter = (input, dataset) => {
               <Link style={{ textDecorationLine:"none" }} id='aheader' to="/sobrenós">
                 Sobre nós
               </Link> 
-              <Link style={{ textDecorationLine:"none" }} id='aheader' to="#">
+              <Link style={{ textDecorationLine:"none" }} id='aheader' to="/perdirorçamento">
                 Pedir orçamento
               </Link> 
             </Box>
@@ -550,16 +654,15 @@ const styles = StyleSheet.create({
       margin:"auto"
 
   },
-
      acontainer: {
         display: "flex",
-        gap:"10px",
+        gap:"7px",
         fontSize:"16px",
         marginLeft:"1rem",
         alignItems:"center",
         textDecorationLine:"none",
         marginTop:"0.5rem",
-        padding: "6px",
+        padding: "3px",
         marginBottom:"0.5rem",
         cursor:"pointer"
       },

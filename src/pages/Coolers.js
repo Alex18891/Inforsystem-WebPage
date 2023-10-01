@@ -128,6 +128,10 @@ export default function Coolers() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
 
     const commonContainer1 = (
         <Box  sx={styles.container1}>
@@ -219,7 +223,7 @@ export default function Coolers() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {processadores.length>0  &&(
                                 itemsToShow.map((processadores, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer} onClick = {(e) =>handleproduct(processadores)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -350,6 +354,7 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {

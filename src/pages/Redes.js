@@ -125,6 +125,11 @@ export default function Redes() {
         setcheckboxmarca(updatedCheckboxes)    
     }
 
+    const handleproduct = (item) =>
+    {
+        navigate(`/produtoindividual/${encodeURIComponent(JSON.stringify(item))}`)
+    }
+
     useEffect(()=>{       
         const filterBySelectedCheckboxes = () => {
             return redesfilter.filter(item=>{      //Filter the pcs by family     
@@ -307,7 +312,7 @@ export default function Redes() {
                     ...(isExtraSmallScreen && styles.container1extrasmall)}}>
                         {redes.length>0  &&(
                                 itemsToShow.map((redes, index) => (
-                                        <Box sx={styles.viewcontainer}>
+                                        <Box sx={styles.viewcontainer} onClick = {(e) =>handleproduct(redes)}>
                                         <Box sx={styles.containerfeaturesmainproduct}> 
                                             <Box sx={styles.containerfeaturesproduts}> 
                                                 <img
@@ -429,6 +434,7 @@ const styles = StyleSheet.create({
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         padding:"0.5rem",
+        cursor:"pointer"
     },
     containerfeaturesmainproduct:
     {
