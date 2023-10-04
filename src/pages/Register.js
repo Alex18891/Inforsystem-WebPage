@@ -279,22 +279,6 @@ const styles = StyleSheet.create({
         color:"#344054",
         WebkitTextStrokeWidth: '0.1px', 
       },
-      textdefaultblue1:{
-        fontSize:"13px",
-        fontFamily: 'Montserrat',
-        color:"#1B64A7",
-        fontWeight:"900",
-        cursor: "pointer"
-      },
-
-      textdefault3:{
-        fontSize:"10px",
-        fontFamily: 'Montserrat',
-        fontWeight:"900",
-        color:"black",
-        WebkitTextStrokeWidth: '0.1px', // Stroke width
-      },
-
       textdefault4:{
         fontSize:"13px",
         fontFamily: 'Montserrat',

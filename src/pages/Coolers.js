@@ -11,9 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { Divider } from '@mui/material';
 import * as XLSX from 'xlsx';
 import '../index.css';
-
 import secondpc from "./../img/secondpc.png";
-
 import disponivel from "./../img/disponivel.png"
 import arrowright from "./../img/arrowright.png"
 import arrowleft from "./../img/arrowleft.png"
@@ -414,12 +412,6 @@ const styles = StyleSheet.create({
     marginTop:"0.5rem",
     maxWidth:"420px",
     fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
     },
     disponiveltext:{
     fontSize:"15px",

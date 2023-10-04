@@ -507,12 +507,6 @@ const styles = StyleSheet.create({
     color:"#368CD6",
     fontWeight:"bold",
     },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
-    },
     disponiveltext:{
     fontSize:"15px",
     fontFamily:"K2D",

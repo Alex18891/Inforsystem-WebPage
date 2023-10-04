@@ -23,6 +23,7 @@ export default function Enderecomain() {
     const {isOpenEndereco, setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd } = useContext(PopupContext);
     const [userinfo,setuserinfo] = useState([]);
     const {userid} = useUser();
+    console.log(userid,userinfo)
 
     useEffect(()=>{
         axios.get(`http://localhost:8080/endereco?userid=${userid}`)
@@ -135,22 +136,6 @@ const styles = StyleSheet.create({
     contactosflexrowsmall:{
         display:"flex",flexDirection:"column",gap:"15px"
     },
-    contactosflexcolumn:{
-        display:"flex", flexDirection:"column",gap:"5px"
-    },
-    offscreen: {
-        display: 'none',
-      },
-
-    errmsg: {
-        marginBottom: 0,
-        paddingBottom:0,
-        fontFamily: 'Montserrat',
-        fontWeight: "bold",
-        fontSize:"13px",
-        color:"rgb(211,109,109)",
-        textAlign:"left"
-    },
     buttoncontainer:{
         backgroundColor:"#1B64A7",
         color:"white",
@@ -176,13 +161,6 @@ const styles = StyleSheet.create({
         WebkitTextStrokeWidth: '0.1px', 
         textAlign:"center"
       },
-      textdefaultblue1:{
-        fontSize:"13px",
-        fontFamily: 'Montserrat',
-        color:"#1B64A7",
-        fontWeight:"900",
-        cursor: "pointer"
-      },
       textdefaultblue:{
         fontSize:"17px",
         fontFamily: 'Montserrat',
@@ -190,24 +168,11 @@ const styles = StyleSheet.create({
         fontWeight:"900",
         cursor: "pointer"
       },
-      textdefault3:{
-        fontSize:"10px",
-        fontFamily: 'Montserrat',
-        fontWeight:"900",
-        color:"black",
-        WebkitTextStrokeWidth: '0.1px', // Stroke width
-      },
-
       textdefault4:{
         fontSize:"13px",
         fontFamily: 'Montserrat',
         fontWeight:"900",
       },   
-      textdefault1:{
-        fontSize:"17px",
-        fontFamily: 'Montserrat',
-        color:"#344054"
-      },
       boxcontainer:{
         display:"flex",
         flexDirection:"column",
@@ -224,19 +189,5 @@ const styles = StyleSheet.create({
         gap:"8px",   
         justifyContent:"space-between",
         border: '1px solid rgba(194, 194, 194, 0.6)',padding:"0.5rem"
-    },
-    titleflex:{
-        display:"flex",
-        flexDirection:"row",
-        gap:"10px",
-        alignItems:"center"
-    },
-    inputtext:{
-        borderRadius:"4px",
-        paddingLeft:"0.3rem",
-        border:"0.5px solid #98A2B3",
-        fontFamily: 'Montserrat',
-        fontSize:"12px", 
-      }, 
- 
+    }, 
 });

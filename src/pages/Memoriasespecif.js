@@ -393,11 +393,11 @@ const styles = StyleSheet.create({
         flexDirection:"column",
     },
     textdefault:{
-    fontSize:"22px",
-    fontFamily: 'Montserrat',
-    marginBottom:"0.5rem",
-    maxWidth:"420px",
-    zIndex:-1
+        fontSize:"22px",
+        fontFamily: 'Montserrat',
+        marginBottom:"0.5rem",
+        maxWidth:"420px",
+        zIndex:-1
     },
     textdefaultsmall:{
       textAlign:"center"
@@ -406,33 +406,27 @@ const styles = StyleSheet.create({
         textAlign:"center"
      },
     textdefault2:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0.5rem",
-    marginTop:"0.5rem",
-    maxWidth:"420px",
-    fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
+        fontSize:"15px",
+        fontFamily:"K2D",
+        marginBottom:"0.5rem",
+        marginTop:"0.5rem",
+        maxWidth:"420px",
+        fontWeight:"bold",
     },
     disponiveltext:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0rem",
-    color:"#3CA62B",
+        fontSize:"15px",
+        fontFamily:"K2D",
+        marginBottom:"0rem",
+        color:"#3CA62B",
     },
     textdefault3:{
-    fontSize:"37px",
-    fontFamily:"K2D",
-    marginBottom:"0.5rem",
-    zIndex:-1
+        fontSize:"37px",
+        fontFamily:"K2D",
+        marginBottom:"0.5rem",
+        zIndex:-1
     },
     textdefault3small:{
-    textAlign:"center"
+        textAlign:"center"
     },
     textdefault3extrasmall:{
         textAlign:"center"

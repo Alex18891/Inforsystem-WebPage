@@ -316,23 +316,7 @@ const styles = StyleSheet.create({
         display:"flex",
         flexDirection:"row",
         alignItems:"center",
-    },
-    buttoncontainer:{
-        color:"black",
-        fontFamily: 'K2D',
-        marginTop:"0.3rem",
-        fontSize:"13px",
-        paddingTop:"0.2rem",
-        paddingBottom:"0.2rem",
-        borderRadius:"6px",
-        border:"1px solid #e0e0e0",
-        '&:hover': {
-            backgroundColor: '#fafafa',
-            color:"black"
-          },
-          flex:1
-    },
-  
+    },  
     containerfeatures:{
         marginTop:"0.5rem",
         display:"flex",
@@ -363,12 +347,6 @@ const styles = StyleSheet.create({
         maxWidth:"420px",
         zIndex:-1
     },
-    textdefaultsmall:{
-      textAlign:"left"
-     },
-    textdefaultextrasmall:{
-        textAlign:"left"
-     },
     textdefault2:{
         fontSize:"30px",
         fontFamily:"K2D",
@@ -378,29 +356,11 @@ const styles = StyleSheet.create({
         color:"black",
         fontWeight:"bold",
     },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
-    },
     disponiveltext:{
     fontSize:"24px",
     fontFamily:"K2D",
     marginBottom:"0rem",
     color:"#3CA62B",
-    },
-    textdefault3:{
-    fontSize:"37px",
-    fontFamily:"K2D",
-    marginBottom:"0.5rem",
-    zIndex:-1
-    },
-    textdefault3small:{
-    textAlign:"center"
-    },
-    textdefault3extrasmall:{
-        textAlign:"center"
     },
     container1:{
         marginTop:"1rem",

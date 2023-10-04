@@ -743,7 +743,6 @@ const styles = StyleSheet.create({
         paddingLeft:"2rem",
         paddingRight:"2rem"
     },
-
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         marginBottom:"2rem",

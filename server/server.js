@@ -158,7 +158,7 @@ app.get('/endereco',async(req,res)=>{
     
 })
 
-const sendorçamento = async(title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte)=>{
+const sendorçamento = async(title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte,newParameter)=>{
     try{
         const transporter = nodemailer.createTransport({
             service:'gmail',
@@ -170,7 +170,7 @@ const sendorçamento = async(title,checkedService,country,state,cdpt,morada,nome
         const mailOptions = {
             from: 'noreplyloginapp18881@gmail.com',
             to:email,
-            subject:{title},
+            subject:title,
             html: `
             <html>
             <head>
@@ -188,25 +188,42 @@ const sendorçamento = async(title,checkedService,country,state,cdpt,morada,nome
                         <img src="https://tagdetect.s3.eu-west-2.amazonaws.com/logo.png" alt="Profile picture">
                     </div>    
                     <div style="background: #F0F1F3; padding: 3rem 0;">
-                        <div style="border-radius: 6px; margin: auto; background: white; width: 60%; max-width: 370px; padding: 2rem;">
+                        <div style="border-radius: 6px; margin: auto; background: white; width: 60%; max-width: 480px; padding: 2rem;">
                             <h1 style="font-size: 20px; margin-bottom: 1rem;text-align: center;">
-                                ${title}
+                                Pedido de Orçamento 
                             </h1>
                             <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">
-                                Olá <b>${nome}</b>, obrigado por solicitar a ${checkedService} da nossa loja.
+                                Olá <b>${nome}</b>, obrigado pelo seu pedido da nossa loja.
                                 <br></br> Seu produto/serviço será realizado num prazo de <b>duas semanas</b>
                                 <br></br> Por favor confirme os seus dados:
                             </p>
+                            ${newParameter ? `
+                                <p style="font-size: 15px; text-align: left; margin-bottom: 0.5rem;">
+                                    <b>Produto:</b>
+                                </p> 
+                                <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">
+                                <b>Descrição do produto: </b> ${newParameter[3]}
+                                </p>   
+                                <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">
+                                    <b>Referência do produto: </b> ${newParameter[2]}
+                                </p> 
+                                <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">
+                                    <b>Marca do produto: </b> ${newParameter[0]}
+                                </p> 
+                                <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">
+                                    <b>Preço do produto: </b> ${newParameter[5]}
+                                </p>`:`` }     
                             <p style="font-size: 15px; text-align: left; margin-bottom: 0.5rem;">
-                                <b>Informações pessoais</b>
-                            </p>       
-                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">País: ${country}</p>
-                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;">Localidade: ${state}</p>
-                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Morada: ${morada}</p>
-                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Código Postal: ${cdpt}</p>
-                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Número de telemóvel: ${telefone}</p>    
-                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"> Número de contribuinte: ${ncontribuinte}</p>     
-                            <p >
+                                <b>Informações pessoais:</b>
+                            </p>                              
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"><b>País: </b> ${country}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"><b>Localidade: </b> ${state}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"><b>Morada: </b> ${morada}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"><b>Código Postal: </b> ${cdpt}</p>
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"><b>Número de telemóvel: </b> ${telefone}</p>    
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"><b>Número de contribuinte: </b> ${ncontribuinte}</p>     
+                            <p style="font-size: 13px; text-align: left; margin-bottom: 0.5rem;"><b>Nota: </b> Qualquer informação errada, responda a este email e diga o problema para podermos
+                            resolver.</p>   
                             <hr style="border:1;width:100%;"/>
                             <p style="font-size: 13px;">
                                 Precisas de ajuda? <span><a style="font-size: 13px; color: #1B64A7; font-weight: 700;" href="mailto:loja2@inforsystem.net"> Contacte-nos</a></span>
@@ -236,9 +253,10 @@ const sendorçamento = async(title,checkedService,country,state,cdpt,morada,nome
 }
 
 app.post('/pedirorcamento',async(req,res)=>{
-    const {title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte}= req.body;
+    const {title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte,newParameter}= req.body;
     try{  
-        sendorçamento(title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte);
+      
+        sendorçamento(title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte,newParameter); 
         return res.status(201).json({message:"Email enviado"});
       }
 

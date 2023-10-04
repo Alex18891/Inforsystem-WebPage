@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, {useState} from "react";
 
 export const UserContext = React.createContext();
 
@@ -10,9 +10,6 @@ function getCookie(name) {
 } 
 
 export const UserProvider = ({ children }) => {
-  // Here you should implement fetching the cookie for initial value.
-
-  
   const [name, setname] = useState(getCookie('name'));
   const [email, setEmail] = useState(getCookie('email'));
   const [userid, setUserId] = useState(getCookie('userid'));

@@ -195,33 +195,6 @@ const styles = StyleSheet.create({
     containerextrasmall:{
         alignItems:"center",
     },
-    disponivel:{
-        display:"flex",
-        flexDirection:"row",
-        alignItems:"center",
-    },
-    containerfeatures:{
-        marginTop:"0.5rem",
-        display:"flex",
-        flexDirection:"column",
-        marginBottom:"0.5rem",
-        alignItems:"left",
-        textAlign:"center",
-    },
-    containerfeaturesproduts:{       
-        padding:"2rem",
-    },
-    viewcontainer:{ 
-        boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
-        marginBottom:"2rem",
-        paddingLeft:"0.5rem",
-    },
-    containerfeaturesmainproduct:
-    {
-        background: "white",
-        alignItems:"center",
-        justifyContent:"center",
-    },
     textdefault:{
     fontSize:"22px",
     fontFamily: 'Montserrat',
@@ -235,27 +208,6 @@ const styles = StyleSheet.create({
     textdefaultextrasmall:{
         textAlign:"center"
      },
-    textdefault2:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0.5rem",
-    marginTop:"0.5rem",
-    maxWidth:"420px",
-    color:"#368CD6",
-    fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
-    },
-    disponiveltext:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0rem",
-    color:"#3CA62B",
-    },
     textdefault3:{
     fontSize:"37px",
     fontFamily:"K2D",

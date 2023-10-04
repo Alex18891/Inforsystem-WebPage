@@ -174,11 +174,6 @@ const styles = StyleSheet.create({
     containerextrasmall:{
         alignItems:"center",
     },
-    disponivel:{
-        display:"flex",
-        flexDirection:"row",
-        alignItems:"center",
-    },
     containerfeatures:{
         marginTop:"0.5rem",
         display:"flex",
@@ -186,10 +181,6 @@ const styles = StyleSheet.create({
         marginBottom:"0.5rem",
         alignItems:"left",
         textAlign:"center",
-    },
-    containerfeaturesproduts:{       
-        padding:"2rem",
-        textAlign:"center"
     },
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
@@ -231,34 +222,6 @@ const styles = StyleSheet.create({
         display:"flex",
         flexDirection:"column",
     },
-    container2:{
-        display:"grid",
-        margin:"0",
-    },
-    container2large:{
-        display:"grid",
-        gridTemplateRows: "auto auto",
-        gridTemplateColumns:"auto auto",
-    },
-    container2extralarge:{
-        display:"grid",
-        gridTemplateRows: "auto auto auto",
-        gridTemplateColumns:"auto auto auto", 
-    },
-    container2medium:{
-        display:"grid",
-        gridTemplateRows: "auto auto",
-        gridTemplateColumns:"auto auto",
-    },
-    container2small:{
-        display:"flex",
-        flexDirection:"column",
-    },
-    container2extrasmall:{
-        display:"flex",
-        flexDirection:"column",
-    },
-
     textdefault:{
     fontSize:"22px",
     fontFamily: 'Montserrat',
@@ -272,27 +235,6 @@ const styles = StyleSheet.create({
     textdefaultextrasmall:{
         textAlign:"left"
      },
-    textdefault2:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0.5rem",
-    marginTop:"0.5rem",
-    maxWidth:"420px",
-    color:"#368CD6",
-    fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
-    },
-    disponiveltext:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0rem",
-    color:"#3CA62B",
-    },
     textdefault3:{
     fontSize:"37px",
     fontFamily:"K2D",
@@ -305,11 +247,4 @@ const styles = StyleSheet.create({
     textdefault3extrasmall:{
         textAlign:"center"
     },
-    tipossuportediv:{
-        display:"flex",
-        flexDirection:"column",
-        transition: 'transform 0.3s ease',
-        transform: 'translateY(0)', // default opacity
-        gap:"20px"
-    }
 });

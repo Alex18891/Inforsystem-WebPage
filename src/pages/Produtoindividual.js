@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect,useRef,useContext } from "react";
 import { useNavigate,Link,useParams} from "react-router-dom";
 import Header from "./Header.js";
 import Slide from "./Slider.js";
@@ -12,6 +12,8 @@ import * as XLSX from 'xlsx';
 import portateisprodutos from "./../img/portateisprodutos.png";
 import disponivel from "./../img/disponivel.png"
 import buy from "./../img/return.png"
+import { useUser } from '../UserProvider';
+import { PopupContext } from './popupcontext';
 
 export default function Produtoindividual() {
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -22,13 +24,13 @@ export default function Produtoindividual() {
     const itemsPerPage = 16;
     const errRef = useRef();
     const { item: itemString } = useParams();
+    const {userid} = useUser();
     const search = JSON.parse(itemString);
-    console.log(search)
     const [familia,setfamilia] = useState([]);
     const [specif,setspecif] = useState([]);
+    const {setIsOpenLogin} = useContext(PopupContext);
     const navigate = useNavigate();  
-
-
+    
     const shouldIncludeInfont = (brand, product) => {
         switch (brand) {
             case "Cooler_Master":
@@ -130,6 +132,16 @@ export default function Produtoindividual() {
         
     },[search])
 
+    const pedirorcamento = () =>{
+        if(userid)
+        {
+            navigate(`/perdirorçamentoproduto/${encodeURIComponent(JSON.stringify(search))}`)
+        }
+        else{
+            setIsOpenLogin(true)
+        }  
+    }
+
     return (
         <>
             <Header></Header>
@@ -158,86 +170,92 @@ export default function Produtoindividual() {
                     }}>
                         <span style={{fontWeight:"bold"}}>Produto</span>
                     </Text>
-                    <Box sx={styles.viewcontainer}> 
-                        <Box sx={{background: "#1A65A4",borderRadius:"3px 0px"}}>
+                    <Box sx={styles.container1}>
+                        <Box sx={styles.viewcontainer}> 
+                            <Box sx={{background: "#1A65A4",borderRadius:"3px 0px"}}>
+                                <Box sx={styles.containerfeaturesmainproduct}> 
+                                <Box style={ {textAlign:"center"}}>
+                                    <Text style={[styles.textdefault,{fontSize:"36px",color:"white",zIndex:0,fontWeight:"bold"}]}>
+                                        {familia} 
+                                        {search[1] !== "PCs_Acessórios" && ` - ${search[1].replace(/_/g, ' ')}`}
+                                    </Text>
+                                </Box>    
+                                </Box>  
+                            </Box>     
                             <Box sx={styles.containerfeaturesmainproduct}> 
-                            <Box style={ {textAlign:"center"}}>
-                                <Text style={[styles.textdefault,{fontSize:"36px",color:"white",zIndex:0,fontWeight:"bold"}]}>
-                                    {familia} 
-                                    {search[1] !== "PCs_Acessórios" && ` - ${search[1].replace(/_/g, ' ')}`}
-                                </Text>
-                            </Box>    
-                            </Box>  
-                        </Box>     
-                        <Box sx={styles.containerfeaturesmainproduct}> 
-                            <Box sx={styles.containerfeatures}>
-                                <Box sx={{...styles.produtosmenurow,
-                                    ...(isMediumScreen && styles.produtosmenurowsmall),
-                                    ...(isSmallScreen && styles.produtosmenurowsmall),
-                                    ...(isExtraSmallScreen && styles.produtosmenurowsmall),
-                                    }}>
-                                    <img src={portateisprodutos} width={650}>
-                                    </img>
-                                    <Box sx={styles.containerfeatures}>
-                                        <Text style={[styles.textdefault2]}>
-                                            {search[3]}  
-                                        </Text>
-                                        <Box sx={styles.disponivel}>
-                                            <img
-                                                src={disponivel}
-                                                width={"45px"}
-                                                height={"45px"}
-                                                style={{marginLeft:"-0.5rem"}}
-                                            ></img>
-                                            <Text style={styles.disponiveltext}>
-                                                <span style={{fontWeight:"bold"}}>Disponível</span> 
-                                            </Text>
-                                        </Box>
-                                        <Text style={[styles.textdefault2,{fontSize:"22px"}]}>
-                                            <span style={{color:"black"}}>Referência:</span> 
-                                        </Text>
-                                        <Text style={[styles.textdefault,{fontSize:"20px"}]}>{search[2]}  </Text>    
-                                        <Text style={[styles.textdefault2,{fontSize:"22px"}]}>
-                                            <span style={{color:"black"}}>Marca:</span> 
-                                        </Text>
-                                        <Text style={[styles.textdefault,{fontSize:"20px"}]}>{search[0]}</Text>   
-                                        {search[1] === "PCs" && (
-                                            <>
-                                                <Text style={[styles.textdefault2,{fontSize:"22px"}]}>
-                                                    <span style={{color:"black"}}>Especificações:</span> 
-                                                </Text>  
-                                                <Text style={[styles.textdefault,{fontSize:"20px"}]}>Processador: {specif[0]}</Text>
-                                                    {
-                                                        specif[3] && specif[3].includes("SSD") ? (
-                                                            <>
-                                                                <Text style={[styles.textdefault,{fontSize:"20px"}]}>Capacidade: {specif[3]}</Text> 
-                                                                <Text style={[styles.textdefault,{fontSize:"20px"}]}>RAM: {specif[2]}</Text>
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <Text style={[styles.textdefault,{fontSize:"20px"}]}>Capacidade: {specif[2]}</Text> 
-                                                                <Text style={[styles.textdefault,{fontSize:"20px"}]}>RAM: {specif[3]}</Text>
-                                                            </>
-                                                        )
-                                                    }                   
-                                            </>
-                                        )
-                                        }          
-                                        <Text style={styles.textdefault2}>
-                                            <span style={{color:"black"}}>{search[5]} €</span> 
-                                        </Text>
-                                        <Box sx = {{...styles.boxcontainer,
-                                        ...(isSmallScreen && styles.boxcontainersmall),
-                                        ...(isExtraSmallScreen && styles.boxcontainersmall),
+                                <Box sx={styles.containerfeatures}>
+                                    <Box sx={{...styles.produtosmenurow,
+                                        ...(isMediumScreen && styles.produtosmenurowsmall),
+                                        ...(isSmallScreen && styles.produtosmenurowsmall),
+                                        ...(isExtraSmallScreen && styles.produtosmenurowsmall),
                                         }}>
-                                            <Button  startIcon={<img src={buy} alt="description"/>} sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
-                                        </Box>
-                                    
-                                    </Box>      
-                                </Box>     
-                            </Box>      
-                        </Box>   
-                    </Box> 
+                                        <img src={portateisprodutos} style={{...{width:"30%"},
+                                        ...(isMediumScreen && {width:"80%",margin:"auto"}),
+                                        ...(isSmallScreen && {width:"80%",margin:"auto"}),
+                                        ...(isExtraSmallScreen && {width:"80%",margin:"auto"}),
+                                        }} >
+                                        </img>
+                                        <Box sx={styles.containerfeatures}>
+                                            <Text style={[styles.textdefault2]}>
+                                                {search[3]}  
+                                            </Text>
+                                            <Box sx={styles.disponivel}>
+                                                <img
+                                                    src={disponivel}
+                                                    width={"45px"}
+                                                    height={"45px"}
+                                                    style={{marginLeft:"-0.5rem"}}
+                                                ></img>
+                                                <Text style={styles.disponiveltext}>
+                                                    <span style={{fontWeight:"bold"}}>Disponível</span> 
+                                                </Text>
+                                            </Box>
+                                            <Text style={[styles.textdefault2,{fontSize:"22px"}]}>
+                                                <span style={{color:"black"}}>Referência:</span> 
+                                            </Text>
+                                            <Text style={[styles.textdefault,{fontSize:"20px"}]}>{search[2]}  </Text>    
+                                            <Text style={[styles.textdefault2,{fontSize:"22px"}]}>
+                                                <span style={{color:"black"}}>Marca:</span> 
+                                            </Text>
+                                            <Text style={[styles.textdefault,{fontSize:"20px"}]}>{search[0]}</Text>   
+                                            {search[1] === "PCs" && (
+                                                <>
+                                                    <Text style={[styles.textdefault2,{fontSize:"22px"}]}>
+                                                        <span style={{color:"black"}}>Especificações:</span> 
+                                                    </Text>  
+                                                    <Text style={[styles.textdefault,{fontSize:"20px"}]}>Processador: {specif[0]}</Text>
+                                                        {
+                                                            specif[3] && specif[3].includes("SSD") ? (
+                                                                <>
+                                                                    <Text style={[styles.textdefault,{fontSize:"20px"}]}>Capacidade: {specif[3]}</Text> 
+                                                                    <Text style={[styles.textdefault,{fontSize:"20px"}]}>RAM: {specif[2]}</Text>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Text style={[styles.textdefault,{fontSize:"20px"}]}>Capacidade: {specif[2]}</Text> 
+                                                                    <Text style={[styles.textdefault,{fontSize:"20px"}]}>RAM: {specif[3]}</Text>
+                                                                </>
+                                                            )
+                                                        }                   
+                                                </>
+                                            )
+                                            }          
+                                            <Text style={styles.textdefault2}>
+                                                <span style={{color:"black"}}>{search[5]} €</span> 
+                                            </Text>
+                                            <Box sx = {{...styles.boxcontainer,
+                                            ...(isSmallScreen && styles.boxcontainersmall),
+                                            ...(isExtraSmallScreen && styles.boxcontainersmall),
+                                            }}>
+                                                <Button onClick={pedirorcamento} startIcon={<img src={buy} alt="description"/>} sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
+                                            </Box>
+                                        
+                                        </Box>      
+                                    </Box>     
+                                </Box>      
+                            </Box>   
+                        </Box> 
+                    </Box>
                     <Text style={{
                             ...styles.textdefault3,
                             fontSize: "22px",
@@ -246,9 +264,9 @@ export default function Produtoindividual() {
                         }}>
                             <span style={{fontWeight:"bold",fontSize: "22px"}}>Produtos</span> Relacionados
                     </Text>
-                    <Link  style={{fontSize: "17px"}} id='aheader' to='/produtos/Pesquisa/'>
+                    <Text  style={{fontSize: "17px"}} >
                             Pesquisar mais produtos
-                    </Link>  
+                    </Text>  
                 </Box>   
                 <Slide key={search}></Slide>
             </Box>  
@@ -258,54 +276,18 @@ export default function Produtoindividual() {
 }
 
 const styles = StyleSheet.create({
-    offscreen: {
-        display: 'none',
-      },    
-    errmsg: {
-        marginBottom: 0,
-        paddingBottom:0,
-        fontFamily: 'Montserrat',
-        fontWeight: "bold",
-        fontSize:"13px",
-        color:"black",
-        textAlign:"left"
-    },
     container:{
         display:'flex',
         flexDirection:'column',
         marginTop:"2rem",
         marginBottom:"2rem",
     },  
-    produtosmenucolumn:{
-        display:"flex",flexDirection:"column",
-        
-    },
     produtosmenurowsmall:{
         flexDirection:"column",
+        gap:"10px"
     },
     produtosmenurow:{
         display:"flex",flexDirection:"row",gap:"100px"
-    },
-    pesquisamain:{
-       justifyContent:"center",gap:"30px",
-       display:"grid",
-       gridTemplateRows: "auto auto ",
-       gridTemplateColumns:"auto auto "
-    },
-    pesquisamainextrasmall:{
-        gridTemplateRows: "auto",
-        gridTemplateColumns:"auto"
-    },
-    pesquisamainsmall:{
-        gridTemplateRows: "auto  ",
-        gridTemplateColumns:"auto  "
-    },
-
-    pesquisacolumn:{
-        display:"flex",flexDirection:"column",gap:"20px",width:"300px"
-    },
-    pesquisarow:{
-        display:"flex",flexDirection:"row",gap:"15px",alignItems:"center"
     },
     boxcontainer:{
         display:"flex",
@@ -319,15 +301,6 @@ const styles = StyleSheet.create({
     boxcontainersmall:{
         width:"60%"
     },
-  
-    inputtext:{
-        borderRadius:"4px",
-        paddingLeft:"0.3rem",
-        border:"0.5px solid #98A2B3",
-        fontFamily: 'Montserrat',
-        fontSize:"12px",
-        width: "100%"
-      }, 
     containersmall:{
        alignItems:"center",
     },
@@ -347,9 +320,6 @@ const styles = StyleSheet.create({
         alignItems:"left",
         textAlign:"center",
     },
-    containerfeaturesproduts:{       
-        padding:"2rem",
-    },
     viewcontainer:{ 
         boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
         marginBottom:"2rem",
@@ -362,11 +332,7 @@ const styles = StyleSheet.create({
         padding:"1rem",
     },
     container1:{
-        display:"flex",
-        marginTop:"1rem",
-        marginBottom:"1rem",
-        gap:"20px",
-        position: 'relative',
+        display:"block",
     },
     textdefault:{
         fontSize:"22px",

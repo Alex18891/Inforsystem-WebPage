@@ -422,8 +422,6 @@ const styles = StyleSheet.create({
         display:"flex",
         flexDirection:"column",
     },
- 
-
     textdefault:{
     fontSize:"22px",
     fontFamily: 'Montserrat',
@@ -444,12 +442,6 @@ const styles = StyleSheet.create({
     marginTop:"0.5rem",
     maxWidth:"420px",
     fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
     },
     disponiveltext:{
     fontSize:"15px",

@@ -54,12 +54,7 @@ export default function Sobrenos() {
                     </Text> 
                     <Box sx={{marginTop:"10px"}} >
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d191633.00394252004!2d-9.063306905468743!3d41.36831200000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd244698175ac0b1%3A0xc60a579215b37112!2sInfor%20System!5e0!3m2!1spt-PT!2spt!4v1692360916209!5m2!1spt-PT!2spt" width="100%" height="350"  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </Box>
-                  
-                 
-                   
-                   
-                   
+                    </Box>      
                 </Box>     
             </Box> 
             <Footer></Footer>
@@ -80,33 +75,6 @@ const styles = StyleSheet.create({
     containerextrasmall:{
         alignItems:"center",
     },
-    disponivel:{
-        display:"flex",
-        flexDirection:"row",
-        alignItems:"center",
-    },
-    containerfeatures:{
-        marginTop:"0.5rem",
-        display:"flex",
-        flexDirection:"column",
-        marginBottom:"0.5rem",
-        alignItems:"left",
-        textAlign:"center",
-    },
-    containerfeaturesproduts:{       
-        padding:"2rem",
-    },
-    viewcontainer:{ 
-        boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)', 
-        marginBottom:"2rem",
-        paddingLeft:"0.5rem",
-    },
-    containerfeaturesmainproduct:
-    {
-        background: "white",
-        alignItems:"center",
-        justifyContent:"center",
-    },
     textdefault:{
     fontSize:"22px",
     fontFamily: 'Montserrat',
@@ -120,27 +88,6 @@ const styles = StyleSheet.create({
     textdefaultextrasmall:{
         textAlign:"center"
      },
-    textdefault2:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0.5rem",
-    marginTop:"0.5rem",
-    maxWidth:"420px",
-    color:"#368CD6",
-    fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
-    },
-    disponiveltext:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0rem",
-    color:"#3CA62B",
-    },
     textdefault3:{
     fontSize:"37px",
     fontFamily:"K2D",

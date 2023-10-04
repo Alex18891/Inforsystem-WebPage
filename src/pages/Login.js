@@ -206,8 +206,7 @@ export default function Login() {
                                 <Button sx={styles.buttoncontainer} onClick={register}>Criar conta</Button>
                             </Box>
                         </Box>        
-            </Box>
-          
+                </Box>
         </>
     );
 }
@@ -261,12 +260,6 @@ const styles = StyleSheet.create({
         fontSize:"20px",
         fontFamily: 'K2D',
         color:"#344054",
-        WebkitTextStrokeWidth: '0.1px', 
-      },
-      textblue:{
-        fontSize:"20px",
-        fontFamily: 'K2D',
-        color:"#1B64A7",
         WebkitTextStrokeWidth: '0.1px', 
       },
       textdefaultblue:{

@@ -24,8 +24,6 @@ import { allCountries as countryRegionData } from 'country-region-data'
 import {calling} from './callingcodes'
 import Checkbox from '@mui/material/Checkbox';
 import { PopupContext } from './popupcontext';
-import Endereco from "./Endereco.js";
-import Enderecomain from "./Enderecomain.js";
 import secondpc from "./../img/secondpc.png";
 import { useUser } from '../UserProvider';
 
@@ -56,9 +54,7 @@ export default function Orcamento() {
         axios.post('http://localhost:8080/pedirorcamento',{title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte}).then(res=>{
             console.log(res)
             console.log(res.data.message)
-        }).catch(err => console.log(err));
-          
-    }
+        }).catch(err => console.log(err));      }
     
     const endereco = () =>{
         if(!userid)
@@ -67,17 +63,10 @@ export default function Orcamento() {
         }
         else{
             setIsOpenEnderecoadd(true)
-        }
-    }
+        }}
 
     const services = [
-        'Reparação de Computadores',
-        'Reparação de Impressoras',
-        'Alojamentos de serviços Web',
-        'Remoção de vírus',
-        'Instalação de sistema operativo',
-        'Adquirir produto da nossa loja'
-    ];
+        'Reparação de Computadores', 'Reparação de Impressoras','Alojamentos de serviços Web','Remoção de vírus','Instalação de sistema operativo','Adquirir produto da nossa loja'];
 
     return (
         <>
@@ -207,16 +196,20 @@ export default function Orcamento() {
                     <FormControl style={{...styles.formularioproduto,
                         ...(isMediumScreen && styles.formularioprodutosmedium),
                         ...(isSmallScreen && styles.formularioprodutosmall),
-                        ...(isExtraSmallScreen && styles.formularioprodutosmall) }} component="form" onSubmit={orcamento}>
-                        <Box>
-                            <Text style={{
-                                ...styles.textdefault3,
-                                fontSize:"25px",
-                                fontWeight:"bold",
-                                ...(isSmallScreen ? styles.textdefault3small : {}),
-                                ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
+                        ...(isExtraSmallScreen && styles.formularioprodutosmall) }} component="form" onSubmit={orcamento}>     
+                        <Box sx={{...styles.container,
+                            ...(isSmallScreen && {width:"70%",marginLeft:"auto",marginRight:"auto"}),
+                            ...(isExtraSmallScreen && {width:"70%",marginLeft:"auto",marginRight:"auto"}),
+                            alignItems:"left",  
+                            }} >   
+                                <Text style={{
+                            ...styles.textdefault3,
+                            fontSize:"25px",
+                            fontWeight:"bold",
+                            ...(isSmallScreen ? styles.textdefault3small : {}),
+                            ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                             }}>
-                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Formulário</p>
+                                Formulário
                             </Text>       
                             <Text style={{
                                 ...styles.textdefault3,
@@ -224,228 +217,173 @@ export default function Orcamento() {
                                 ...(isSmallScreen ? styles.textdefault3small : {}),
                                 ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                             }}>
-                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Preencha o formulário</p>
-                            </Text>     
-                            <Box sx={{...styles.container,
-                                ...(isSmallScreen && {marginLeft:"auto",marginRight:"auto"}),
-                                ...(isExtraSmallScreen && {marginLeft:"auto",marginRight:"auto"}),
-                                alignItems:"left",  
-                                }} >       
-                                <Box style={{...styles.contentmain,
-                                            ...(isExtraLargeScreen && styles.contentmainlarge),
-                                            ...(isLargeScreen && styles.contentmainlarge),
-                                            ...(isMediumScreen && styles.contentmainmedium),
-                                            ...(isSmallScreen && styles.contentmainsmall),
-                                            ...(isExtraSmallScreen && styles.contentmainsmall)}}>   
-                                    <Box style={styles.contentflex}>
-                                        <Box style={styles.titleflex}> 
-                                            <img
-                                                width={30}
-                                                height={30}
-                                                src={onetopic}               
-                                            ></img>
+                                Preencha o formulário
+                            </Text>         
+                            <Box style={{...styles.contentmain,
+                                        ...(isExtraLargeScreen && styles.contentmainlarge),
+                                        ...(isLargeScreen && styles.contentmainlarge),
+                                        ...(isMediumScreen && styles.contentmainmedium),
+                                        ...(isSmallScreen && styles.contentmainsmall),
+                                        ...(isExtraSmallScreen && styles.contentmainsmall)}}>   
+                                <Box style={styles.contentflex}>
+                                    <Box style={styles.titleflex}> 
+                                        <img
+                                            width={30}
+                                            height={30}
+                                            src={onetopic}               
+                                        ></img>
+                                        <Text style={{
+                                            ...styles.textdefault3,
+                                            fontSize:"27px",
+                                            margin:0,
+                                            ...(isSmallScreen ? styles.textdefault3small : {}),
+                                            ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
+                                        }}>
+                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Diga o que precisa</p>
+                                        </Text>
+                                    </Box>
+                                    <Box style={{display:"flex", flexDirection:"column",gap:"15px"}}>
+                                        <Box sx={{...styles.pesquisarow,
+                                            ...(isSmallScreen && styles.pesquisarowsmall),
+                                            ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                                        }}>
                                             <Text style={{
-                                                ...styles.textdefault3,
-                                                fontSize:"27px",
-                                                margin:0,
-                                                ...(isSmallScreen ? styles.textdefault3small : {}),
-                                                ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
-                                            }}>
-                                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Diga o que precisa</p>
+                                                    ...styles.textdefault3,
+                                                    fontSize:"22px",
+                                                }}>
+                                                    Título do pedido
                                             </Text>
+                                            <input
+                                                type="text"
+                                                required
+                                                value={title}
+                                                placeholder="Título*"
+                                                title="The fill of this camp is mandatory"
+                                                onChange={(e)=>settitle(e.target.value)}
+                                                style={{...styles.inputtext,height:"20px"}}  
+                                                /> 
                                         </Box>
-                                        <Box style={{display:"flex", flexDirection:"column",gap:"15px"}}>
-                                            <Box sx={{...styles.pesquisarow,
-                                                ...(isSmallScreen && styles.pesquisarowsmall),
-                                                ...(isExtraSmallScreen && styles.pesquisarowsmall)
-                                            }}>
-                                                <Text style={{
-                                                        ...styles.textdefault3,
-                                                        fontSize:"22px",
-                                                    }}>
-                                                        Título do pedido
-                                                </Text>
-                                                <input
-                                                    type="text"
-                                                    required
-                                                    value={title}
-                                                    placeholder="Título*"
-                                                    title="The fill of this camp is mandatory"
-                                                    onChange={(e)=>settitle(e.target.value)}
-                                                    style={{...styles.inputtext,height:"20px"}}  
-                                                    /> 
-                                            </Box>
-                                            <Box sx={{...styles.pesquisarow,
-                                                ...(isSmallScreen && styles.pesquisarowsmall),
-                                                ...(isExtraSmallScreen && styles.pesquisarowsmall)
-                                            }}>
-                                                <Text style={{
-                                                        ...styles.textdefault3,
-                                                        fontSize:"22px",  
-                                                    }}>
-                                                        Descrição do pedido (Opcional)
-                                                </Text>
-                                                <textarea
-                                                    style={{...styles.inputtext,height:"100px",resize: "none"}}  
-                                                    value={carta}
-                                                    placeholder="Descrição do seu pedido"
-                                                    onChange={(e)=>setcarta(e.target.value)}
-                                                >     
-                                                </textarea>
-                                            </Box>
-                                
-                                        </Box>     
-                                    </Box>               
-                                    <Box style={styles.contentflex}>
-                                        <Box style={styles.titleflex}> 
-                                            <img
-                                                width={30}
-                                                height={30}
-                                                src={twotopic}               
-                                            ></img>
+                                        <Box sx={{...styles.pesquisarow,
+                                            ...(isSmallScreen && styles.pesquisarowsmall),
+                                            ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                                        }}>
                                             <Text style={{
-                                                ...styles.textdefault3,
-                                                fontSize:"27px",
-                                                margin:0,
-                                                ...(isSmallScreen ? styles.textdefault3small : {}),
-                                                ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
-                                            }}>
-                                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Endereço</p>
+                                                    ...styles.textdefault3,
+                                                    fontSize:"22px",  
+                                                }}>
+                                                    Descrição do pedido (Opcional)
                                             </Text>
+                                            <textarea
+                                                style={{...styles.inputtext,height:"100px",resize: "none"}}  
+                                                value={carta}
+                                                placeholder="Descrição do seu pedido"
+                                                onChange={(e)=>setcarta(e.target.value)}
+                                            >     
+                                            </textarea>
                                         </Box>
-                                            {(userInfo && userid)  ?(
-                                                <Box style={styles.contentflex}>
-                                                    <Box sx={{...styles.pesquisarow,
-                                                        ...(isSmallScreen && styles.pesquisarowsmall),
-                                                        ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                            
+                                    </Box>     
+                                </Box>               
+                                <Box style={styles.contentflex}>
+                                    <Box style={styles.titleflex}> 
+                                        <img
+                                            width={30}
+                                            height={30}
+                                            src={twotopic}               
+                                        ></img>
+                                        <Text style={{
+                                            ...styles.textdefault3,
+                                            fontSize:"27px",
+                                            margin:0,
+                                            ...(isSmallScreen ? styles.textdefault3small : {}),
+                                            ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
+                                        }}>
+                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Endereço</p>
+                                        </Text>
+                                    </Box>
+                                        {(userInfo && userid)  ?(
+                                            <Box style={styles.contentflex}>
+                                                <Box sx={{...styles.pesquisarow,
+                                                    ...(isSmallScreen && styles.pesquisarowsmall),
+                                                    ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                                                }}>
+                                                    <Box sx = {{...styles.contactosflexrow,
+                                                    ...(isSmallScreen && styles.contactosflexrowsmall),
+                                                    ...(isExtraSmallScreen && styles.contactosflexrowsmall)
                                                     }}>
-                                                        <Box sx = {{...styles.contactosflexrow,
-                                                        ...(isSmallScreen && styles.contactosflexrowsmall),
-                                                        ...(isExtraSmallScreen && styles.contactosflexrowsmall)
-                                                        }}>
-                                                            <Box style={styles.contactosflexcolumn} >
-                                                                <Text style={{                                      
-                                                                    ...styles.textdefault3,
-                                                                    fontSize:"22px",
-                                                                    margin:0,
-                                                                    color:"black"
-                                                                }}>
-                                                                    <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.name}</p>
-                                                                </Text>
-                                                            </Box>
-                                                            <Box style={styles.contactosflexcolumn} >
-                                                                <Text style={{                                      
-                                                                    ...styles.textdefault3,
-                                                                    fontSize:"22px",
-                                                                    margin:0,
-                                                                    color:"black"
-                                                                }}>
-                                                                    <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.telefone}</p>
-                                                                </Text>
-                                                            </Box>
-                                                        
-                                                        </Box>              
-                                                    </Box>
-                                                    <Box sx={{...styles.pesquisarow,
-                                                        ...(isSmallScreen && styles.pesquisarowsmall),
-                                                        ...(isExtraSmallScreen && styles.pesquisarowsmall),
-                                                        
-                                                    }}>
-                                                        <Box sx = {{...styles.contactosflexrow,
-                                                        justifyContent:"space-between",
-                                                        ...(isSmallScreen && styles.contactosflexrowsmall),
-                                                        ...(isExtraSmallScreen && styles.contactosflexrowsmall)
-                                                        }}>
-                                                                <Text style={{...styles.textdefault4, maxWidth:"270px"}} >
-                                                                    {userInfo.morada}, 
-                                                                </Text>
-
-                                                            <Box >
-                                                                <Text  onClick= {endereco} style={{...styles.textdefaultblue, maxWidth:"270px"}} >
-                                                                    Mudar
-                                                                </Text>
-                                                        
-                                                            </Box>
-                                                        </Box>   
-                                                        <Box sx = {{...styles.contactosflexrow,
-                                                        justifyContent:"space-between",
-                                                        ...(isSmallScreen && styles.contactosflexrowsmall),
-                                                        ...(isExtraSmallScreen && styles.contactosflexrowsmall)
-                                                        }}> 
-                                                            <Text style={{...styles.textdefault4, maxWidth:"470px"}} >
-                                                            {userInfo.state}, {userInfo.country}, {userInfo.cdpt} 
+                                                        <Box style={styles.contactosflexcolumn} >
+                                                            <Text style={{                                      
+                                                                ...styles.textdefault3,
+                                                                fontSize:"22px",
+                                                                margin:0,
+                                                                color:"black"
+                                                            }}>
+                                                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.name}</p>
                                                             </Text>
-                                                        </Box> 
-                                                    </Box>     
-                                                </Box> 
-                                            ):(
-                                                <Box style={styles.contentflex}>
-                                                    <Box sx={{...styles.pesquisarow,
-                                                        ...(isSmallScreen && styles.pesquisarowsmall),
-                                                        ...(isExtraSmallScreen && styles.pesquisarowsmall)
-                                                    }}>
-                                                         <Box >
-                                                                <Text  onClick= {endereco} style={{...styles.textdefaultblue, color:"black", maxWidth:"270px"}} >
-                                                                    Adicionar Endereço
-                                                                </Text>     
-                                                            </Box>         
-                                                    </Box>
+                                                        </Box>
+                                                        <Box style={styles.contactosflexcolumn} >
+                                                            <Text style={{                                      
+                                                                ...styles.textdefault3,
+                                                                fontSize:"22px",
+                                                                margin:0,
+                                                                color:"black"
+                                                            }}>
+                                                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.telefone}</p>
+                                                            </Text>
+                                                        </Box>
+                                                    
+                                                    </Box>              
                                                 </Box>
-                                            )}   
-                                            <ReactModal                 
-                                                isOpen={isOpenEndereco}
-                                                onRequestClose={() =>setIsOpenEndereco(false)}
-                                                contentLabel="Endereco Modal"
-                                                style={styles.popup}
-                                                >
-                                                <button 
-                                                    onClick={() => setIsOpenEndereco(false)} 
-                                                    style={{
-                                                    cursor:'pointer',
-                                                    position: 'absolute', // Position the button absolutely
-                                                    top: '10px', // Position from the top
-                                                    right: '10px', // Position from the right
-                                                    background: 'transparent',
-                                                    color:'#344054', // Optionally make the button background transparent
-                                                    border: 'none',
-                                                    zIndex:2 // Optionally remove the button border
-                                                    }}
-                                                >
-                                                <FontAwesomeIcon size="2x" icon={faTimes} />
-                                                </button>
-                                                <Endereco onRequestClose={() => setIsOpenEndereco(false)} />
-                                            </ReactModal>
-                                            <ReactModal
-                                                isOpen={isOpenEnderecoadd}
-                                                onRequestClose={() =>setIsOpenEnderecoadd(false)}
-                                                contentLabel="Endereco Modal"
-                                                style={styles.popup}
-                                                >
-                                                <button 
-                                                    onClick={() => setIsOpenEnderecoadd(false)} 
-                                                    style={{
-                                                    cursor:'pointer',
-                                                    position: 'absolute', // Position the button absolutely
-                                                    top: '10px', // Position from the top
-                                                    right: '10px', // Position from the right
-                                                    background: 'transparent',
-                                                    color:'#344054', // Optionally make the button background transparent
-                                                    border: 'none',
-                                                    zIndex:2 // Optionally remove the button border
-                                                    }}
-                                                >
-                                                <FontAwesomeIcon size="2x" icon={faTimes} />
-                                                </button>
-                                                <Enderecomain onRequestClose={() => setIsOpenEnderecoadd(false)} />
-                                            </ReactModal> 
-                                    </Box>                      
-                                </Box>  
-                            </Box>    
-                        </Box>
-                        <Box>
+                                                <Box sx={{...styles.pesquisarow,
+                                                    ...(isSmallScreen && styles.pesquisarowsmall),
+                                                    ...(isExtraSmallScreen && styles.pesquisarowsmall),
+                                                    
+                                                }}>
+                                                    <Box sx = {{...styles.contactosflexrow,
+                                                    justifyContent:"space-between",
+                                                    }}>
+                                                            <Text style={{...styles.textdefault4, maxWidth:"270px"}} >
+                                                                {userInfo.morada}, 
+                                                            </Text>
+
+                                                        <Box >
+                                                            <Text  onClick= {endereco} style={{...styles.textdefaultblue, maxWidth:"270px"}} >
+                                                                Mudar
+                                                            </Text>
+                                                    
+                                                        </Box>
+                                                    </Box>   
+                                                    <Box sx = {{...styles.contactosflexrow,
+                                                    justifyContent:"space-between",
+                                                    ...(isSmallScreen && styles.contactosflexrowsmall),
+                                                    ...(isExtraSmallScreen && styles.contactosflexrowsmall)
+                                                    }}> 
+                                                        <Text style={{...styles.textdefault4, maxWidth:"470px"}} >
+                                                        {userInfo.state}, {userInfo.country}, {userInfo.cdpt} 
+                                                        </Text>
+                                                    </Box> 
+                                                </Box>     
+                                            </Box> 
+                                        ):(
+                                            <Box style={styles.contentflex}>
+                                                <Box sx={{...styles.pesquisarow,
+                                                    ...(isSmallScreen && styles.pesquisarowsmall),
+                                                    ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                                                }}>
+                                                        <Box >
+                                                            <Text  onClick= {endereco} style={{...styles.textdefaultblue, color:"black", maxWidth:"270px"}} >
+                                                                Adicionar Endereço
+                                                            </Text>     
+                                                        </Box>         
+                                                </Box>
+                                            </Box>
+                                        )}   
+                                </Box>                      
+                            </Box>  
+                        </Box>               
                         <Box sx={{...styles.container,
-                                ...(isSmallScreen && {marginLeft:"auto",marginRight:"auto"}),
-                                ...(isExtraSmallScreen && {marginLeft:"auto",marginRight:"auto"}),
+                                ...(isSmallScreen && {width:"70%",marginLeft:"auto",marginRight:"auto"}),
+                                ...(isExtraSmallScreen && {width:"70%",marginLeft:"auto",marginRight:"auto"}),
                                 alignItems:"left",  
                                 }} >       
                                     <Box style={styles.contentflex}>
@@ -486,6 +424,12 @@ export default function Orcamento() {
                                         <Text style={ {...styles.textdefault4,fontSize:"13px"}} >
                                             Nota: Em caso de adquirir um produto na nossa loja, indique no título o que deseja.          
                                         </Text> 
+                                        <Box sx = {[styles.boxcontainer,{flexDirection:'row',alignItems:"center",marginLeft:"-0.6rem"}]}> 
+                                            <Checkbox />
+                                            <Text style={ {...styles.textdefault4,fontSize:"13px"}} >
+                                                SUBSCREVER NEWSLETTER<span><Text style={{fontSize:"12px", color:"#344054",fontFamily: 'Montserrat',}}> (quero receber notificação de novos produtos)</Text></span>        
+                                            </Text>  
+                                        </Box>
                                         <Box sx = {[styles.boxcontainer,{flexDirection:'row',alignItems:"center",marginLeft:"-0.6rem",marginTop:0,marginBottom:0}]}> 
                                             <Checkbox required value={checkboxterm} onChange={(e) => setcheckboxterm(e.target.checked)}/>
                                             <Text style={ {...styles.textdefault4,fontSize:"13px"}} >
@@ -496,12 +440,11 @@ export default function Orcamento() {
                                     </Box>   
                                     <Box style={styles.contentflex}>
                                         <Box sx = {{...styles.boxcontainer,
-                                                    marginBottom:"1rem"}}>
+                                                    marginBottom:"1rem",marginTop:"0.5rem"}}>
                                             <Button type="submit"  startIcon={<img src={buy} alt="description"/>} disabled={!checkboxterm || !userInfo}  sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
                                         </Box>   
                                     </Box>            
-                            </Box>     
-                        </Box>                                   
+                        </Box>                                              
                     </FormControl>                              
             </Box> 
             <Footer></Footer>
@@ -513,62 +456,27 @@ const styles = StyleSheet.create({
     imgcontainerflex:{
         alignItems: 'stretch',height: '55%', display: 'flex'
     },
-    popup:{
-        overlay: {
-          backgroundColor: 'rgba(0,0,0,0.5)', 
-        },
-        content : {
-        position: 'relative',
-        top: '50%',
-        left: '50%',
-        right : 'auto',
-        bottom : 'auto',
-        width:"800px",
-        transform : 'translate(-50%, -50%)',
-        backgroundColor : '#fff', 
-        borderRadius:'6px',
-        paddingBottom:'2rem',
-        padding:'0',
-        border: 0,
-        zIndex:2
-        }
-      },
     imgcontainer:{
         resizeMode: 'cover' ,
         width: '100%', // or any width you prefer
     },
-    precoflexcolumn:{
-        display:"flex",
-        flexDirection:"column",
-        gap:"5px"
-    },
-    precoflexrow:{
-        display:"flex",
-        flexDirection:"row",
-        justifyContent:"space-between"
-    },
-    produtosflexboxdes:{
-        display:"flex",flexDirection:"row",gap:"15px",alignItems:"center"
-    },
-    produtosmenurow:{
-        display:"flex",flexDirection:"column",gap:"10px"
-    },
     formularioproduto:{
         display:"flex",
         flexDirection:"row",
-        gap:"170px"
+        gap:"170px",
+        marginBottom:"2rem",  
     },
     formularioprodutosmall:{
         display:"flex",
         flexDirection:"column",
         gap:"20px",
-        alignItems:"center"
+        alignItems:"strech"
     },
     formularioprodutosmedium:{
         display:"flex",
         flexDirection:"column",
         gap:"20px",
-        alignItems:"center"
+        alignItems:"strech"
     },
     container1:{
         display:"grid",
@@ -606,7 +514,6 @@ const styles = StyleSheet.create({
         flexDirection:"column",
         textAlign:"left",
     },
-
     pesquisarow:{
         display:"flex",flexDirection:"column",gap:"5px"
     },
@@ -624,7 +531,6 @@ const styles = StyleSheet.create({
     },
     contentmain:{
         display: "flex",
-        minWidth:"700px",
     },
     contentmainlarge:{
         flexDirection:"column",
@@ -634,7 +540,6 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection:"column",
         gap:"20px",
-        width:"100%",
     },
     contentmainmedium:{
         display: "flex",
@@ -662,7 +567,7 @@ const styles = StyleSheet.create({
     container:{
         display:'flex',
         flexDirection:'column',
-        marginBottom:"2rem",  
+        flex: 1
     },   
     containerfeatures:{
         marginTop:"0.5rem",
@@ -689,9 +594,6 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         padding:"1rem"
     },
-    textlowdescription:{
-        marginBottom:"0.5rem",marginTop:"0.5rem",textAlign:"left"
-    },
     textdefault:{
     fontSize:"22px",
     fontFamily: 'Montserrat',
@@ -705,21 +607,7 @@ const styles = StyleSheet.create({
     textdefaultextrasmall:{
         textAlign:"center"
      },
-    textdefault2:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0.5rem",
-    marginTop:"0.5rem",
-    maxWidth:"420px",
-    color:"#368CD6",
-    fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
-    },
+
     textdefault3:{
         fontSize:"37px",
         fontFamily:"K2D",

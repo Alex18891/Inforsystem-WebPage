@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import React, { useState } from 'react';
 import Homepage from "./pages/Homepage";
+import DadosPessoais from "./pages/DadosPessoais";
+import SubscreverNewsletter from "./pages/SubscreverNewsletter";
 import SoftwareFaturação from "./pages/SoftwareFaturação";
 import SuporteManutenção from "./pages/SuporteManutenção";
 import Termoseserviços from "./pages/Termoseserviços";
@@ -55,17 +57,20 @@ function App() {
   const [isOpenForgotpassword, setIsOpenForgotpassword] = useState(false);
   const [isOpenEndereco, setIsOpenEndereco] = useState(false);
   const [isOpenEnderecoadd, setIsOpenEnderecoadd] = useState(false);
-
+  const [isOpenconta, setIsOpenconta] = useState(false);
   
   return (
-    <PopupContext.Provider value={{ isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword, setIsOpenForgotpassword,isOpenEndereco,setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd}}>
+    <PopupContext.Provider value={{ isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword, setIsOpenForgotpassword,isOpenEndereco,setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd,
+      isOpenconta, setIsOpenconta}}>
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="/" element={<Homepage/>} />
+          <Route path="/dadospessoais" element={<DadosPessoais/>} />
+          <Route path="/subscrevernewsletter" element={<SubscreverNewsletter/>} />
           <Route path="/softwarefaturação" element={<SoftwareFaturação/>} />
           <Route path="/suportemanutenção" element={<SuporteManutenção/>} />
           <Route path="/perdirorçamento" element={<Orçamento/>} />
-          <Route path="/perdirorçamentoproduto" element={<OrçamentoProduto/>} />
+          <Route path="/perdirorçamentoproduto/:item" element={<OrçamentoProduto/>} />
           <Route path="/termoseserviços" element={<Termoseserviços/>} />
           <Route path="/políticadeprivacidade" element={<Politicadeprivacidade/>} />
           <Route path="/políticadecookies" element={<Politicadecookies/>} />

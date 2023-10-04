@@ -701,7 +701,6 @@ const styles = StyleSheet.create({
     offscreen: {
         display: 'none',
       },
-      
     errmsg: {
         marginBottom: 0,
         paddingBottom:0,
@@ -737,7 +736,6 @@ const styles = StyleSheet.create({
         gridTemplateRows: "auto  ",
         gridTemplateColumns:"auto  "
     },
-
     pesquisacolumn:{
         display:"flex",flexDirection:"column",gap:"20px",width:"300px"
     },
@@ -766,11 +764,6 @@ const styles = StyleSheet.create({
        alignItems:"center",
     },
     containerextrasmall:{
-        alignItems:"center",
-    },
-    disponivel:{
-        display:"flex",
-        flexDirection:"row",
         alignItems:"center",
     },
     containerfeatures:{
@@ -845,18 +838,6 @@ const styles = StyleSheet.create({
     maxWidth:"420px",
     color:"#368CD6",
     fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
-    },
-    disponiveltext:{
-    fontSize:"15px",
-    fontFamily:"K2D",
-    marginBottom:"0rem",
-    color:"#3CA62B",
     },
     textdefault3:{
     fontSize:"37px",

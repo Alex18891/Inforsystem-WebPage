@@ -1,5 +1,5 @@
 import { useState, useEffect,useRef,useContext } from "react";
-import { useNavigate,Link,useLocation} from "react-router-dom";
+import { useNavigate,Link,useLocation, useParams} from "react-router-dom";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
 import {View, Text,StyleSheet} from 'react-native';
@@ -14,23 +14,16 @@ import '../index.css';
 import axios from 'axios'
 import onetopic from "./../img/onetopic.png"
 import twotopic from "./../img/twotopic.png"
-import threetopic from "./../img/threetopic.png"
 import firstorçamento from "./../img/firstorçamento.png"
 import secondorçamento from "./../img/secondorçamento.png"
 import thirdorçamento from "./../img/thirdorçamento.png"
 import fourthorçamento from "./../img/fourthorçamento.png"
 import buy from "./../img/return.png"
-import { allCountries as countryRegionData } from 'country-region-data'
-import {calling} from './callingcodes'
-import Checkbox from '@mui/material/Checkbox';
 import { PopupContext } from './popupcontext';
-import Endereco from "./Endereco.js";
-import Enderecomain from "./Enderecomain.js";
 import secondpc from "./../img/secondpc.png";
 import { useUser } from '../UserProvider';
 
 export default function OrcamentoProduto() {
-
     const isExtraSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.between('sm', 'md'));
     const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.between('md', 'lg'));
@@ -38,40 +31,118 @@ export default function OrcamentoProduto() {
     const isExtraLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('xl'));
     const [title,settitle] = useState('');
     const [carta,setcarta] = useState('');
-    const [checkedService, setCheckedService] = useState(null);
-    const [checkboxterm, setcheckboxterm] = useState(null);
-    const [country,setcountry] = useState('');
-    const [ncontribuinte,setncontribuinte] = useState('');
-    const [state,setstate] = useState('');
-    const [countryStates, setCountryStates] = useState([]);
-    const [nome,setnome] = useState('');
-    const [morada,setmorada] = useState('');
-    const [cdpt,setcdpt] = useState('');
-    const [telefone,settelefone] = useState('');
-    const [phoneabrebiation,setphoneabrebiation] = useState('351');
+    const [familia,setfamilia] = useState([]);
+    const checkedService = "Adquirir produto da nossa loja";
+    const userInfo = JSON.parse(localStorage.getItem('userinfo'));
+    const {item: itemstring} = useParams();
+    const search = JSON.parse(itemstring);
+    console.log(search)
     const navigate = useNavigate();
-    const [userInfo,setuserInfo] = useState('');
     const {userid,email } = useUser();
-    const {isOpenEndereco, setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd } = useContext(PopupContext);
-    const key = Object.keys(calling)
-    const value = Object.values(calling)
+    const {isOpenEndereco, setIsOpenEndereco,isOpenEnderecoadd, setIsOpenEnderecoadd,setIsOpenLogin } = useContext(PopupContext);
 
+
+    const shouldIncludeInfont = (brand, product) => {
+        switch (brand) {
+            case "Cooler_Master":
+                if(product === "V750 Gold i Multi A/EU cord" && product === "V850 Gold i Multi A/EU cord")
+                {
+                    return true;
+                }
+                else{
+                    return false
+                }
+              
+            case "Asus":
+                if(product !== "GX601 ROG Strix Helios HDD Cage Kit ") 
+                {
+                    return true
+                }
+                else{
+                    return false
+                }
+            case "Nox":
+                if (!product.includes("Adapter")){
+                    return true
+                }
+                else{
+                    return false
+                }
+            case "Corsair":
+                if (product.includes("Series") && product === "Professional  AX1600i Digital ATX Power Supply, EU version ")
+                {
+                    return true
+                }
+                else{
+                    return false
+                }
+                    
+            case "UNYKAch":
+                if (!product.includes("Adaptador")){
+                    return true ;
+                } 
+                else {
+                    return false
+                }
+            default:
+                return false;
+        }
+    }
 
     useEffect(()=>{
-        if(userid)
+        if(search[1] === "PCs")
         {
-            const userInfo = JSON.parse(localStorage.getItem('userinfo'));
-            setuserInfo(userInfo)
+            setfamilia("Computadores")
         }
-        else{
-            setuserInfo('')
+        else if(search[1] === "PCs_Acessórios")
+        {
+            let font = shouldIncludeInfont(search[0], search[3])
+            if( font == true)
+            {
+                setfamilia("Acessórios - Fontes de Alimentação")
+            }
+            else 
+            {
+                setfamilia("Computadores - PCs Acessórios")
+            }
+           
         }
-    },[userid])
-    
+        else if(search[1] === "POS_Impressoras" || search[1] === "POS_Leitores_codigos_barra" || search[1] === "Sistemas_de_POS" 
+        || search[1] === "POS_Monitores" || search[1] === "POS_Acessorios" )
+        {
+            setfamilia("Sistemas Pos")
+        }
+        else if(search[1] === "Placas_Graficas" || search[1] === "Motherboards_Pcs" || search[1] === "Processadores" )
+        {
+            setfamilia("Componentes")
+        }
+        else if(search[1] === "Memorias_PCs" || search[1] === "Memorias_Portateis" || search[1] === "Memorias_USB" 
+        || search[1] === "Memorias_Cartoes" || search[1] === "Memorias_Especificas" )
+        {
+            setfamilia("Memórias")
+        }
+        else if(search[1] === "Ratos_Acessórios")
+        {
+            setfamilia("Tapetes e Ratos")
+        }
+        else if(search[1] === "Discos_Externos" || search[1] === "Discos_SSD" || search[1] === "Discos_HDD" )
+        {
+            setfamilia("Discos")
+        }
+        else if(search[1] === "Soluções_de_Arrefecimento" || search[1] === "Redes_Switch" || search[1] === "Conectividade" 
+        || search[1] === "Caixas" || search[1] === "Drives_Ópticas" )
+        {
+            setfamilia("Acessórios")
+        }
+        else if(search[1] === "SW_Servidores" || search[1] === "SW_Sistemas_Operativos" )
+        {
+            setfamilia("Serviços Suporte/Manutenção")
+        }
+        
+    },[search])
 
     const  orcamento =  (event) =>{
         event.preventDefault();
-        console.log("top")
         const country = userInfo.country
         const state = userInfo.state
         const morada = userInfo.morada
@@ -79,7 +150,12 @@ export default function OrcamentoProduto() {
         const cdpt = userInfo.cdpt
         const telefone = userInfo.telefone
         const ncontribuinte = userInfo.ncontribuinte
-        axios.post('http://localhost:8080/pedirorcamento',{title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte}).then(res=>{
+        let requestData = {title,checkedService,country,state,cdpt,morada,nome,telefone,email,ncontribuinte}
+        if(checkedService =="Adquirir produto da nossa loja")
+        {
+            requestData.newParameter = search
+        }
+        axios.post('http://localhost:8080/pedirorcamento',requestData).then(res=>{
             console.log(res)
             console.log(res.data.message)
         }).catch(err => console.log(err));
@@ -87,7 +163,14 @@ export default function OrcamentoProduto() {
     }
     
     const endereco = () =>{
-        setIsOpenEnderecoadd(true)
+        if(!userid)
+        {
+            setIsOpenLogin(true)
+        }
+        else{
+            setIsOpenEnderecoadd(true)
+        }
+        
     }
 
     const services = [
@@ -223,37 +306,34 @@ export default function OrcamentoProduto() {
                                 </Box>
                             </Box>
                         </Box> 
-                    </Box> 
-                    <Box sx={{...styles.formularioproduto,
+                    </Box>  
+                    <FormControl component="form" onSubmit={orcamento} sx={{...styles.formularioproduto,
                             ...(isMediumScreen && styles.formularioprodutosmedium),
                             ...(isSmallScreen && styles.formularioprodutosmall),
-                            ...(isExtraSmallScreen && styles.formularioprodutosmall)
-                    }}>
-                      <Box>
-                        <Text style={{
-                            ...styles.textdefault3,
-                            fontSize:"25px",
-                            fontWeight:"bold",
-                            ...(isSmallScreen ? styles.textdefault3small : {}),
-                            ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
-                        }}>
-                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Formulário</p>
-                        </Text>       
-                        <Text style={{
-                            ...styles.textdefault3,
-                            fontSize:"20px",
-                            ...(isSmallScreen ? styles.textdefault3small : {}),
-                            ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
-                        }}>
-                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Preencha o formulário</p>
-                        </Text>     
-                        <FormControl component="form" onSubmit={orcamento}>
+                            ...(isExtraSmallScreen && styles.formularioprodutosmall)}}>            
                             <Box sx={{...styles.container,
                                 ...(isSmallScreen && {width:"70%",marginLeft:"auto",marginRight:"auto"}),
                                 ...(isExtraSmallScreen && {width:"70%",marginLeft:"auto",marginRight:"auto"}),
                                 alignItems:"left",  
                                 }} > 
-                                <Box>
+                  
+                                        <Text style={{
+                                        ...styles.textdefault3,
+                                        fontSize:"25px",
+                                        fontWeight:"bold",
+                                        ...(isSmallScreen ? styles.textdefault3small : {}),
+                                        ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
+                                    }}>
+                                        Formulário
+                                    </Text>       
+                                    <Text style={{
+                                        ...styles.textdefault3,
+                                        fontSize:"20px",
+                                        ...(isSmallScreen ? styles.textdefault3small : {}),
+                                        ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
+                                    }}>
+                                        Preencha o formulário
+                                    </Text>
                                     <Box style={{...styles.contentmain,
                                                 ...(isExtraLargeScreen && styles.contentmainlarge),
                                                 ...(isLargeScreen && styles.contentmainlarge),
@@ -336,125 +416,86 @@ export default function OrcamentoProduto() {
                                                     <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Endereço</p>
                                                 </Text>
                                             </Box>
-                                                {userInfo && (
-                                                    <Box style={styles.contentflex}>
-                                                        <Box sx={{...styles.pesquisarow,
-                                                            ...(isSmallScreen && styles.pesquisarowsmall),
-                                                            ...(isExtraSmallScreen && styles.pesquisarowsmall)
-                                                        }}>
-                                                            <Box sx = {{...styles.contactosflexrow,
-                                                            ...(isSmallScreen && styles.contactosflexrowsmall),
-                                                            ...(isExtraSmallScreen && styles.contactosflexrowsmall)
+                                            {(userInfo)  ?(
+                                            <Box style={styles.contentflex}>
+                                                <Box sx={{...styles.pesquisarow,
+                                                    ...(isSmallScreen && styles.pesquisarowsmall),
+                                                    ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                                                }}>
+                                                    <Box sx = {{...styles.contactosflexrow,
+                                                    ...(isSmallScreen && styles.contactosflexrowsmall),
+                                                    ...(isExtraSmallScreen && styles.contactosflexrowsmall)
+                                                    }}>
+                                                        <Box style={styles.contactosflexcolumn} >
+                                                            <Text style={{                                      
+                                                                ...styles.textdefault3,
+                                                                fontSize:"22px",
+                                                                margin:0,
+                                                                color:"black"
                                                             }}>
-                                                                <Box style={styles.contactosflexcolumn} >
-                                                                    <Text style={{                                      
-                                                                        ...styles.textdefault3,
-                                                                        fontSize:"22px",
-                                                                        margin:0,
-                                                                        color:"black"
-                                                                    }}>
-                                                                        <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.name}</p>
-                                                                    </Text>
-                                                                </Box>
-                                                                <Box style={styles.contactosflexcolumn} >
-                                                                    <Text style={{                                      
-                                                                        ...styles.textdefault3,
-                                                                        fontSize:"22px",
-                                                                        margin:0,
-                                                                        color:"black"
-                                                                    }}>
-                                                                        <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.telefone}</p>
-                                                                    </Text>
-                                                                </Box>
-                                                            
-                                                            </Box>              
+                                                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.name}</p>
+                                                            </Text>
                                                         </Box>
-                                                        <Box sx={{...styles.pesquisarow,
-                                                            ...(isSmallScreen && styles.pesquisarowsmall),
-                                                            ...(isExtraSmallScreen && styles.pesquisarowsmall),
-                                                            
-                                                        }}>
-                                                            <Box sx = {{...styles.contactosflexrow,
-                                                            justifyContent:"space-between",
-                                                            ...(isSmallScreen && styles.contactosflexrowsmall),
-                                                            ...(isExtraSmallScreen && styles.contactosflexrowsmall)
+                                                        <Box style={styles.contactosflexcolumn} >
+                                                            <Text style={{                                      
+                                                                ...styles.textdefault3,
+                                                                fontSize:"22px",
+                                                                margin:0,
+                                                                color:"black"
                                                             }}>
-                                                                    <Text style={{...styles.textdefault4, maxWidth:"270px"}} >
-                                                                        {userInfo.morada}, 
-                                                                    </Text>
-    
-                                                                <Box >
-                                                                    <Text  onClick= {endereco} style={{...styles.textdefaultblue, maxWidth:"270px"}} >
-                                                                        Mudar
-                                                                    </Text>
-                                                                    <ReactModal
-                                                                        
-                                                                        isOpen={isOpenEndereco}
-                                                                        onRequestClose={() =>setIsOpenEndereco(false)}
-                                                                        contentLabel="Endereco Modal"
-                                                                        style={styles.popup}
-                                                                        >
-                                                                        <button 
-                                                                            onClick={() => setIsOpenEndereco(false)} 
-                                                                            style={{
-                                                                            cursor:'pointer',
-                                                                            position: 'absolute', // Position the button absolutely
-                                                                            top: '10px', // Position from the top
-                                                                            right: '10px', // Position from the right
-                                                                            background: 'transparent',
-                                                                            color:'#344054', // Optionally make the button background transparent
-                                                                            border: 'none',
-                                                                            zIndex:2 // Optionally remove the button border
-                                                                            }}
-                                                                        >
-                                                                        <FontAwesomeIcon size="2x" icon={faTimes} />
-                                                                        </button>
-                                                                        <Endereco onRequestClose={() => setIsOpenEndereco(false)} />
-                                                                    </ReactModal>
-                                                                    <ReactModal
-                                                                        isOpen={isOpenEnderecoadd}
-                                                                        onRequestClose={() =>setIsOpenEnderecoadd(false)}
-                                                                        contentLabel="Endereco Modal"
-                                                                        style={styles.popup}
-                                                                        >
-                                                                        <button 
-                                                                            onClick={() => setIsOpenEnderecoadd(false)} 
-                                                                            style={{
-                                                                            cursor:'pointer',
-                                                                            position: 'absolute', // Position the button absolutely
-                                                                            top: '10px', // Position from the top
-                                                                            right: '10px', // Position from the right
-                                                                            background: 'transparent',
-                                                                            color:'#344054', // Optionally make the button background transparent
-                                                                            border: 'none',
-                                                                            zIndex:2 // Optionally remove the button border
-                                                                            }}
-                                                                        >
-                                                                        <FontAwesomeIcon size="2x" icon={faTimes} />
-                                                                        </button>
-                                                                        <Enderecomain onRequestClose={() => setIsOpenEnderecoadd(false)} />
-                                                                    </ReactModal>
-                                                                </Box>
-                                                            </Box>   
-                                                            <Box sx = {{...styles.contactosflexrow,
-                                                            justifyContent:"space-between",
-                                                            ...(isSmallScreen && styles.contactosflexrowsmall),
-                                                            ...(isExtraSmallScreen && styles.contactosflexrowsmall)
-                                                            }}> 
-                                                                <Text style={{...styles.textdefault4,maxWidth:"470px"}} >
-                                                                {userInfo.state}, {userInfo.country}, {userInfo.cdpt} 
-                                                                </Text>
-                                                            </Box> 
-                                                        </Box>     
+                                                                <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{userInfo.telefone}</p>
+                                                            </Text>
+                                                        </Box>
+                                                    
+                                                    </Box>              
+                                                </Box>
+                                                <Box sx={{...styles.pesquisarow,
+                                                    ...(isSmallScreen && styles.pesquisarowsmall),
+                                                    ...(isExtraSmallScreen && styles.pesquisarowsmall),
+                                                    
+                                                }}>
+                                                    <Box sx = {{...styles.contactosflexrow,
+                                                    justifyContent:"space-between",
+                                                    }}>
+                                                            <Text style={{...styles.textdefault4, maxWidth:"270px"}} >
+                                                                {userInfo.morada}, 
+                                                            </Text>
+
+                                                        <Box >
+                                                            <Text  onClick= {endereco} style={{...styles.textdefaultblue, maxWidth:"270px"}} >
+                                                                Mudar
+                                                            </Text>
+                                                    
+                                                        </Box>
+                                                    </Box>   
+                                                    <Box sx = {{...styles.contactosflexrow,
+                                                    justifyContent:"space-between",
+                                                    ...(isSmallScreen && styles.contactosflexrowsmall),
+                                                    ...(isExtraSmallScreen && styles.contactosflexrowsmall)
+                                                    }}> 
+                                                        <Text style={{...styles.textdefault4, maxWidth:"470px"}} >
+                                                        {userInfo.state}, {userInfo.country}, {userInfo.cdpt} 
+                                                        </Text>
                                                     </Box> 
-                                                )}    
+                                                </Box>     
+                                            </Box> 
+                                            ):(
+                                                <Box style={styles.contentflex}>
+                                                    <Box sx={{...styles.pesquisarow,
+                                                        ...(isSmallScreen && styles.pesquisarowsmall),
+                                                        ...(isExtraSmallScreen && styles.pesquisarowsmall)
+                                                    }}>
+                                                            <Box >
+                                                                <Text  onClick= {endereco} style={{...styles.textdefaultblue, color:"black", maxWidth:"270px"}} >
+                                                                    Adicionar Endereço
+                                                                </Text>     
+                                                            </Box>         
+                                                    </Box>
+                                                </Box>
+                                            )}     
                                         </Box>
-                              
-                                    </Box>
-                                </Box>
+                                    </Box> 
                             </Box>
-                        </FormControl>
-                      </Box>
                       <Box>
                         <Text style={{
                             ...styles.textdefault3,
@@ -487,7 +528,7 @@ export default function OrcamentoProduto() {
                                             ...(isSmallScreen ? styles.textdefault3small : {}),
                                             ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                                         }}>
-                                        <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>Produto: <span style={{fontWeight:"normal"}}> Computadores</span></p>
+                                        <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{familia}: <span style={{fontWeight:"normal"}}> {search[1] !== "PCs_Acessórios" && `${search[1].replace(/_/g, ' ')}`} </span></p>
                                     </Text>
                                     <Box sx={styles.produtosmenurow}>
                                         <img src={secondpc} style={{maxWidth:"180px"}} >
@@ -497,13 +538,25 @@ export default function OrcamentoProduto() {
                                                 <Text style={[styles.textdefault2,{fontSize:"22px",margin:0}]}>
                                                     <span style={{color:"black"}}>Descrição:</span> 
                                                 </Text>
-                                                <Text style={[styles.textdefault,{fontSize:"20px",margin:0,maxWidth:"180px"}]}> "top"  </Text>  
+                                                <Text style={[styles.textdefault,{fontSize:"20px",margin:0,maxWidth:"480px"}]}>{search[3]} </Text>  
+                                            </Box>
+                                            <Box sx={styles.produtosflexboxdes}>
+                                                <Text style={[styles.textdefault2,{fontSize:"22px",margin:0}]}>
+                                                    <span style={{color:"black"}}>Referência:</span> 
+                                                </Text>
+                                                <Text style={[styles.textdefault,{fontSize:"20px",margin:0,maxWidth:"480px"}]}>{search[2]} </Text>  
+                                            </Box>
+                                            <Box sx={styles.produtosflexboxdes}>
+                                                <Text style={[styles.textdefault2,{fontSize:"22px",margin:0}]}>
+                                                    <span style={{color:"black"}}>Marca:</span> 
+                                                </Text>
+                                                <Text style={[styles.textdefault,{fontSize:"20px",margin:0,maxWidth:"480px"}]}>{search[0]} </Text>  
                                             </Box>
                                             <Box sx={styles.produtosflexboxdes}>
                                                 <Text style={[styles.textdefault2,{fontSize:"22px",margin:0}]}>
                                                     <span style={{color:"black"}}>Preço do produto:</span> 
                                                 </Text>
-                                                <Text style={[styles.textdefault,{fontSize:"20px",margin:0}]}> 50  </Text>  
+                                                <Text style={[styles.textdefault,{fontSize:"20px",margin:0}]}>{search[5]} €  </Text>  
                                             </Box>    
                                         </Box>      
                                     </Box>   
@@ -531,7 +584,7 @@ export default function OrcamentoProduto() {
                                                 ...(isSmallScreen ? styles.textdefault3small : {}),
                                                 ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                                             }}>
-                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>10.90€</p>
+                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{search[5]} €</p>
                                             </Text>
                                         </Box>
                                         <Box sx={styles.precoflexrow}>
@@ -549,7 +602,7 @@ export default function OrcamentoProduto() {
                                                 ...(isSmallScreen ? styles.textdefault3small : {}),
                                                 ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                                             }}>
-                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>2€</p>
+                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>12€</p>
                                             </Text>
                                         </Box>
                                         <Divider style={{border:0, borderTop:'1px solid rgba(52, 64, 84, 0.3)',width:"100%"}}/>
@@ -570,16 +623,15 @@ export default function OrcamentoProduto() {
                                                 ...(isSmallScreen ? styles.textdefault3small : {}),
                                                 ...(isExtraSmallScreen ? styles.textdefault3extrasmall : {})
                                             }}>
-                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>12€</p>
+                                            <p style={{marginBottom:"0.5rem",marginTop:"0.5rem"}}>{Math.round(search[5] + 12)} €</p>
                                             </Text>
-                                        </Box>
-                                        
+                                        </Box>       
                                     </Box>
                                     <Box style={styles.contentflex}>
                                             <Box sx = {{...styles.boxcontainer,
                                                         marginTop:"1rem",
                                                         marginBottom:"1rem"}}>
-                                                    <Button type="submit"  startIcon={<img src={buy} alt="description"/>} disabled={!checkboxterm || !userInfo}  sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
+                                                    <Button type="submit"  startIcon={<img src={buy} alt="description"/>} disabled={!userInfo}  sx={styles.buttoncontainer} >PEDIR ORÇAMENTO</Button>
                                             </Box>        
                                             <p style={styles.textlowdescription}>Ao clicar pedir orçamento está a aceitar os nossos termos e condições e a nossa politíca de privacidade</p>         
                                         </Box>     
@@ -588,8 +640,7 @@ export default function OrcamentoProduto() {
                             </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  
+                    </FormControl> 
             </Box> 
             <Footer></Footer>
         </>
@@ -600,26 +651,6 @@ const styles = StyleSheet.create({
     imgcontainerflex:{
         alignItems: 'stretch',height: '55%', display: 'flex'
     },
-    popup:{
-        overlay: {
-          backgroundColor: 'rgba(0,0,0,0.5)', 
-        },
-        content : {
-        position: 'relative',
-        top: '50%',
-        left: '50%',
-        right : 'auto',
-        bottom : 'auto',
-        width:"800px",
-        transform : 'translate(-50%, -50%)',
-        backgroundColor : '#fff', 
-        borderRadius:'6px',
-        paddingBottom:'2rem',
-        padding:'0',
-        border: 0,
-        zIndex:2
-        }
-      },
     imgcontainer:{
         resizeMode: 'cover' ,
         width: '100%', // or any width you prefer
@@ -635,7 +666,7 @@ const styles = StyleSheet.create({
         justifyContent:"space-between"
     },
     produtosflexboxdes:{
-        display:"flex",flexDirection:"row",gap:"15px",alignItems:"center"
+        display:"flex",flexDirection:"row",gap:"15px",alignItems:"baseline"
     },
     produtosmenurow:{
         display:"flex",flexDirection:"column",gap:"10px"
@@ -648,13 +679,14 @@ const styles = StyleSheet.create({
     formularioprodutosmall:{
         display:"flex",
         flexDirection:"column",
-        gap:"20px"
+        gap:"20px",
+        alignItems:"strech"
     },
     formularioprodutosmedium:{
         display:"flex",
         flexDirection:"column",
         gap:"20px",
-        alignItems:"center"
+        alignItems:"strech"
     },
     container1:{
         display:"grid",
@@ -692,7 +724,6 @@ const styles = StyleSheet.create({
         flexDirection:"column",
         textAlign:"left",
     },
-
     pesquisarow:{
         display:"flex",flexDirection:"column",gap:"5px"
     },
@@ -710,11 +741,11 @@ const styles = StyleSheet.create({
     },
     contentmain:{
         display: "flex",
-        minWidth:"700px",
     },
     contentmainlarge:{
         flexDirection:"column",
         gap:"20px",
+        
     },
     contentmainsmall:{
         display: "flex",
@@ -749,6 +780,7 @@ const styles = StyleSheet.create({
         display:'flex',
         flexDirection:'column',
         marginBottom:"2rem",  
+        flex: 1
     },   
     containerfeatures:{
         marginTop:"0.5rem",
@@ -799,12 +831,6 @@ const styles = StyleSheet.create({
     maxWidth:"420px",
     color:"#368CD6",
     fontWeight:"bold",
-    },
-    textdefault2small:{
-    textAlign:"center"
-    },
-    textdefault2extrasmall:{
-        textAlign:"center"
     },
     textdefault3:{
         fontSize:"37px",

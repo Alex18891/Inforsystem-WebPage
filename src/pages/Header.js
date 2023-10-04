@@ -13,10 +13,14 @@ import ReactModal from 'react-modal';
 import { Divider } from '@mui/material';
 import * as XLSX from 'xlsx';
 import pfp from "./../img/user.png";
+import pfpsmall from "./../img/usersmall.png";
 import logo from "./../img/logo.png";
 import menu from "./../img/menu.png";
 import menuwhite from "./../img/menuwhite.png";
 import Login from './Login';
+import Conta from "./Conta";
+import Endereco from "./Endereco.js";
+import Enderecomain from "./Enderecomain.js";
 import Register from "./Register";
 import { PopupContext } from './popupcontext';
 import ForgotPassword from "./ForgotPassword";
@@ -54,16 +58,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingRight: `calc(1rem + ${theme.spacing(3)})`,
     transition: theme.transitions.create("width"),
     borderRadius:"4px",
-    [theme.breakpoints.up("md")]: {
-      width: "24ch",
-      height:"2.8ch"
-    },
+
     [theme.breakpoints.down("sm")]: {
-      width: "24ch", // Set width to 100% for small screens
+      width: "25ch", // Set width to 100% for small screens
       height:"2.8ch", // Set height to 1.6ch for small screens
     },
-    [theme.breakpoints.down('lg')]: {
-      width: '24ch', // Set width to 30ch for large screens
+    [theme.breakpoints.down('md') && theme.breakpoints.up("sm") ]: {
+      width: '55ch', // Set width to 30ch for large screens
+      height:"2.8ch", // Set height to 2ch for large screens
+    },
+    [theme.breakpoints.down("lg") && theme.breakpoints.up('md') ]: {
+      width: "30ch",
+      height:"2.8ch"
+    },
+    [theme.breakpoints.up('lg')] : {
+      width: '30ch', // Set width to 30ch for large screens
       height:"2.8ch", // Set height to 2ch for large screens
     },
     "&::placeholder": {
@@ -86,14 +95,12 @@ export default function PrimarySearchAppBar() {
   const [search, setsearch] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
   const [isselected, setselected] = useState(false);
-  const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword , isOpenEndereco,isOpenEnderecoadd } = useContext(PopupContext);
+  const { isOpenLogin, setIsOpenLogin, isOpenRegister, setIsOpenRegister,isOpenForgotpassword,setIsOpenForgotpassword , isOpenEndereco,isOpenEnderecoadd,
+  isOpenconta, setIsOpenconta,setIsOpenEndereco,setIsOpenEnderecoadd} = useContext(PopupContext);
   const [isHoveredprodu, setIsHoveredprodu] = useState(false);
-  const [isHoveredlogout, setIsHoveredlogout] = useState(false);
   const [isHoveredsoft, setIsHoveredsoft] = useState(false);
-  const [hoveredboxconta, sethoveredboxconta] = useState(false);
   const { setUserId,name,userid,setEmail,setname } = useUser();
-  console.log(userid,name)
-
+  console.log(userid)
   const readFile = async () => {
     try {
     const response = await fetch("/data/Comp_Filtros_1.xlsx");
@@ -224,15 +231,18 @@ const filter = (input, dataset) => {
     {
       setIsOpenLogin(true);
     }
+    else{
+      setIsOpenconta(true)
+    }
   }
 
   const menutoolbar = (
     <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
       <Box sx={{display:"flex",alignItems: "center", gap: "15px"}}>
-        <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >
+        <View style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd || isOpenconta ? 0 : 1,}]} >
           <img src={menu} width={30}  style={{cursor:"pointer"}} onClick={() => window.location.href = "/"} ></img>
         </View>
-        <View  onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnterprod}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >   
+        <View  onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnterprod}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd || isOpenconta ? 0 : 1,}]} >   
           <View  sx={styles.produtosmenu} >
               Produtos       
           </View>
@@ -241,9 +251,8 @@ const filter = (input, dataset) => {
                 <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Catálogo</Link>  
           </View>
         </View>  
-      </Box>
-         
-      <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,minWidth: "380px",}]} onMouseEnter={handleMouseEntersoft}
+      </Box>   
+      <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd || isOpenconta ? 0 : 1,minWidth: "380px",}]} onMouseEnter={handleMouseEntersoft}
             onMouseLeave={handleMouseLeave}>
             <Box  style={{ color: "black",textDecorationLine:"none"}} >
                 Software
@@ -255,56 +264,12 @@ const filter = (input, dataset) => {
         </View>
       </View>
     </Box>
-  )
-  
-  const handlelogout = () =>{
-    setIsHoveredlogout(prevvalue=>!prevvalue)
-  }
-  const logoutaccount = () =>{
-    document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "userid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    localStorage.removeItem('userinfo');
-      setUserId(null)
-      setEmail(null)
-      setname(null)
-  }
-
-  const logoutboxaccount = () =>{
-    sethoveredboxconta(true)
-  }
-
-  const leavelogoutboxaccount = () =>{
-    sethoveredboxconta(false)
-  }
+  ) 
 
   const logout = (
-    <Box onMouseEnter={logoutboxaccount} onMouseLeave={leavelogoutboxaccount}>
-      {userid ? (
-          <View  onClick={handlelogout}  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >   
-             <Box sx={{...styles.seconditemfirsttoolbar,
-            ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
-            ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} >
-              <img
-                src={pfp}
-                alt="profile picture"
-                width="40px"
-                height="40px"
-                style={{
-                marginTop:"0.5rem"
-                }}></img>
-              <View style={styles.textdefault} >
-                  {name}       
-              </View>
-             </Box> 
-            <View  style={[styles.container_cont,isHoveredlogout && hoveredboxconta && styles.containerHovered,{position:"absolute",top:"37px",minWidth: "140px"}]}>
-                 <View  id='aheader' onClick={logoutaccount} style={{...styles.acontainer,alignItems:"flex-start"}}>Sair da Conta</View>     
-            </View>
-          </View>  
-      ):(
         <Box sx={{...styles.seconditemfirsttoolbar,
           ...(isSmallScreen && styles.seconditemfirsttoolbarsmall),
-          ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)  }} onClick={loginaccount}>
+          ...(isExtraSmallScreen && styles.seconditemfirsttoolbarsmall)}} onClick={loginaccount}>
               <img
                   src={pfp}
                   alt="profile picture"
@@ -315,11 +280,37 @@ const filter = (input, dataset) => {
                   }}
                 ></img>
               <Text style={styles.textdefault} >
-                Minha conta
+                {!userid ? "Minha conta" : name}
               </Text> 
         </Box>   
-      )}
-     </Box>
+  )
+
+//IR PARA PAGINA DE Definições/PROFIL FALTA
+  const contasmall = (
+    <Box sx={{ display: "flex", alignItems: "center", gap: "50px",justifyContent:"space-between"}}>
+    <Box sx={[styles.produtosmenu]}>
+      <img src={menuwhite} width={40} style={{cursor:"pointer",color:"white"}} onClick={handleMouseEnterprod} ></img>          
+      <img
+        src={logo}
+        width={210}
+        height={42}
+        alt="profile picture"
+        onClick={() => window.location.href = "/"}
+        style={{cursor:"pointer"}}
+      />
+    </Box>
+            <Box  onClick={loginaccount}>
+                  <img
+                src={pfpsmall}
+                alt="profile picture"
+                width="40px"
+                height="40px"
+                style={{
+                marginTop:"0.5rem",
+                cursor:"pointer"
+                }}></img>
+            </Box> 
+    </Box> 
   )
 
   const handleselectsearch = () => {
@@ -341,30 +332,21 @@ const filter = (input, dataset) => {
               <Box sx={{...styles.firstitemfirsttoolbar,
                     ...(isSmallScreen && styles.firstitemfirsttoolbarsmall),
                     ...(isExtraSmallScreen && styles.firstitemfirsttoolbarextrasmall) }}>
-                {( isSmallScreen  ) && (
-                  <Box sx={{ display: "flex", alignItems: "center", gap: "50px"}}>
-                  <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >
-                    <Box  sx={[styles.produtosmenu]}  >
-                      <img src={menuwhite} width={40} style={{cursor:"pointer",color:"white"}} onClick={handleMouseEnterprod} ></img>          
-                    </Box>  
-                  </View>      
-                  </Box> 
+                {( isSmallScreen || isExtraSmallScreen ) ? (
+                 contasmall
+                ):(
+                  <>
+                  <img
+                      src={logo}
+                      width={210}
+                      height={42}
+                      alt="profile picture"
+                      onClick={() => window.location.href = "/"}
+                      style={{cursor:"pointer"}}
+                    />
+                  </>   
                 )
                 }
-                {
-                  (
-                  <>
-                    <img
-                        src={logo}
-                        width={210}
-                        height={42}
-                        alt="profile picture"
-                        onClick={() => window.location.href = "/"}
-                        style={{cursor:"pointer"}}
-                      />
-                    </>   
-                )
-              } 
                 <Box sx={styles.mainsearch} onMouseEnter={handleselectsearch}
                       onMouseLeave={handleleavesearch}>
                   <Search>
@@ -382,8 +364,8 @@ const filter = (input, dataset) => {
                     <Box sx={{
                       ...styles.searchbar,
                       ...isSmallScreen && styles.searchbarsmall,
-                      ...isExtraSmallScreen && styles.searchbarsmall,
-                      zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 2,
+                      ...isExtraSmallScreen && styles.searchbarextrasmall,
+                      zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd || isOpenconta ? 0 : 2,
                     }}>
                       {search.slice(0, 4).map((item, index) => (
                         <Box sx={{display:"flex",flexDirection:"column",gap:"10px"}} onClick = {(e) =>handleproduct(item)}>
@@ -396,16 +378,8 @@ const filter = (input, dataset) => {
                   ):null
                   } 
                 </Box>  
-                {( isExtraSmallScreen  ) && (
-                <View    style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} >
-                   <Box  style={{ color: "white",textDecorationLine:"none", cursor:"pointer"}} onClick={handleMouseEnterprod}>
-                      Menu
-                      <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
-                    </Box>  
-                  </View> 
-                )}
               </Box>
-              {logout}
+            {logout}
             <ReactModal
                 isOpen={isOpenLogin}
                 onRequestClose={() => setIsOpenLogin(false)}
@@ -475,6 +449,75 @@ const filter = (input, dataset) => {
               </button>
               <ForgotPassword onRequestClose={() => setIsOpenForgotpassword(false)} />
             </ReactModal>
+            <ReactModal
+              isOpen={isOpenconta}
+              onRequestClose={() => setIsOpenconta(false)}
+              contentLabel="Conta Modal"
+              style={styles.popupconta}
+            >
+              <button 
+                onClick={() => setIsOpenconta(false)} 
+                style={{
+                  cursor:'pointer',
+                  position: 'absolute', // Position the button absolutely
+                  top: '10px', // Position from the top
+                  right: '10px', // Position from the right
+                  background: 'transparent',
+                  color:'#344054', // Optionally make the button background transparent
+                  border: 'none',
+                  zIndex:2 // Optionally remove the button border
+                }}
+              >
+                <FontAwesomeIcon size="2x" icon={faTimes} />
+              </button>
+              <Conta onRequestClose={() => setIsOpenconta(false)} />
+            </ReactModal>
+            <ReactModal                 
+              isOpen={isOpenEndereco}
+              onRequestClose={() =>setIsOpenEndereco(false)}
+              contentLabel="Endereco Modal"
+              style={styles.popupendereco}
+              >
+              <button 
+                  onClick={() => setIsOpenEndereco(false)} 
+                  style={{
+                  cursor:'pointer',
+                  position: 'absolute', // Position the button absolutely
+                  top: '10px', // Position from the top
+                  right: '10px', // Position from the right
+                  background: 'transparent',
+                  color:'#344054', // Optionally make the button background transparent
+                  border: 'none',
+                  zIndex:2 // Optionally remove the button border
+                  }}
+              >
+              <FontAwesomeIcon size="2x" icon={faTimes} />
+              </button>
+            <Endereco onRequestClose={() => setIsOpenEndereco(false)} />
+            </ReactModal>
+            <ReactModal
+                isOpen={isOpenEnderecoadd}
+                onRequestClose={() =>setIsOpenEnderecoadd(false)}
+                contentLabel="Endereco Modal"
+                style={styles.popupendereco}
+                >
+                <button 
+                    onClick={() => setIsOpenEnderecoadd(false)} 
+                    style={{
+                    cursor:'pointer',
+                    position: 'absolute', // Position the button absolutely
+                    top: '10px', // Position from the top
+                    right: '10px', // Position from the right
+                    background: 'transparent',
+                    color:'#344054', // Optionally make the button background transparent
+                    border: 'none',
+                    zIndex:2 // Optionally remove the button border
+                    }}
+                >
+                <FontAwesomeIcon size="2x" icon={faTimes} />
+                </button>
+                <Enderecomain onRequestClose={() => setIsOpenEnderecoadd(false)} />
+            </ReactModal> 
             </Toolbar>       
         </Box >
         {(isExtraSmallScreen|| isSmallScreen) && isHoveredprodu &&  (
@@ -483,24 +526,24 @@ const filter = (input, dataset) => {
                 <Link  style={styles.acontainer} id='aheader'to="/produtos/Pesquisa">Catálogo de Produtos</Link>  
                 <Link style={styles.acontainer} id='aheader' to="/suportemanutenção?page=1">Serviços de Suporte/Manutenção</Link>
               <Link style={styles.acontainer} id='aheader' to="/softwarefaturação">Serviços de Faturação</Link>
+              <Link style={styles.acontainer} id='aheader' to="/perdirorçamento">Pedir orçamento</Link> 
+              <Link style={styles.acontainer} id='aheader' to="/sobrenós">Sobre nós </Link>
           </View>
-        )}
-        
+        )}  
         <Box  sx={{ background: "white" ,boxShadow: '0 0 30px rgba(0, 0, 0, 0.2)'}}>
           <Toolbar  sx={{...styles.secondtoolbar,
                       ...(isSmallScreen && styles.secondtoolbarsmall),
                       ...(isExtraSmallScreen && styles.secondtoolbarsmall)  }}>
             {menutoolbar}
             <Box sx={{ flexGrow: 1 }} />
-              <Box sx={{ display: "flex", alignItems: "center",gap: "50px" ,zIndex:0}}>
-              <View  style={[styles.container,{zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd ? 0 : 1,}]} onMouseEnter={handleMouseEnter}
+              <Box sx={{ display: "flex", alignItems: "center",gap: "50px" ,zIndex: isOpenLogin || isOpenForgotpassword || isOpenRegister || isOpenEndereco || isOpenEnderecoadd || isOpenconta  ? 0 : 1}}>
+              <View  style={[styles.container]} onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}>
                   <Link style={{ color: "black",textDecorationLine:"none"}} >
                       Contactos
                       <i className="fa fa-caret-down" style={{marginLeft:"0.5rem"}} ></i>
                   </Link>
-                  <View  style={[styles.container_cont,isHovered && styles.containerHovered]}>
-                    
+                  <View  style={[styles.container_cont,isHovered && styles.containerHovered]}>  
                       <Link style={styles.acontainer} id='aheader' to="https://wa.me/351967687915">
                           <i style={{marginTop:"0.2rem"}} className="fas fa-phone" width="21px" height="21px"  ></i>
                           <p style={{margin:0}}>(+351) 966218628</p>
@@ -509,30 +552,22 @@ const filter = (input, dataset) => {
                           <i style={{marginTop:"0.2rem"}} className="fas fa-envelope" width="21px" height="24px"   ></i>
                           <p style={{margin:0}} >loja2@inforsystem.net</p>
                       </Link>
-                    
                   </View>
               </View>
               <Link style={{ textDecorationLine:"none" }} id='aheader' to="/sobrenós">
                 Sobre nós
               </Link> 
-              <Link style={{ textDecorationLine:"none" }} id='aheader' to="/perdirorçamento">
+              <Link style={{ textDecorationLine:"none"}} id='aheader' to="/perdirorçamento">
                 Pedir orçamento
               </Link> 
             </Box>
           </Toolbar>
         </Box>
-  
     </Box>
   );
 }
 
 const styles = StyleSheet.create({
-  hamburger:{
-    content:" ",
-    display:"block",
-    width:"30px",
-    height:"3px"
-  },
   produtosmenu:{
     color: "black",textDecorationLine:"none",display:"flex",alignItems:"center",gap:"15px"
   },
@@ -561,37 +596,66 @@ const styles = StyleSheet.create({
     zIndex:2
     }
   },
+  popupconta:{
+    overlay: {
+      backgroundColor: 'rgba(0,0,0,0.5)', 
+    },
+    content : {
+    position: 'relative',
+    inset:0,
+    marginLeft:"auto",
+    width:"380px",
+    height:"100%",
+    backgroundColor : '#fff', 
+    borderRadius:'6px',
+    padding:'0',
+    border: 0,
+    zIndex:2
+    }
+  },
+  popupendereco:{
+    overlay: {
+      backgroundColor: 'rgba(0,0,0,0.5)', 
+    },
+    content : {
+    position: 'relative',
+    top: '50%',
+    left: '50%',
+    right : 'auto',
+    bottom : 'auto',
+    width:"800px",
+    transform : 'translate(-50%, -50%)',
+    backgroundColor : '#fff', 
+    borderRadius:'6px',
+    paddingBottom:'2rem',
+    padding:'0',
+    border: 0,
+    zIndex:2
+    }
+  },
   searchbar:{
     position: 'absolute',   
-    marginLeft: `1.48rem`,
+    marginLeft: `1.5rem`,
     top: '94%', 
     border:"1px solid black",
     left: 0, 
     right: 0,
-    width: "35ch", 
+    width: "41.1ch", 
     backgroundColor: "#EBEBEB", 
     boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
   },
+  searchbarextrasmall:{
+    marginLeft: `0rem`,
+  },
   searchbarsmall:{
     marginLeft: `0rem`,
+    width: "67ch", 
   },
     mainsearch:{
       position: 'relative',
       display:"flex",
       flexDirection:"column" ,
     },
-    container_cont2:{
-      display: "none",
-      backgroundColor: "white",
-      shadowColor: '#000',
-      shadowOffset: {
-      width: 0,
-      height: 8,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 16,
-      borderRadius:"10px"  
-  },
     firsttoolbar:{
       alignItems:"center",
       display:"flex",
@@ -609,8 +673,12 @@ const styles = StyleSheet.create({
       flexDirection:"row",display:"flex"
     },
     firstitemfirsttoolbarsmall:{
-      gap:"20px",
+      gap:"10px",
       margin:0,    
+      flexDirection:"column",
+      alignItems: "normal",
+      marginBottom:"20px",
+      marginTop:"10px",
     },
     firstitemfirsttoolbarextrasmall:{
       gap:"10px",
@@ -619,7 +687,7 @@ const styles = StyleSheet.create({
       flexDirection:"column",
       marginBottom:"20px",
       marginTop:"10px",
-      alignItems: "center"
+      alignItems: "normal",
     },
     secondtoolbar:{
       marginLeft:"auto",
@@ -629,11 +697,9 @@ const styles = StyleSheet.create({
       justifyContent:"space-between",
       maxWidth:"1800px", 
     },
-
     secondtoolbarsmall:{
       display:"none",
     },
-
     container_cont:{
         display: "none",
         position: "absolute",
@@ -649,11 +715,6 @@ const styles = StyleSheet.create({
         paddingRight:"20px",
         borderRadius:"5px",  
     },
-    container_small:{
-      display: "none",
-      margin:"auto"
-
-  },
      acontainer: {
         display: "flex",
         gap:"7px",
@@ -665,9 +726,7 @@ const styles = StyleSheet.create({
         padding: "3px",
         marginBottom:"0.5rem",
         cursor:"pointer"
-      },
-      
-  
+      }, 
       containerHovered: {
         display: "block",
         zIndex:2
